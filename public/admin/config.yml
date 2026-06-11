@@ -1,0 +1,68 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "public/images/uploads"
+public_folder: "/images/uploads"
+
+collections:
+  - name: "portfolio"
+    label: "Portfolio Data"
+    files:
+      - label: "Projects"
+        name: "projects"
+        file: "src/data/projects.json"
+        description: "List of portfolio projects"
+        fields:
+          - label: "Projects List"
+            name: "projects"
+            widget: "list"
+            fields:
+              - {label: "Title", name: "title", widget: "string"}
+              - {label: "Description", name: "description", widget: "text"}
+              - {label: "Image URL", name: "image", widget: "string"}
+              - {label: "Tags", name: "tags", widget: "list"}
+              - {label: "Link", name: "link", widget: "string", required: false}
+              - {label: "Github", name: "github", widget: "string", required: false}
+      - label: "About"
+        name: "about"
+        file: "src/data/about.json"
+        fields:
+          - {label: "Bio", name: "bio", widget: "text"}
+          - label: "Stats"
+            name: "stats"
+            widget: "list"
+            fields:
+              - {label: "Title", name: "title", widget: "string"}
+              - {label: "Description", name: "desc", widget: "string"}
+              - {label: "Icon (react-icons/fi)", name: "icon", widget: "string"}
+          - label: "Tools"
+            name: "tools"
+            widget: "list"
+            fields:
+              - {label: "Title", name: "title", widget: "string"}
+              - {label: "Icon (react-icons/si)", name: "icon", widget: "string"}
+      - label: "Experience"
+        name: "experience"
+        file: "src/data/experience.json"
+        fields:
+          - label: "Experiences List"
+            name: "experiences"
+            widget: "list"
+            fields:
+              - {label: "Role", name: "role", widget: "string"}
+              - {label: "Company", name: "company", widget: "string"}
+              - {label: "Duration", name: "duration", widget: "string"}
+              - {label: "Description", name: "description", widget: "text"}
+      - label: "Certifications"
+        name: "certifications"
+        file: "src/data/certifications.json"
+        fields:
+          - label: "Certifications List"
+            name: "certifications"
+            widget: "list"
+            fields:
+              - {label: "Title", name: "title", widget: "string"}
+              - {label: "Issuer", name: "issuer", widget: "string"}
+              - {label: "Date", name: "date", widget: "string"}
+              - {label: "Link", name: "link", widget: "string"}

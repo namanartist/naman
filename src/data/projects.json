@@ -1,0 +1,66 @@
+{
+  "projects": [
+    {
+      "image": "/namsify.jpg",
+      "title": "Namsify",
+      "description": "Built an AI-powered branding platform that helps startups and businesses generate brand names, taglines, domain suggestions, and digital identity solutions. Led end-to-end product development.",
+      "tags": [
+        "UI/UX Design",
+        "Full-Stack",
+        "AI Integration",
+        "Cloud Deployment"
+      ],
+      "link": "https://namsify.vercel.app/",
+      "github": "https://github.com/namanartist"
+    },
+    {
+      "image": "/inamigos.jpg",
+      "title": "Hopebridge Foundation For Inamigos",
+      "description": "Designed and developed a modern, responsive website to showcase its mission, social initiatives, community impact, donation programs, and volunteer opportunities.",
+      "tags": [
+        "Accessibility",
+        "Responsive UI",
+        "Web Design"
+      ],
+      "link": "https://hopebridgefoundationin.netlify.app/",
+      "github": "https://github.com/namanartist"
+    },
+    {
+      "image": "/clixhub.jpg",
+      "title": "Clix Hub",
+      "description": "Built and managed a SaaS platform delivering web applications, automation solutions, and digital transformation tools for educational institutions and businesses.",
+      "tags": [
+        "SaaS",
+        "Full-Stack",
+        "Cloud Deployment",
+        "Security"
+      ],
+      "link": "https://clixhub.vercel.app/",
+      "github": "https://github.com/namanartist"
+    },
+    {
+      "image": "/cleanup.jpg",
+      "title": "CleanUp App",
+      "description": "Developed an AI-powered smart waste management application featuring waste classification, real-time garbage vehicle tracking, and authenticated user reporting.",
+      "tags": [
+        "AI",
+        "Smart Waste Mgmt",
+        "Real-time Tracking"
+      ],
+      "link": "https://clean-up-eea39809.base44.app/",
+      "github": "https://github.com/namanartist"
+    },
+    {
+      "image": "https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&q=80&w=800",
+      "title": "Optimization of Tank Material",
+      "description": "Applied differential calculus to optimize tank dimensions, minimizing material usage while maintaining required volume. Developed mathematical models and constraints.",
+      "tags": [
+        "Calculus",
+        "Mathematical Modeling",
+        "Optimization"
+      ],
+      "link": "https://drive.google.com/file/d/14Uy3gxO3UKVFWD2vjh7aPZDBr6UJwFtd/view?usp=drivesdk",
+      "github": "https://github.com/namanartist"
+    }
+  ]
+}

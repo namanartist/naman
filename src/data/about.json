@@ -1,0 +1,42 @@
+{
+  "bio": "I am an innovative Full-Stack Developer and B.Tech student in Mathematics & Computing. My expertise lies in crafting scalable SaaS platforms, AI-integrated solutions, and high-performance applications with clean architecture.",
+  "stats": [
+    {
+      "icon": "FiCode",
+      "title": "Languages",
+      "desc": "C++, Python, JS, HTML/CSS, MERN"
+    },
+    {
+      "icon": "FiBookOpen",
+      "title": "Education",
+      "desc": "B.Tech Mathematics & Computing"
+    },
+    {
+      "icon": "FiAward",
+      "title": "Projects",
+      "desc": "SaaS Platforms & AI Solutions"
+    }
+  ],
+  "tools": [
+    {
+      "icon": "SiReact",
+      "title": "React js"
+    },
+    {
+      "icon": "SiNodedotjs",
+      "title": "Node.js"
+    },
+    {
+      "icon": "SiMongodb",
+      "title": "MongoDB"
+    },
+    {
+      "icon": "SiPython",
+      "title": "Python"
+    },
+    {
+      "icon": "SiCplusplus",
+      "title": "C++"
+    }
+  ]
+}
