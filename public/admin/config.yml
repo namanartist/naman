@@ -2,7 +2,7 @@ backend:
   name: github
   repo: namanartist/naman
   branch: main
-  base_url: https://namannew.vercel.app
+  base_url: https://namanlahariya.vercel.app
   auth_endpoint: api/auth
 
 media_folder: "public/images/uploads"
