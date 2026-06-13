@@ -174,18 +174,18 @@ export default function Hero() {
         <div className="portfolio-ui center-glow absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60vw] h-[60vw] bg-blue-600/10 blur-[80px] md:blur-[150px] rounded-full pointer-events-none opacity-0 mix-blend-screen z-[1] transform-gpu" style={{ willChange: 'opacity, transform' }}></div>
 
         {/* --- HUD ELEMENTS --- */}
-        <div className="portfolio-ui absolute top-28 left-8 md:top-32 md:left-12 z-[60] font-mono text-[10px] text-blue-400 tracking-widest flex flex-col space-y-1.5 pointer-events-none">
+        <div className="portfolio-ui hidden md:flex absolute top-28 left-8 md:top-32 md:left-12 z-[60] font-mono text-[10px] text-blue-400 tracking-widest flex-col space-y-1.5 pointer-events-none">
             <span className="hud-element opacity-0">&gt; SYSTEM ONLINE</span>
             <span className="hud-element opacity-0">&gt; INITIALIZING PORTFOLIO v2.0</span>
             <span className="hud-element opacity-0">&gt; NEURAL LINK ESTABLISHED</span>
         </div>
-        <div className="portfolio-ui absolute bottom-12 right-8 md:bottom-12 md:right-12 z-[60] font-mono text-[10px] text-gray-600 tracking-widest text-right flex flex-col space-y-1.5 pointer-events-none">
+        <div className="portfolio-ui hidden md:flex absolute bottom-12 right-8 md:bottom-12 md:right-12 z-[60] font-mono text-[10px] text-gray-600 tracking-widest text-right flex-col space-y-1.5 pointer-events-none">
             <span className="hud-element opacity-0">SECURE SYS_ID: REACT_GSAP</span>
             <span className="hud-element opacity-0">COORD: 34.0522 N / 118.2437 W</span>
         </div>
 
         {/* --- SOCIAL LINKS --- */}
-        <div className="portfolio-ui absolute bottom-12 left-8 md:left-12 z-[60] flex flex-col space-y-5">
+        <div className="portfolio-ui hidden md:flex absolute bottom-12 left-8 md:left-12 z-[60] flex-col space-y-5">
             <a href="https://github.com/namanartist" target="_blank" rel="noreferrer" className="social-icon opacity-0 text-gray-500 hover:text-white hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.8)] transition-all">
                 {/* GitHub */}
                 <svg className="w-[18px] h-[18px]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
@@ -220,7 +220,7 @@ export default function Hero() {
                                 transition={{ duration: 0.8, ease: "easeOut" }}
                                 className="mb-4"
                             >
-                                <h1 className="text-4xl md:text-6xl lg:text-7xl font-sans font-bold text-black dark:text-white tracking-[0.1em] uppercase leading-none" style={{ textShadow: "0 0 20px rgba(150,150,150,0.2)" }}>
+                                <h1 className="text-fluid-h1 font-sans font-bold text-black dark:text-white tracking-[0.1em] uppercase leading-none" style={{ textShadow: "0 0 20px rgba(150,150,150,0.2)" }}>
                                     {titleText}
                                 </h1>
                             </motion.div>
@@ -250,7 +250,7 @@ export default function Hero() {
                                 transition={{ duration: 0.8, ease: "easeOut" }}
                                 className="mb-8"
                             >
-                                <p className="text-gray-600 dark:text-gray-400 text-sm md:text-sm lg:text-base font-light tracking-wide leading-relaxed">
+                                <p className="text-gray-600 dark:text-gray-400 text-fluid-p font-light tracking-wide leading-relaxed">
                                     Crafting modern, scalable and high-performance web applications with precision engineering and seamless user experience.
                                 </p>
                             </motion.div>
@@ -261,10 +261,21 @@ export default function Hero() {
                                 initial={{ opacity: 0, y: 30 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
-                                className="pointer-events-auto"
+                                className="pointer-events-auto flex flex-col items-center md:items-start w-full"
                             >
-                                <div className="inline-flex items-center px-8 py-3 border border-gray-300 dark:border-gray-700 bg-white/50 dark:bg-black/50 hover:bg-white dark:hover:bg-black/80 hover:border-blue-500/50 transition-colors cursor-pointer rounded-sm backdrop-blur-md group">
-                                    <span className="text-gray-600 dark:text-gray-300 font-mono tracking-widest uppercase text-xs group-hover:text-black dark:group-hover:text-white transition-colors">Explore Work</span>
+                                <div className="inline-flex items-center px-8 py-4 md:py-3 border border-gray-300 dark:border-gray-700 bg-white/50 dark:bg-black/50 hover:bg-white dark:hover:bg-black/80 hover:border-blue-500/50 transition-colors cursor-pointer rounded-sm backdrop-blur-md group mb-8 md:mb-0 w-full md:w-auto justify-center">
+                                    <span className="text-gray-600 dark:text-gray-300 font-mono tracking-widest uppercase text-sm md:text-xs group-hover:text-black dark:group-hover:text-white transition-colors">Explore Work</span>
+                                </div>
+                                <div className="flex md:hidden space-x-8 justify-center w-full">
+                                    <a href="https://github.com/namanartist" target="_blank" rel="noreferrer" className="text-gray-400 hover:text-white p-3 border border-gray-800 rounded-full bg-black/20">
+                                        <svg className="w-[20px] h-[20px]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                                    </a>
+                                    <a href="https://linkedin.com/in/naman-lahariya" target="_blank" rel="noreferrer" className="text-gray-400 hover:text-white p-3 border border-gray-800 rounded-full bg-black/20">
+                                        <svg className="w-[20px] h-[20px]" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                                    </a>
+                                    <a href="https://t.me/na_man" target="_blank" rel="noreferrer" className="text-gray-400 hover:text-white p-3 border border-gray-800 rounded-full bg-black/20">
+                                        <svg className="w-[20px] h-[20px]" fill="currentColor" viewBox="0 0 24 24"><path d="M12 24c6.627 0 12-5.373 12-12S18.627 0 12 0 0 5.373 0 12s5.373 12 12 12zm5.894-17.536l-1.849 8.706c-.14.636-.519.794-1.047.498l-2.898-2.137-1.398 1.346c-.155.155-.285.285-.584.285l.208-2.951 5.37-4.851c.234-.208-.051-.323-.362-.116L9.695 11.43l-2.86-.894c-.62-.194-.633-.62.13-.918l11.182-4.312c.518-.191.97.114.747.79z"/></svg>
+                                    </a>
                                 </div>
                             </motion.div>
                         )}

@@ -114,7 +114,7 @@ export default function Navbar() {
                   setActiveLink(link.name);
                   setIsMobileMenuOpen(false);
                 }}
-                className={`text-sm tracking-[0.4em] uppercase font-mono transition-all duration-300 ${
+                className={`text-base tracking-[0.4em] uppercase font-mono transition-all duration-300 ${
                   activeLink === link.name ? 'text-black dark:text-white drop-shadow-[0_0_15px_rgba(0,0,0,0.2)] dark:drop-shadow-[0_0_15px_rgba(255,255,255,0.5)]' : 'text-gray-500 dark:text-white/40 hover:text-black dark:hover:text-white'
                 }`}
               >
@@ -123,7 +123,7 @@ export default function Navbar() {
             </li>
           ))}
           <li className={`pt-6 transition-all duration-500 ${isMobileMenuOpen ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`} style={{ transitionDelay: `${navLinks.length * 100}ms` }}>
-            <a href="#contactme" onClick={() => setIsMobileMenuOpen(false)} className="inline-block px-12 py-3 border border-white/20 text-white font-mono text-[10px] uppercase tracking-[0.4em] hover:bg-white hover:text-black transition-all rounded-sm">
+            <a href="#contactme" onClick={() => setIsMobileMenuOpen(false)} className="inline-block px-12 py-4 border border-black/20 dark:border-white/20 text-black dark:text-white font-mono text-[11px] uppercase tracking-[0.4em] hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all rounded-sm">
                 Hire Me
             </a>
           </li>

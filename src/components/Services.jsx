@@ -1,12 +1,12 @@
 import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { motion } from 'framer-motion';
 import { 
-  FiLayout, 
-  FiServer, 
-  FiCloud, 
-  FiZap, 
-  FiBriefcase, 
+  FiLayers, 
+  FiCpu, 
+  FiActivity, 
+  FiDatabase,
   FiArrowRight 
 } from "react-icons/fi";
 
@@ -16,28 +16,31 @@ export default function Services() {
   const containerRef = useRef(null);
   const headerRef = useRef(null);
   const gridRef = useRef(null);
-  const sidebarRef = useRef(null);
 
-  const mainServices = [
+  const personalizedServices = [
     {
-      icon: <FiLayout size={24} />,
-      title: "Frontend Development",
-      p: "Create responsive, fast, and modern user interfaces using React, Tailwind CSS, and reusable components.",
+      icon: <FiLayers size={28} />,
+      title: "Full-Stack SaaS Development",
+      p: "Crafting end-to-end scalable platforms using the MERN stack (MongoDB, Express, React, Node.js) with clean, maintainable architecture.",
+      tags: ["React", "Node.js", "MongoDB", "Express"]
     },
     {
-      icon: <FiServer size={24} />,
-      title: "Backend & API Design",
-      p: "Design and develop secure REST APIs and database integration using FastAPI, Node.js, and MongoDB.",
+      icon: <FiCpu size={28} />,
+      title: "AI Integration & Python",
+      p: "Developing intelligent machine learning features, automation scripts, and robust data pipelines using advanced Python workflows.",
+      tags: ["Python", "Machine Learning", "Automation"]
     },
     {
-      icon: <FiCloud size={24} />,
-      title: "Deployment & Hosting",
-      p: "Deploy applications on cloud platforms with domain setup and production-ready server configurations.",
+      icon: <FiActivity size={28} />,
+      title: "High-Performance Systems",
+      p: "Leveraging my Mathematics & Computing background and C++ expertise to design highly efficient algorithms and system-level components.",
+      tags: ["C++", "Algorithms", "Optimization"]
     },
     {
-      icon: <FiZap size={24} />,
-      title: "Real-Time Solutions",
-      p: "Develop features like chat apps and live notifications using WebSockets and FastAPI.",
+      icon: <FiDatabase size={28} />,
+      title: "API & Backend Architecture",
+      p: "Architecting secure, scalable RESTful APIs and real-time backend systems capable of handling heavy production workloads.",
+      tags: ["REST APIs", "FastAPI", "WebSockets"]
     },
   ];
 
@@ -51,30 +54,16 @@ export default function Services() {
         }
       });
 
-      // 1. Header Animation
+      // Header Animation
       tl.fromTo(headerRef.current.children, 
         { opacity: 0, y: 20 }, 
         { opacity: 1, y: 0, duration: 0.4, ease: "none", stagger: 0.1 }
       );
 
-      // 2. Main Services Grid Stagger
+      // Grid Animation
       tl.fromTo(".service-card", 
-        { opacity: 0, y: 40 }, 
-        { opacity: 1, y: 0, duration: 0.3, ease: "none", stagger: 0.1 },
-        "-=0.2"
-      );
-
-      // 3. Experience Sidebar Slide
-      tl.fromTo(sidebarRef.current, 
-        { opacity: 0, x: 50 }, 
-        { opacity: 1, x: 0, duration: 0.5, ease: "none" },
-        "-=0.3"
-      );
-
-      // UI corner lines animation for sidebar
-      tl.fromTo(".corner-line",
-        { scale: 0 },
-        { scale: 1, duration: 0.3, ease: "none", stagger: 0.05 },
+        { opacity: 0, y: 40, scale: 0.95 }, 
+        { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: "back.out(1.2)", stagger: 0.15 },
         "-=0.2"
       );
 
@@ -91,117 +80,72 @@ export default function Services() {
     >
       {/* Background Subtle Grid */}
       <div className="absolute inset-0 z-0 opacity-[0.05] pointer-events-none transform-gpu" style={{ backgroundImage: 'linear-gradient(currentColor 1px, transparent 1px), linear-gradient(90deg, currentColor 1px, transparent 1px)', backgroundSize: '60px 60px' }}></div>
-      {/* Noise Texture */}
-      <div className="absolute inset-0 z-0 opacity-10 pointer-events-none mix-blend-overlay transform-gpu" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.8%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")', willChange: 'opacity' }}></div>
+      
+      {/* Glowing Ambient Orbs */}
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
+         <div className="absolute top-1/4 -left-32 w-96 h-96 bg-blue-500/10 blur-[120px] rounded-full"></div>
+         <div className="absolute bottom-1/4 -right-32 w-96 h-96 bg-blue-500/10 blur-[120px] rounded-full"></div>
+      </div>
 
       {/* Header */}
-      <div ref={headerRef} className="max-w-7xl mx-auto text-center mb-24 relative z-10">
-        <div className="inline-block px-3 py-1 border border-blue-500/30 bg-blue-500/5 rounded-sm mb-4">
-          <p className="text-blue-400 font-mono text-[10px] uppercase tracking-[0.5em]">SERVICES MODULE</p>
+      <div ref={headerRef} className="max-w-4xl mx-auto text-center mb-20 relative z-10">
+        <div className="inline-block px-4 py-1 border border-blue-500/30 bg-blue-500/5 rounded-full mb-6">
+          <p className="text-blue-500 font-mono text-[10px] uppercase tracking-[0.5em] font-bold">CORE CAPABILITIES</p>
         </div>
-        <h2 className="text-3xl md:text-4xl lg:text-6xl font-black tracking-tighter uppercase mb-6">
-          My Services<span className="text-blue-500">.</span>
+        <h2 className="text-fluid-h2 font-black tracking-tighter uppercase mb-6">
+          My Expertise<span className="text-blue-500">.</span>
         </h2>
         <div className="w-24 h-[1px] bg-blue-500/40 mx-auto mb-8"></div>
-        <p className="max-w-3xl mx-auto text-gray-600 dark:text-gray-500 font-light text-base leading-relaxed">
-          Leveraging my experience from production-level applications and real-time startup incubation projects to build scalable digital solutions.
+        <p className="text-gray-600 dark:text-gray-400 font-light text-fluid-p leading-relaxed">
+          Combining deep mathematical foundations with modern software engineering to build scalable, high-performance applications.
         </p>
       </div>
 
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 items-start relative z-10">
-        
-        {/* Main Services Grid */}
-        <div ref={gridRef} className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-6">
-          {mainServices.map((service) => (
+      <div className="max-w-6xl mx-auto relative z-10">
+        {/* Full-Width Main Services Grid */}
+        <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {personalizedServices.map((service, index) => (
             <div
               key={service.title}
-              className="service-card group p-10 bg-gray-50 dark:bg-[#0a0a0a] border border-black/[0.05] dark:border-white/[0.05] hover:border-blue-500/30 hover:shadow-[0_0_30px_rgba(59,130,246,0.05)] transition-all duration-300 rounded-sm cursor-default flex flex-col items-start"
+              className="service-card group relative p-8 md:p-12 bg-white/40 dark:bg-[#0a0a0a]/80 backdrop-blur-xl border border-black/5 dark:border-white/5 hover:border-blue-500/40 transition-all duration-500 rounded-2xl flex flex-col items-start overflow-hidden shadow-lg dark:shadow-none"
             >
-              <div className="mb-8 p-4 bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-sm text-gray-600 dark:text-gray-300 group-hover:text-blue-500 dark:group-hover:text-blue-400 group-hover:border-blue-500/20 transition-all">
-                {service.icon}
+              {/* Hover Ambient Glow inside card */}
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/0 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+              
+              {/* Corner Cyberpunk Accents */}
+              <div className="absolute top-0 right-0 w-16 h-16 border-t-2 border-r-2 border-blue-500/0 group-hover:border-blue-500/30 transition-all duration-500 rounded-tr-2xl transform translate-x-4 -translate-y-4 group-hover:translate-x-0 group-hover:translate-y-0"></div>
+              <div className="absolute bottom-0 left-0 w-16 h-16 border-b-2 border-l-2 border-blue-500/0 group-hover:border-blue-500/30 transition-all duration-500 rounded-bl-2xl transform -translate-x-4 translate-y-4 group-hover:translate-x-0 group-hover:translate-y-0"></div>
+
+              <div className="relative z-10">
+                <div className="mb-8 p-4 inline-block bg-blue-500/10 border border-blue-500/20 rounded-xl text-blue-500 group-hover:scale-110 group-hover:bg-blue-500 group-hover:text-white transition-all duration-500 shadow-[0_0_20px_rgba(59,130,246,0.1)] group-hover:shadow-[0_0_30px_rgba(59,130,246,0.4)]">
+                  {service.icon}
+                </div>
+                <h3 className="text-2xl font-black text-black dark:text-white mb-4 tracking-tight uppercase">{service.title}</h3>
+                <p className="text-gray-600 dark:text-gray-400 font-light text-base leading-relaxed mb-8 h-24">
+                  {service.p}
+                </p>
+                
+                {/* Tech Tags */}
+                <div className="flex flex-wrap gap-2 mb-8">
+                  {service.tags.map((tag) => (
+                    <span key={tag} className="text-[9px] uppercase tracking-widest font-mono px-3 py-1 bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 text-gray-500 dark:text-gray-400 rounded-full group-hover:border-blue-500/30 group-hover:text-blue-500 transition-colors duration-300">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+
+                <div className="flex items-center gap-3 text-[10px] font-mono uppercase tracking-[0.3em] text-gray-400 group-hover:text-blue-500 transition-colors mt-auto">
+                  <span>Explore Sector</span> 
+                  <FiArrowRight className="group-hover:translate-x-2 transition-transform" />
+                </div>
               </div>
-              <h3 className="text-xl font-bold text-black dark:text-white mb-3 tracking-tight uppercase">{service.title}</h3>
-              <p className="text-gray-600 dark:text-gray-500 font-light text-sm leading-relaxed mb-10">
-                {service.p}
-              </p>
-              <button className="flex items-center gap-3 text-[10px] font-mono uppercase tracking-[0.3em] text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white group/btn transition-colors">
-                <span>View Details</span> 
-                <FiArrowRight className="group-hover:translate-x-1 transition-transform" />
-              </button>
             </div>
           ))}
         </div>
-
-        {/* Featured Experience Card (Sidebar) */}
-        <div ref={sidebarRef} className="lg:col-span-4 h-full relative">
-          <div className="sticky top-32 p-6 md:p-10 bg-gray-50 dark:bg-[#0c0c0c] border border-black/[0.08] dark:border-white/[0.08] rounded-sm group overflow-hidden shadow-xl dark:shadow-none">
-            
-            {/* HUD Corner Lines */}
-            <div className="corner-line absolute top-2 left-2 w-4 h-4 border-t border-l border-blue-500/50"></div>
-            <div className="corner-line absolute top-2 right-2 w-4 h-4 border-t border-r border-blue-500/50"></div>
-            <div className="corner-line absolute bottom-2 left-2 w-4 h-4 border-b border-l border-blue-500/50"></div>
-            <div className="corner-line absolute bottom-2 right-2 w-4 h-4 border-b border-r border-blue-500/50"></div>
-
-            <div className="absolute -top-12 -right-12 w-48 h-48 bg-blue-500/5 blur-[80px] group-hover:bg-blue-500/10 transition-colors duration-1000 transform-gpu" style={{ willChange: 'background-color' }} />
-            
-            <div className="relative z-10 flex flex-col h-full">
-              <div className="flex items-center gap-4 mb-12">
-                <div className="p-3 bg-blue-500/10 border border-blue-500/20 rounded-sm text-blue-400">
-                  <FiBriefcase size={22} />
-                </div>
-                <div>
-                  <h3 className="text-lg font-bold tracking-widest uppercase">Experience</h3>
-                  <span className="text-[8px] font-mono text-gray-600 block tracking-[0.4em] mt-1">MODULE ACTIVE</span>
-                </div>
-              </div>
-
-              <div className="flex gap-4 mb-8">
-                <div className="h-10 px-3 bg-black dark:bg-white flex items-center justify-center rounded-sm">
-                   <span className="text-white dark:text-black font-black text-[10px] tracking-tighter">AGROGANAM</span>
-                </div>
-                <div className="h-10 px-3 border border-black/20 dark:border-white/20 flex items-center justify-center rounded-sm">
-                   <span className="text-black dark:text-white font-bold text-[10px] tracking-widest">INCUBATION</span>
-                </div>
-              </div>
-
-              <p className="text-gray-600 dark:text-gray-400 font-light text-sm leading-relaxed mb-12">
-                Completed a 6-month internship at <span className="text-black dark:text-white font-medium">Agroganam Technologies</span>, 
-                delivering production-level apps and collaborating on real-time incubation center projects.
-              </p>
-
-              <div className="mt-auto space-y-6">
-                <div className="relative overflow-hidden rounded-sm group/img h-40">
-                  <div className="absolute inset-0 bg-blue-500/5 z-10 mix-blend-overlay"></div>
-                  <img 
-                    className="w-full h-full object-cover opacity-60 grayscale group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700 scale-100 group-hover:scale-105" 
-                    src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=800" 
-                    alt="Work Showcase" 
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
-                  <div className="absolute bottom-4 left-4 font-mono text-[8px] text-gray-500 tracking-widest">SYSTEM_IMAGE_01</div>
-                </div>
-                
-                <button 
-                  className="w-full py-4 border border-black/10 dark:border-white/10 text-black dark:text-white font-mono text-[10px] uppercase tracking-[0.3em] hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all duration-300 rounded-sm"
-                >
-                  View Case Study
-                </button>
-              </div>
-            </div>
-          </div>
-
-          {/* Micro HUD Footer */}
-          <div className="mt-6 flex justify-between items-center font-mono text-[9px] text-gray-700 tracking-[0.2em] px-2 opacity-50">
-            <span>&gt; SYSTEM DATA LOADED</span>
-            <span>0x034FB</span>
-          </div>
-        </div>
-
       </div>
 
       {/* Grid Lines Overlay */}
       <div className="absolute bottom-0 left-0 w-full h-[1px] bg-black/[0.03] dark:bg-white/[0.03] z-10"></div>
-      <div className="absolute top-0 right-1/2 w-[1px] h-full bg-black/[0.03] dark:bg-white/[0.03] z-10"></div>
     </section>
   );
 }

@@ -19,7 +19,7 @@ const Certifications = () => {
           <motion.h2
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            className="text-3xl md:text-6xl font-black text-black dark:text-white mb-8 uppercase tracking-tighter"
+            className="text-fluid-h2 font-black text-black dark:text-white mb-8 uppercase tracking-tighter"
           >
             Certifications<span className="text-blue-500">.</span>
           </motion.h2>

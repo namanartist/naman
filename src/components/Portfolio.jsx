@@ -19,7 +19,7 @@ const Portfolio = () => {
         <motion.h2
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          className="text-3xl md:text-6xl font-black text-white mb-8 uppercase tracking-tighter"
+          className="text-fluid-h2 font-black text-white mb-8 uppercase tracking-tighter"
         >
           Selected Works<span className="text-blue-500">.</span>
         </motion.h2>
@@ -36,7 +36,7 @@ const Portfolio = () => {
             whileHover={{ y: -5 }}
             className="group relative overflow-hidden rounded-[2rem] bg-white/5 border border-white/10"
           >
-            <div className="relative overflow-hidden aspect-[4/3] rounded-[1.5rem] m-2">
+            <div className="relative overflow-hidden aspect-video md:aspect-[4/3] rounded-[1.5rem] m-2">
               <img
                 src={project.image}
                 alt={project.title}
@@ -45,7 +45,7 @@ const Portfolio = () => {
               <div className="absolute inset-0 bg-blue-500/20 opacity-0 group-hover:opacity-100 transition-opacity" />
             </div>
 
-            <div className="p-8">
+            <div className="p-6 md:p-8">
               <h3 className="text-2xl font-black text-white mb-2 tracking-tight uppercase">{project.title}</h3>
               <p className="text-gray-400 text-sm mb-4 line-clamp-3">{project.description}</p>
               <div className="flex flex-wrap gap-2 mb-8">

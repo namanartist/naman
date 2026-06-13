@@ -168,12 +168,12 @@ const Contact = () => {
             exit={{ opacity: 0 }}
             className="absolute inset-0 flex flex-col items-center justify-center z-[100] bg-gray-50 dark:bg-[#020202]"
           >
-            <div className="text-cyan-400 font-mono text-[10px] uppercase tracking-[0.5em] mb-4 animate-pulse">
+            <div className="text-blue-400 font-mono text-[10px] uppercase tracking-[0.5em] mb-4 animate-pulse">
               SYNCING_COMM_STREAM {loadingProgress}%
             </div>
-            <div className="w-64 h-[2px] bg-cyan-950/30 overflow-hidden">
+            <div className="w-64 h-[2px] bg-blue-950/30 overflow-hidden">
                <motion.div 
-                 className="h-full bg-cyan-500" 
+                 className="h-full bg-blue-500" 
                  style={{ width: `${loadingProgress}%` }}
                />
             </div>
@@ -200,31 +200,31 @@ const Contact = () => {
             className="absolute inset-0 z-20 pointer-events-none p-10"
           >
             {/* Top-left animated text */}
-            <div className="absolute top-12 left-12">
+            <div className="hidden md:block absolute top-12 left-12">
               <motion.div 
                 animate={{ opacity: [0.3, 1, 0.3] }}
                 transition={{ duration: 2, repeat: Infinity }}
-                className="text-cyan-400 font-mono text-[9px] uppercase tracking-[0.7em] font-bold"
+                className="text-blue-400 font-mono text-[9px] uppercase tracking-[0.7em] font-bold"
               >
                 Establish Sub-Space Connection
               </motion.div>
             </div>
 
             {/* Brackets */}
-            <div className="absolute top-10 left-10 w-24 h-24 border-t border-l border-cyan-500/20" />
-            <div className="absolute top-10 right-10 w-24 h-24 border-t border-r border-cyan-500/20" />
-            <div className="absolute bottom-10 left-10 w-24 h-24 border-b border-l border-cyan-500/20" />
-            <div className="absolute bottom-10 right-10 w-24 h-24 border-b border-r border-cyan-500/20" />
+            <div className="hidden md:block absolute top-10 left-10 w-24 h-24 border-t border-l border-blue-500/20" />
+            <div className="hidden md:block absolute top-10 right-10 w-24 h-24 border-t border-r border-blue-500/20" />
+            <div className="hidden md:block absolute bottom-10 left-10 w-24 h-24 border-b border-l border-blue-500/20" />
+            <div className="hidden md:block absolute bottom-10 right-10 w-24 h-24 border-b border-r border-blue-500/20" />
 
             {/* Static HUD Text */}
-            <div className="absolute top-12 left-12 flex items-center space-x-3">
-               <FiActivity className="text-cyan-400 text-xs animate-pulse" />
-               <span className="text-cyan-400/40 text-[9px] tracking-[0.4em] uppercase font-bold">Signal_Stable</span>
+            <div className="hidden md:flex absolute top-12 left-12 items-center space-x-3">
+               <FiActivity className="text-blue-400 text-xs animate-pulse" />
+               <span className="text-blue-400/40 text-[9px] tracking-[0.4em] uppercase font-bold">Signal_Stable</span>
             </div>
             
             <div className="absolute bottom-12 right-12 text-right hidden lg:block">
                <span className="text-black/30 dark:text-white/10 text-[9px] tracking-[0.6em] uppercase block mb-1">Archive_003</span>
-               <span className="text-cyan-500/30 text-[9px] tracking-[0.4em] uppercase">&gt; System_Ready</span>
+               <span className="text-blue-500/30 text-[9px] tracking-[0.4em] uppercase">&gt; System_Ready</span>
             </div>
           </motion.div>
         )}
@@ -241,10 +241,10 @@ const Contact = () => {
             className="relative z-50 w-full max-w-4xl px-6 pointer-events-auto"
           >
             <div className="text-center mb-8">
-              <h2 className="text-5xl md:text-9xl font-black text-black dark:text-white uppercase tracking-tighter leading-none">
-              COMM<span className="text-cyan-500 block sm:inline">.LINK</span>
+              <h2 className="text-[clamp(3rem,8vw,8rem)] font-black text-black dark:text-white uppercase tracking-tighter leading-none">
+              COMM<span className="text-blue-500 block sm:inline">.LINK</span>
             </h2>
-              <div className="flex items-center justify-center space-x-2 text-cyan-500/60 font-mono text-[9px] tracking-[0.6em] uppercase">
+              <div className="flex items-center justify-center space-x-2 text-blue-500/60 font-mono text-[9px] tracking-[0.6em] uppercase">
                 <FiShield />
                 <span>Protocol: Neural_Gate</span>
               </div>
@@ -253,51 +253,65 @@ const Contact = () => {
             <form
               ref={formRef}
               onSubmit={sendToTelegram}
-              className="bg-black/[0.03] dark:bg-white/[0.03] backdrop-blur-md border border-black/10 dark:border-white/10 p-6 md:p-14 rounded-none shadow-[0_20px_50px_rgba(0,0,0,0.1)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.5)] space-y-6 md:space-y-10 group"
+              className="relative bg-white/40 dark:bg-[#0a0a0a]/80 backdrop-blur-xl border border-black/5 dark:border-white/5 p-8 md:p-14 rounded-3xl shadow-2xl dark:shadow-[0_20px_50px_rgba(0,0,0,0.5)] space-y-6 md:space-y-10 group overflow-hidden"
             >
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+              {/* Hover Ambient Glow inside form card */}
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/0 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+
+              {/* Corner Cyberpunk Accents */}
+              <div className="absolute top-0 right-0 w-16 h-16 border-t-2 border-r-2 border-blue-500/0 group-hover:border-blue-500/30 transition-all duration-500 rounded-tr-3xl transform translate-x-4 -translate-y-4 group-hover:translate-x-0 group-hover:translate-y-0"></div>
+              <div className="absolute bottom-0 left-0 w-16 h-16 border-b-2 border-l-2 border-blue-500/0 group-hover:border-blue-500/30 transition-all duration-500 rounded-bl-3xl transform -translate-x-4 translate-y-4 group-hover:translate-x-0 group-hover:translate-y-0"></div>
+
+              <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-10">
                 <div className="space-y-3">
-                  <label className="text-[9px] font-mono font-bold uppercase tracking-[0.3em] text-cyan-500/50 block ml-1">IDENT_SIGNATURE</label>
+                  <label className="text-[9px] font-mono font-bold uppercase tracking-[0.3em] text-blue-600/70 dark:text-blue-500/50 block ml-1 flex items-center gap-2">
+                    <FiUser className="text-blue-500" /> IDENT_SIGNATURE
+                  </label>
                   <input
                     name="name"
                     type="text"
                     placeholder="ENTER_NAME"
                     required
-                    className="w-full bg-black/5 dark:bg-white/5 border-b border-black/10 dark:border-white/10 py-5 px-6 text-black dark:text-white text-[11px] outline-none focus:border-cyan-600 transition-all placeholder:text-black/30 dark:placeholder:text-cyan-950/20"
+                    className="w-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-xl py-4 px-6 text-black dark:text-white text-base md:text-sm outline-none focus:border-blue-500 focus:bg-blue-500/5 focus:shadow-[0_0_15px_rgba(59,130,246,0.15)] transition-all placeholder:text-black/30 dark:placeholder:text-blue-950/40"
                   />
                 </div>
                 <div className="space-y-3">
-                  <label className="text-[9px] font-mono font-bold uppercase tracking-[0.3em] text-cyan-500/50 block ml-1">COMM_PATH_ADDR</label>
+                  <label className="text-[9px] font-mono font-bold uppercase tracking-[0.3em] text-blue-600/70 dark:text-blue-500/50 block ml-1 flex items-center gap-2">
+                    <FiMail className="text-blue-500" /> COMM_PATH_ADDR
+                  </label>
                   <input
                     name="email"
                     type="email"
                     placeholder="ENTER_EMAIL"
                     required
-                    className="w-full bg-black/5 dark:bg-white/5 border-b border-black/10 dark:border-white/10 py-5 px-6 text-black dark:text-white text-[11px] outline-none focus:border-cyan-600 transition-all placeholder:text-black/30 dark:placeholder:text-cyan-950/20"
+                    className="w-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-xl py-4 px-6 text-black dark:text-white text-base md:text-sm outline-none focus:border-blue-500 focus:bg-blue-500/5 focus:shadow-[0_0_15px_rgba(59,130,246,0.15)] transition-all placeholder:text-black/30 dark:placeholder:text-blue-950/40"
                   />
                 </div>
               </div>
 
-              <div className="space-y-3">
-                <label className="text-[9px] font-mono font-bold uppercase tracking-[0.3em] text-cyan-500/50 block ml-1">DATA_PAYLOAD</label>
+              <div className="relative z-10 space-y-3">
+                <label className="text-[9px] font-mono font-bold uppercase tracking-[0.3em] text-blue-600/70 dark:text-blue-500/50 block ml-1 flex items-center gap-2">
+                  <FiMessageSquare className="text-blue-500" /> DATA_PAYLOAD
+                </label>
                 <textarea
                   name="message"
                   placeholder="INPUT_TRANSMISSION..."
                   required
-                  className="w-full bg-black/5 dark:bg-white/5 border-b border-black/10 dark:border-white/10 py-5 px-6 text-black dark:text-white text-[11px] outline-none focus:border-cyan-600 transition-all min-h-[140px] resize-none placeholder:text-black/30 dark:placeholder:text-cyan-950/20"
+                  className="w-full bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-xl py-4 px-6 text-black dark:text-white text-base md:text-sm outline-none focus:border-blue-500 focus:bg-blue-500/5 focus:shadow-[0_0_15px_rgba(59,130,246,0.15)] transition-all min-h-[140px] resize-none placeholder:text-black/30 dark:placeholder:text-blue-950/40"
                 />
               </div>
 
-              <div className="flex justify-center md:justify-end">
+              <div className="relative z-10 flex justify-center md:justify-end mt-4">
                 <motion.button
-                whileHover={{ scale: 1.05, boxShadow: "0 0 50px rgba(6, 182, 212, 0.3)" }}
-                whileTap={{ scale: 0.95 }}
-                type="submit"
-                className="group flex items-center space-x-6 bg-cyan-600 text-black font-black text-[11px] uppercase tracking-[0.6em] px-12 py-5 md:px-24 md:py-6 shadow-2xl transition-all"
-              >
-                <span>TRANSMIT</span>
-                <FiSend className="text-lg transition-transform group-hover:translate-x-1" />
-              </motion.button>
+                  whileHover={{ scale: 1.02, boxShadow: "0 0 30px rgba(59, 130, 246, 0.4)" }}
+                  whileTap={{ scale: 0.98 }}
+                  type="submit"
+                  className="group relative overflow-hidden flex justify-center items-center space-x-4 w-full md:w-auto bg-blue-600 hover:bg-blue-500 text-black font-black text-xs uppercase tracking-[0.4em] px-12 py-5 rounded-xl shadow-xl transition-all"
+                >
+                  <span className="relative z-10">TRANSMIT_DATA</span>
+                  <FiSend className="relative z-10 text-lg transition-transform group-hover:translate-x-2 group-hover:-translate-y-1" />
+                  <div className="absolute inset-0 bg-white/20 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-out z-0"></div>
+                </motion.button>
               </div>
             </form>
           </motion.div>
@@ -306,8 +320,8 @@ const Contact = () => {
 
       <ToastContainer
         position="bottom-right"
-        toastClassName="bg-white dark:bg-black border border-cyan-500/30 text-black dark:text-white font-mono text-[9px] rounded-none backdrop-blur-xl"
-        progressClassName="bg-cyan-600"
+        toastClassName="bg-white dark:bg-black border border-blue-500/30 text-black dark:text-white font-mono text-[9px] rounded-none backdrop-blur-xl"
+        progressClassName="bg-blue-600"
       />
     </div>
   );
