@@ -8,10 +8,10 @@ export default {
   theme: {
     extend: {
       fontSize: {
-        'fluid-h1': 'clamp(2.5rem, 5vw + 1rem, 5rem)',
-        'fluid-h2': 'clamp(2rem, 4vw + 1rem, 4.5rem)',
-        'fluid-h3': 'clamp(1.5rem, 3vw + 1rem, 2.5rem)',
-        'fluid-p': 'clamp(0.875rem, 1.5vw + 0.5rem, 1.125rem)',
+        'fluid-h1': 'clamp(3rem, 8vw, 8rem)',
+        'fluid-h2': 'clamp(2.5rem, 6vw, 6rem)',
+        'fluid-h3': 'clamp(1.5rem, 4vw, 4rem)',
+        'fluid-p': 'clamp(0.875rem, 1.5vw, 1.25rem)',
       }
     },
   },
