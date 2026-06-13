@@ -1,4 +1,4 @@
-/* Premium Decap CMS UI Enhancements */
+/* Glassmorphic Decap CMS UI Enhancements */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 /* Base Font & Theme */
@@ -9,116 +9,178 @@
 }
 
 /* App Background */
+body, [class*="AppMainContainer"] {
+  background: linear-gradient(135deg, #0f172a, #1e293b, #3b82f6) !important;
+  background-attachment: fixed !important;
+  color: #f8fafc !important;
+}
+
+[class*="AuthenticationPage-root"] {
+  background: linear-gradient(135deg, #0f172a, #1e293b, #3b82f6) !important;
+}
+
+/* App Header */
 [class*="AppHeader-root"] {
-  background-color: #ffffff !important;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
-  border-bottom: 1px solid #e5e7eb !important;
+  background: rgba(15, 23, 42, 0.6) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
 }
 
 /* Sidebar & Collection UI */
 [class*="SidebarContainer"] {
-  background-color: #f9fafb !important;
-  border-right: 1px solid #e5e7eb !important;
+  background: rgba(30, 41, 59, 0.4) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
 
-[class*="CollectionTop-topPane"] {
-  background-color: #ffffff !important;
-  border-bottom: 1px solid #e5e7eb !important;
+[class*="CollectionTop-topPane"],
+[class*="ToolbarContainer"] {
+  background: rgba(30, 41, 59, 0.4) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+[class*="EditorContainer"], 
+[class*="ControlPaneContainer"] {
+  background: transparent !important;
+}
+
+/* Text overrides for dark theme */
+h1, h2, h3, h4, h5, h6, p, span, div, label {
+  color: #e2e8f0 !important;
 }
 
 /* Cards & List items */
 [class*="Card-root"],
 [class*="GridCard-root"],
 [class*="ListCard-root"] {
-  border-radius: 12px !important;
-  border: 1px solid #e5e7eb !important;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03) !important;
-  transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  border-radius: 16px !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease !important;
 }
 
 [class*="Card-root"]:hover,
 [class*="GridCard-root"]:hover,
 [class*="ListCard-root"]:hover {
-  transform: translateY(-2px) !important;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04) !important;
+  transform: translateY(-4px) !important;
+  background: rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2) !important;
 }
 
 /* Inputs & Forms */
-[class*="ControlPaneContainer"] {
-  background-color: #f9fafb !important;
-}
-
 [class*="ControlContainer"] input,
 [class*="ControlContainer"] textarea,
 [class*="ControlContainer"] select {
-  border-radius: 8px !important;
-  border: 1px solid #d1d5db !important;
-  padding: 10px 12px !important;
-  transition: border-color 0.2s, box-shadow 0.2s !important;
-  background-color: #ffffff !important;
+  background: rgba(15, 23, 42, 0.5) !important;
+  backdrop-filter: blur(4px) !important;
+  -webkit-backdrop-filter: blur(4px) !important;
+  border-radius: 12px !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  padding: 12px 16px !important;
+  color: #ffffff !important;
+  transition: border-color 0.2s, box-shadow 0.2s, background 0.2s !important;
 }
 
 [class*="ControlContainer"] input:focus,
 [class*="ControlContainer"] textarea:focus,
 [class*="ControlContainer"] select:focus {
-  border-color: #3b82f6 !important;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2) !important;
+  background: rgba(15, 23, 42, 0.8) !important;
+  border-color: #60a5fa !important;
+  box-shadow: 0 0 0 4px rgba(96, 165, 250, 0.3) !important;
   outline: none !important;
+}
+
+::placeholder {
+  color: rgba(255, 255, 255, 0.4) !important;
 }
 
 /* Buttons */
 button {
-  border-radius: 8px !important;
-  font-weight: 500 !important;
-  transition: all 0.2s ease !important;
+  border-radius: 12px !important;
+  font-weight: 600 !important;
+  transition: all 0.3s ease !important;
 }
 
 [class*="Button-button-primary"] {
-  background-color: #111827 !important;
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6) !important;
   color: #ffffff !important;
   border: none !important;
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4) !important;
 }
 
 [class*="Button-button-primary"]:hover {
-  background-color: #374151 !important;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.6) !important;
+  transform: translateY(-2px) !important;
 }
 
+/* Login Page specific */
 [class*="githubAuthenticationPage-button"] {
-  background-color: #111827 !important;
-  border-radius: 8px !important;
-  padding: 12px 24px !important;
+  background: rgba(255, 255, 255, 0.1) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  border-radius: 12px !important;
+  padding: 14px 28px !important;
   font-size: 16px !important;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
 }
 
 [class*="githubAuthenticationPage-button"]:hover {
-  background-color: #374151 !important;
-  transform: translateY(-1px) !important;
+  background: rgba(255, 255, 255, 0.2) !important;
+  transform: translateY(-2px) !important;
 }
 
 /* List Widget enhancements */
 [class*="ListItemTopBar"] {
-  background-color: #f3f4f6 !important;
-  border-top-left-radius: 8px !important;
-  border-top-right-radius: 8px !important;
-  border-bottom: 1px solid #e5e7eb !important;
+  background: rgba(15, 23, 42, 0.6) !important;
+  backdrop-filter: blur(8px) !important;
+  border-top-left-radius: 12px !important;
+  border-top-right-radius: 12px !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
 }
 
 [class*="ObjectWidgetTopBar"] {
-  background-color: #f3f4f6 !important;
-  border-radius: 8px 8px 0 0 !important;
+  background: rgba(15, 23, 42, 0.6) !important;
+  backdrop-filter: blur(8px) !important;
+  border-radius: 12px 12px 0 0 !important;
 }
 
 [class*="ListContainer"] {
-  border: 1px solid #e5e7eb !important;
-  border-radius: 8px !important;
+  background: rgba(255, 255, 255, 0.03) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 12px !important;
   overflow: hidden !important;
+  backdrop-filter: blur(10px) !important;
 }
 
 /* Custom hints styling */
 [class*="FieldHint"] {
   font-size: 13px !important;
-  color: #6b7280 !important;
-  margin-top: 4px !important;
+  color: rgba(255, 255, 255, 0.6) !important;
+  margin-top: 6px !important;
+}
+
+/* Scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.6);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
 }
