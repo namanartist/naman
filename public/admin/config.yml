@@ -10,12 +10,14 @@ public_folder: "/images/uploads"
 
 collections:
   - name: "portfolio"
-    label: "Portfolio Data"
+    label: "Portfolio Content"
+    editor:
+      preview: false
     files:
       - label: "Projects"
         name: "projects"
         file: "src/data/projects.json"
-        description: "List of portfolio projects"
+        description: "Manage your portfolio projects"
         fields:
           - label: "Projects List"
             name: "projects"
@@ -25,16 +27,18 @@ collections:
             fields:
               - {label: "Title", name: "title", widget: "string"}
               - {label: "Description", name: "description", widget: "text"}
-              - {label: "Image URL", name: "image", widget: "string", hint: "E.g., /images/projects/project1.jpg"}
-              - {label: "Tags", name: "tags", widget: "list"}
-              - {label: "Link", name: "link", widget: "string", required: false}
-              - {label: "Github", name: "github", widget: "string", required: false}
-      - label: "About"
+              - {label: "Project Image", name: "image", widget: "image", choose_url: false, hint: "Upload an image for the project"}
+              - {label: "Tags", name: "tags", widget: "list", hint: "E.g., Full-Stack, React"}
+              - {label: "Live Demo Link", name: "link", widget: "string", required: false}
+              - {label: "GitHub Link", name: "github", widget: "string", required: false}
+              
+      - label: "About Me"
         name: "about"
         file: "src/data/about.json"
+        description: "Manage your biography and skills"
         fields:
-          - {label: "Bio", name: "bio", widget: "text"}
-          - label: "Stats"
+          - {label: "Biography", name: "bio", widget: "text", hint: "Write a short bio about yourself"}
+          - label: "Key Stats"
             name: "stats"
             widget: "list"
             summary: '{{fields.title}}'
@@ -43,31 +47,35 @@ collections:
               - {label: "Title", name: "title", widget: "string"}
               - {label: "Description", name: "desc", widget: "string"}
               - {label: "Icon (react-icons/fi)", name: "icon", widget: "string", hint: "E.g., FiCode, FiCoffee"}
-          - label: "Tools"
+          - label: "Tools & Technologies"
             name: "tools"
             widget: "list"
             summary: '{{fields.title}}'
             collapsed: true
             fields:
-              - {label: "Title", name: "title", widget: "string"}
+              - {label: "Tool Name", name: "title", widget: "string"}
               - {label: "Icon (react-icons/si)", name: "icon", widget: "string", hint: "E.g., SiReact, SiNodedotjs"}
+              
       - label: "Experience"
         name: "experience"
         file: "src/data/experience.json"
+        description: "Manage your work experience"
         fields:
-          - label: "Experiences List"
+          - label: "Work Experiences"
             name: "experiences"
             widget: "list"
             summary: '{{fields.role}} at {{fields.company}}'
             collapsed: true
             fields:
-              - {label: "Role", name: "role", widget: "string"}
+              - {label: "Role / Job Title", name: "role", widget: "string"}
               - {label: "Company", name: "company", widget: "string"}
               - {label: "Duration", name: "duration", widget: "string", hint: "E.g., Jan 2023 - Present"}
               - {label: "Description", name: "description", widget: "text"}
+              
       - label: "Certifications"
         name: "certifications"
         file: "src/data/certifications.json"
+        description: "Manage your certifications and achievements"
         fields:
           - label: "Certifications List"
             name: "certifications"
@@ -75,7 +83,7 @@ collections:
             summary: '{{fields.title}}'
             collapsed: true
             fields:
-              - {label: "Title", name: "title", widget: "string"}
-              - {label: "Issuer", name: "issuer", widget: "string"}
-              - {label: "Date", name: "date", widget: "string"}
-              - {label: "Link", name: "link", widget: "string", required: false}
+              - {label: "Certificate Title", name: "title", widget: "string"}
+              - {label: "Issuer", name: "issuer", widget: "string", hint: "E.g., Coursera, Udemy"}
+              - {label: "Date", name: "date", widget: "string", hint: "E.g., Dec 2023"}
+              - {label: "Verification Link", name: "link", widget: "string", required: false}
