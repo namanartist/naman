@@ -1,0 +1,124 @@
+/* Premium Decap CMS UI Enhancements */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* Base Font & Theme */
+[class*="nc-"],
+[class*="nc-"] *,
+#nc-root {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+}
+
+/* App Background */
+[class*="AppHeader-root"] {
+  background-color: #ffffff !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+  border-bottom: 1px solid #e5e7eb !important;
+}
+
+/* Sidebar & Collection UI */
+[class*="SidebarContainer"] {
+  background-color: #f9fafb !important;
+  border-right: 1px solid #e5e7eb !important;
+}
+
+[class*="CollectionTop-topPane"] {
+  background-color: #ffffff !important;
+  border-bottom: 1px solid #e5e7eb !important;
+}
+
+/* Cards & List items */
+[class*="Card-root"],
+[class*="GridCard-root"],
+[class*="ListCard-root"] {
+  border-radius: 12px !important;
+  border: 1px solid #e5e7eb !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03) !important;
+  transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+[class*="Card-root"]:hover,
+[class*="GridCard-root"]:hover,
+[class*="ListCard-root"]:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04) !important;
+}
+
+/* Inputs & Forms */
+[class*="ControlPaneContainer"] {
+  background-color: #f9fafb !important;
+}
+
+[class*="ControlContainer"] input,
+[class*="ControlContainer"] textarea,
+[class*="ControlContainer"] select {
+  border-radius: 8px !important;
+  border: 1px solid #d1d5db !important;
+  padding: 10px 12px !important;
+  transition: border-color 0.2s, box-shadow 0.2s !important;
+  background-color: #ffffff !important;
+}
+
+[class*="ControlContainer"] input:focus,
+[class*="ControlContainer"] textarea:focus,
+[class*="ControlContainer"] select:focus {
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2) !important;
+  outline: none !important;
+}
+
+/* Buttons */
+button {
+  border-radius: 8px !important;
+  font-weight: 500 !important;
+  transition: all 0.2s ease !important;
+}
+
+[class*="Button-button-primary"] {
+  background-color: #111827 !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+
+[class*="Button-button-primary"]:hover {
+  background-color: #374151 !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+}
+
+[class*="githubAuthenticationPage-button"] {
+  background-color: #111827 !important;
+  border-radius: 8px !important;
+  padding: 12px 24px !important;
+  font-size: 16px !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+}
+
+[class*="githubAuthenticationPage-button"]:hover {
+  background-color: #374151 !important;
+  transform: translateY(-1px) !important;
+}
+
+/* List Widget enhancements */
+[class*="ListItemTopBar"] {
+  background-color: #f3f4f6 !important;
+  border-top-left-radius: 8px !important;
+  border-top-right-radius: 8px !important;
+  border-bottom: 1px solid #e5e7eb !important;
+}
+
+[class*="ObjectWidgetTopBar"] {
+  background-color: #f3f4f6 !important;
+  border-radius: 8px 8px 0 0 !important;
+}
+
+[class*="ListContainer"] {
+  border: 1px solid #e5e7eb !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
+}
+
+/* Custom hints styling */
+[class*="FieldHint"] {
+  font-size: 13px !important;
+  color: #6b7280 !important;
+  margin-top: 4px !important;
+}
