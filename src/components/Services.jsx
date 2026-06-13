@@ -99,7 +99,7 @@ export default function Services() {
         <div className="inline-block px-3 py-1 border border-blue-500/30 bg-blue-500/5 rounded-sm mb-4">
           <p className="text-blue-400 font-mono text-[10px] uppercase tracking-[0.5em]">SERVICES MODULE</p>
         </div>
-        <h2 className="text-4xl md:text-6xl font-black tracking-tighter uppercase mb-6">
+        <h2 className="text-3xl md:text-4xl lg:text-6xl font-black tracking-tighter uppercase mb-6">
           My Services<span className="text-blue-500">.</span>
         </h2>
         <div className="w-24 h-[1px] bg-blue-500/40 mx-auto mb-8"></div>
@@ -134,7 +134,7 @@ export default function Services() {
 
         {/* Featured Experience Card (Sidebar) */}
         <div ref={sidebarRef} className="lg:col-span-4 h-full relative">
-          <div className="sticky top-32 p-10 bg-gray-50 dark:bg-[#0c0c0c] border border-black/[0.08] dark:border-white/[0.08] rounded-sm group overflow-hidden shadow-xl dark:shadow-none">
+          <div className="sticky top-32 p-6 md:p-10 bg-gray-50 dark:bg-[#0c0c0c] border border-black/[0.08] dark:border-white/[0.08] rounded-sm group overflow-hidden shadow-xl dark:shadow-none">
             
             {/* HUD Corner Lines */}
             <div className="corner-line absolute top-2 left-2 w-4 h-4 border-t border-l border-blue-500/50"></div>

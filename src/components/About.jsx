@@ -50,11 +50,11 @@ export default function About() {
                 <div className="hidden lg:block w-[35%] h-full"></div>
 
                 {/* Main Content Pane */}
-                <div className="w-full lg:w-[65%] flex flex-col space-y-10 pointer-events-auto bg-white/60 dark:bg-black/40 backdrop-blur-sm p-8 md:p-12 border border-black/5 dark:border-white/5 rounded-2xl shadow-xl dark:shadow-none">
+                <div className="w-full lg:w-[65%] flex flex-col space-y-6 md:space-y-10 pointer-events-auto bg-white/60 dark:bg-black/40 backdrop-blur-sm p-6 md:p-12 border border-black/5 dark:border-white/5 rounded-2xl shadow-xl dark:shadow-none">
                     {/* Header */}
                     <div className="space-y-2">
                         <p className="text-blue-500 font-mono text-[10px] uppercase tracking-[0.5em]">SYSTEM INFO</p>
-                        <h2 className="text-4xl md:text-5xl lg:text-7xl font-black text-black dark:text-white tracking-tighter uppercase">
+                        <h2 className="text-3xl md:text-5xl lg:text-7xl font-black text-black dark:text-white tracking-tighter uppercase">
                             About Me<span className="text-blue-500">.</span>
                         </h2>
                     </div>

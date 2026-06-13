@@ -241,7 +241,7 @@ const Contact = () => {
             className="relative z-50 w-full max-w-4xl px-6 pointer-events-auto"
           >
             <div className="text-center mb-8">
-              <h2 className="text-6xl md:text-9xl font-black text-black dark:text-white uppercase tracking-tighter leading-none">
+              <h2 className="text-5xl md:text-9xl font-black text-black dark:text-white uppercase tracking-tighter leading-none">
               COMM<span className="text-cyan-500 block sm:inline">.LINK</span>
             </h2>
               <div className="flex items-center justify-center space-x-2 text-cyan-500/60 font-mono text-[9px] tracking-[0.6em] uppercase">
@@ -253,7 +253,7 @@ const Contact = () => {
             <form
               ref={formRef}
               onSubmit={sendToTelegram}
-              className="bg-black/[0.03] dark:bg-white/[0.03] backdrop-blur-md border border-black/10 dark:border-white/10 p-10 md:p-14 rounded-none shadow-[0_20px_50px_rgba(0,0,0,0.1)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.5)] space-y-10 group"
+              className="bg-black/[0.03] dark:bg-white/[0.03] backdrop-blur-md border border-black/10 dark:border-white/10 p-6 md:p-14 rounded-none shadow-[0_20px_50px_rgba(0,0,0,0.1)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.5)] space-y-6 md:space-y-10 group"
             >
               <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                 <div className="space-y-3">
@@ -293,7 +293,7 @@ const Contact = () => {
                 whileHover={{ scale: 1.05, boxShadow: "0 0 50px rgba(6, 182, 212, 0.3)" }}
                 whileTap={{ scale: 0.95 }}
                 type="submit"
-                className="group flex items-center space-x-6 bg-cyan-600 text-black font-black text-[11px] uppercase tracking-[0.6em] px-24 py-6 shadow-2xl transition-all"
+                className="group flex items-center space-x-6 bg-cyan-600 text-black font-black text-[11px] uppercase tracking-[0.6em] px-12 py-5 md:px-24 md:py-6 shadow-2xl transition-all"
               >
                 <span>TRANSMIT</span>
                 <FiSend className="text-lg transition-transform group-hover:translate-x-1" />
