@@ -37,9 +37,8 @@ export default async function handler(req, res) {
         <script>
           (function() {
             function receiveMessage(e) {
-              if (e.data === "authorizing:github" || e.data?.match(/authorizing/)) {
-                return;
-              }
+              // The opener echoes back "authorizing:github" to give us its origin.
+              // We then respond with the access token.
               window.opener.postMessage(
                 'authorization:github:success:{"token":"${accessToken}","provider":"github"}',
                 e.origin
