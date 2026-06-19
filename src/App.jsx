@@ -1,4 +1,5 @@
 import React, { Suspense, lazy } from 'react';
+import { Analytics } from '@vercel/analytics/react';
 import Hero from './components/Hero';
 import Navbar from './components/Navbar';
 
@@ -31,6 +32,7 @@ function App() {
         <Contact />
         <Footer />
       </Suspense>
+      <Analytics />
     </>
   );
 }
