@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
     <title>NL-ADMIN // Mission Control Dashboard</title>
     <link rel="icon" type="image/png" href="/static/assets/image.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -332,6 +333,84 @@
             .avatar-admin-grid {
                 grid-template-columns: 1fr !important;
             }
+            body {
+                flex-direction: column;
+            }
+            .admin-sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+                border-right: none;
+                border-bottom: 1px solid var(--glass-border);
+                padding: 1rem 1.2rem;
+            }
+            .admin-brand {
+                padding-bottom: 0.8rem;
+                margin-bottom: 0.8rem;
+            }
+            .admin-nav {
+                display: flex;
+                flex-direction: row;
+                overflow-x: auto;
+                padding-bottom: 6px;
+                gap: 6px;
+                -webkit-overflow-scrolling: touch;
+            }
+            .admin-nav-item {
+                white-space: nowrap;
+                padding: 8px 12px;
+                font-size: 0.8rem;
+                flex-shrink: 0;
+            }
+            .admin-sidebar-footer {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                padding-top: 0.6rem;
+                margin-top: 0.4rem;
+            }
+            .admin-main {
+                margin-left: 0;
+                padding: 1.2rem 1rem;
+                width: 100%;
+                max-width: 100vw;
+                overflow-x: hidden;
+            }
+            .admin-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+                margin-bottom: 1.5rem;
+            }
+            .admin-header-title h1 {
+                font-size: 1.4rem;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 0.8rem;
+            }
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            .admin-panel {
+                padding: 1.2rem 1rem;
+            }
+            .panel-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.8rem;
+            }
+        }
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            .stat-box {
+                padding: 1rem;
+            }
+            .admin-modal-card {
+                padding: 1.2rem 1rem;
+            }
         }
         .resume-dropzone {
             border: 2px dashed rgba(0, 255, 204, 0.35);
@@ -426,6 +505,10 @@
             <a class="admin-nav-item" data-tab="tab-llm">
                 <i data-lucide="bot"></i>
                 <span>Local LLM AI</span>
+            </a>
+            <a class="admin-nav-item" data-tab="tab-security">
+                <i data-lucide="shield-check"></i>
+                <span>Security &amp; Auth</span>
             </a>
         </nav>
 
@@ -1001,6 +1084,107 @@
                     </div>
                     <div id="llm-test-output" style="display: none; margin-top: 1rem; background: rgba(0,0,0,0.4); border: 1px solid var(--accent-primary); border-radius: 8px; padding: 1.2rem; font-family: var(--font-mono); font-size: 0.85rem; line-height: 1.6;"></div>
                 </div>
+            </div>
+        </div>
+        <!-- ================================================================= -->
+        <!-- TAB 10: SECURITY & AUTH -->
+        <!-- ================================================================= -->
+        <div id="tab-security" class="tab-section">
+            <div class="admin-panel" style="margin-bottom: 2rem;">
+                <div class="panel-header">
+                    <h3 class="panel-title"><i data-lucide="shield-check"></i> Security Architecture &amp; Active Session</h3>
+                    <span style="font-family: var(--font-mono); font-size: 0.75rem; color: #10b981; border: 1px solid rgba(16,185,129,0.3); padding: 4px 10px; border-radius: 6px; background: rgba(16,185,129,0.08);">
+                        <i data-lucide="lock" style="width: 12px; height: 12px; display: inline-block; vertical-align: middle;"></i> SECURE PROTOCOL ACTIVE
+                    </span>
+                </div>
+
+                <div class="stats-grid" style="margin-bottom: 1.5rem;">
+                    <div class="stat-box">
+                        <span class="stat-label">Authenticated Identity</span>
+                        <div class="stat-num" style="font-size: 1.4rem; color: var(--accent-primary);">@{{ current_user }}</div>
+                        <span class="stat-sub">Administrative Clearance</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">Password Cipher</span>
+                        <div class="stat-num" style="font-size: 1.2rem; color: #b026ff;">Scrypt / PBKDF2</div>
+                        <span class="stat-sub">One-way Salted Cryptographic Hash</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">Brute-Force Guard</span>
+                        <div class="stat-num" style="font-size: 1.3rem; color: #10b981;">5-Try Max / 60s</div>
+                        <span class="stat-sub">Automated Lockout Mechanism</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-label">Dual-Auth Vectors</span>
+                        <div class="stat-num" style="font-size: 1.2rem; color: #38bdf8;">Passcode + GitHub</div>
+                        <span class="stat-sub">Fast Auth for @namanartist</span>
+                    </div>
+                </div>
+
+                <div style="background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); border-radius: 8px; padding: 1.2rem; font-family: var(--font-mono); font-size: 0.85rem; line-height: 1.8; color: var(--text-secondary);">
+                    <div>• <strong>Current Admin Handle:</strong> <span style="color: #fff;">{{ admin_auth.username }}</span></div>
+                    <div>• <strong>Last Successful Access:</strong> <span style="color: #fff;">{{ admin_auth.last_login }}</span></div>
+                    <div>• <strong>Origin Remote Address:</strong> <span style="color: #fff;">{{ admin_auth.last_login_ip }}</span></div>
+                    <div>• <strong>Credentials Modified:</strong> <span style="color: #fff;">{{ admin_auth.updated_at }}</span></div>
+                </div>
+            </div>
+
+            <!-- Change Credentials Panel -->
+            <div class="admin-panel">
+                <div class="panel-header">
+                    <h3 class="panel-title"><i data-lucide="key-round"></i> Update Admin Credentials</h3>
+                    <span style="font-size: 0.8rem; color: var(--text-secondary);">Scrypt-hashed on submit</span>
+                </div>
+
+                <form id="form-security-credentials" class="form-grid" onsubmit="changeSecurityCredentials(event)">
+                    <div class="admin-field" style="grid-column: 1 / -1;">
+                        <label>CURRENT MASTER PASSCODE *</label>
+                        <div style="position: relative;">
+                            <input type="password" id="sec-current-password" required placeholder="Enter current admin master password" class="admin-input" style="padding-right: 42px;">
+                            <button type="button" onclick="togglePassVisibility('sec-current-password', this)" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text-secondary); cursor: pointer; padding: 4px;">
+                                <i data-lucide="eye" style="width: 16px; height: 16px;"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="admin-field">
+                        <label>NEW ADMIN USERNAME</label>
+                        <input type="text" id="sec-new-username" placeholder="e.g. admin or namanartist" value="{{ admin_auth.username }}" class="admin-input">
+                        <small style="color: var(--text-secondary); font-size: 0.72rem; margin-top: 4px;">Leave unchanged or set a custom administrative handle</small>
+                    </div>
+
+                    <div class="admin-field">
+                        <label>NEW PASSCODE (MIN 6 CHARACTERS)</label>
+                        <div style="position: relative;">
+                            <input type="password" id="sec-new-password" placeholder="••••••••••••" class="admin-input" style="padding-right: 42px;">
+                            <button type="button" onclick="togglePassVisibility('sec-new-password', this)" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text-secondary); cursor: pointer; padding: 4px;">
+                                <i data-lucide="eye" style="width: 16px; height: 16px;"></i>
+                            </button>
+                        </div>
+                        <small style="color: var(--text-secondary); font-size: 0.72rem; margin-top: 4px;">Leave blank if only updating username</small>
+                    </div>
+
+                    <div class="admin-field" style="grid-column: 1 / -1;">
+                        <label>CONFIRM NEW PASSCODE</label>
+                        <div style="position: relative;">
+                            <input type="password" id="sec-confirm-password" placeholder="Repeat new passcode" class="admin-input" style="padding-right: 42px;">
+                            <button type="button" onclick="togglePassVisibility('sec-confirm-password', this)" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text-secondary); cursor: pointer; padding: 4px;">
+                                <i data-lucide="eye" style="width: 16px; height: 16px;"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="sec-status-msg" style="grid-column: 1 / -1; display: none; padding: 0.8rem 1rem; border-radius: 8px; font-size: 0.85rem; font-family: var(--font-mono);"></div>
+
+                    <div style="grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: center; margin-top: 0.8rem;">
+                        <a href="/admin/logout" class="action-btn delete" style="text-decoration: none;">
+                            <i data-lucide="log-out"></i> End Session &amp; Logout
+                        </a>
+                        <button type="submit" id="sec-submit-btn" class="action-btn primary" style="padding: 10px 20px;">
+                            <i data-lucide="save"></i> Update Credentials &amp; Re-Encrypt
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </main>
@@ -1774,6 +1958,81 @@
             const data = await resp.json();
             if (data.result) {
                 output.innerHTML = `<strong>Engine:</strong> ${data.result.engine}<br><strong>Latency:</strong> ${data.result.latency_ms || 2.0}ms<br><br>${data.result.reply.replace(/\n/g, '<br>')}`;
+            }
+        }
+
+        // Password visibility toggler
+        function togglePassVisibility(inputId, btn) {
+            const input = document.getElementById(inputId);
+            if (!input) return;
+            const isPassword = input.type === 'password';
+            input.type = isPassword ? 'text' : 'password';
+            btn.innerHTML = isPassword ? '<i data-lucide="eye-off" style="width:16px;height:16px;"></i>' : '<i data-lucide="eye" style="width:16px;height:16px;"></i>';
+            if (window.lucide) lucide.createIcons();
+        }
+
+        // Change Admin Credentials Submit
+        async function changeSecurityCredentials(event) {
+            event.preventDefault();
+            const current_password = document.getElementById('sec-current-password').value.trim();
+            const new_username = document.getElementById('sec-new-username').value.trim();
+            const new_password = document.getElementById('sec-new-password').value.trim();
+            const confirm_password = document.getElementById('sec-confirm-password').value.trim();
+            const msgBox = document.getElementById('sec-status-msg');
+            const submitBtn = document.getElementById('sec-submit-btn');
+
+            if (!current_password) {
+                alert('Please enter your current master passcode.');
+                return;
+            }
+            if (new_password && new_password.length < 6) {
+                alert('New password must be at least 6 characters.');
+                return;
+            }
+            if (new_password && new_password !== confirm_password) {
+                alert('New password and confirmation password do not match.');
+                return;
+            }
+
+            submitBtn.disabled = true;
+            submitBtn.innerText = 'Encrypting & Saving...';
+
+            try {
+                const resp = await fetch('/admin/api/auth/change-credentials', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        current_password,
+                        new_username,
+                        new_password,
+                        confirm_password
+                    })
+                });
+                const res = await resp.json();
+                msgBox.style.display = 'block';
+                if (resp.ok) {
+                    msgBox.style.background = 'rgba(16, 185, 129, 0.15)';
+                    msgBox.style.border = '1px solid #10b981';
+                    msgBox.style.color = '#10b981';
+                    msgBox.innerHTML = `✓ ${res.message || 'Credentials updated successfully!'}`;
+                    showCyberToast(res.message || 'Credentials updated successfully!');
+                    document.getElementById('sec-current-password').value = '';
+                    document.getElementById('sec-new-password').value = '';
+                    document.getElementById('sec-confirm-password').value = '';
+                    setTimeout(() => location.reload(), 1200);
+                } else {
+                    msgBox.style.background = 'rgba(239, 68, 68, 0.15)';
+                    msgBox.style.border = '1px solid #ef4444';
+                    msgBox.style.color = '#ef4444';
+                    msgBox.innerHTML = `✗ ${res.message || 'Failed to update credentials.'}`;
+                    showCyberToast('Error updating credentials');
+                }
+            } catch (err) {
+                alert('Network or server error updating credentials: ' + err.message);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i data-lucide="save"></i> Update Credentials &amp; Re-Encrypt';
+                if (window.lucide) lucide.createIcons();
             }
         }
 

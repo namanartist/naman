@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NL-ADMIN // Access Terminal</title>
-    <link rel="icon" type="image/png" href="/static/assets/image.png">
+    <meta name="robots" content="noindex, nofollow">
+    <title>NL-ADMIN // Access Terminal &amp; Authentication</title>
+    <link rel="icon" type="image/png" href="{{ data.profile.avatar if data and data.profile and data.profile.avatar else '/static/assets/image.png' }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
@@ -21,22 +22,44 @@
             color: #f0f0f0;
             font-family: var(--font-body);
             position: relative;
+            overflow-x: hidden;
+        }
+        /* Background Glow Blobs */
+        .auth-blob {
+            position: absolute;
+            width: 450px;
+            height: 450px;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.15;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .auth-blob-1 {
+            top: 10%;
+            left: 20%;
+            background: var(--accent-primary);
+        }
+        .auth-blob-2 {
+            bottom: 15%;
+            right: 20%;
+            background: #741bcf;
         }
         .login-card {
             width: 100%;
-            max-width: 440px;
-            background: rgba(10, 10, 16, 0.85);
-            backdrop-filter: blur(24px);
-            border: 1px solid var(--accent-primary);
-            box-shadow: 0 20px 60px rgba(0, 255, 204, 0.2);
-            border-radius: 16px;
+            max-width: 460px;
+            background: rgba(10, 10, 16, 0.88);
+            backdrop-filter: blur(28px);
+            border: 1px solid rgba(0, 255, 204, 0.35);
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.8), 0 0 35px rgba(0, 255, 204, 0.15);
+            border-radius: 18px;
             padding: 2.5rem;
             position: relative;
             z-index: 2;
         }
         .login-header {
             text-align: center;
-            margin-bottom: 2rem;
+            margin-bottom: 1.8rem;
         }
         .login-logo {
             font-family: var(--font-heading);
@@ -53,38 +76,118 @@
             color: var(--accent-primary);
             background: rgba(0, 255, 204, 0.1);
             border: 1px solid rgba(0, 255, 204, 0.3);
-            padding: 3px 10px;
-            border-radius: 12px;
-            margin-top: 0.5rem;
+            padding: 4px 12px;
+            border-radius: 14px;
+            margin-top: 0.4rem;
             letter-spacing: 1px;
+        }
+        /* Auth Tabs */
+        .auth-tabs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            padding: 4px;
+            margin-bottom: 1.8rem;
+            gap: 4px;
+        }
+        .auth-tab-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-family: var(--font-mono);
+            font-size: 0.76rem;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .auth-tab-btn.active {
+            background: rgba(0, 255, 204, 0.15);
+            color: var(--accent-primary);
+            font-weight: 600;
+        }
+        .auth-tab-btn i,
+        .auth-tab-btn svg {
+            width: 14px;
+            height: 14px;
         }
         .login-form {
             display: flex;
             flex-direction: column;
-            gap: 1.2rem;
+            gap: 1.1rem;
         }
         .input-group label {
             display: block;
             font-family: var(--font-mono);
-            font-size: 0.78rem;
+            font-size: 0.75rem;
             color: var(--text-secondary);
             margin-bottom: 0.4rem;
+            text-transform: uppercase;
+        }
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        .input-icon {
+            position: absolute;
+            left: 12px;
+            width: 16px;
+            height: 16px;
+            color: var(--text-secondary);
+            pointer-events: none;
         }
         .login-input {
             width: 100%;
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid var(--glass-border);
             border-radius: 8px;
-            padding: 0.85rem 1rem;
+            padding: 0.8rem 1rem 0.8rem 2.4rem;
             color: #fff;
             font-family: var(--font-mono);
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             outline: none;
             transition: all 0.2s ease;
+            box-sizing: border-box;
         }
         .login-input:focus {
             border-color: var(--accent-primary);
-            box-shadow: 0 0 15px rgba(0, 255, 204, 0.25);
+            box-shadow: 0 0 16px rgba(0, 255, 204, 0.25);
+            background: rgba(255, 255, 255, 0.08);
+        }
+        .reveal-pwd-btn {
+            position: absolute;
+            right: 12px;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .reveal-pwd-btn:hover {
+            color: var(--accent-primary);
+        }
+        .remember-wrap {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+        }
+        .remember-wrap input {
+            accent-color: var(--accent-primary);
+            cursor: pointer;
         }
         .login-btn {
             background: var(--accent-primary);
@@ -93,7 +196,7 @@
             border-radius: 8px;
             padding: 0.85rem;
             font-family: var(--font-heading);
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: 700;
             cursor: pointer;
             letter-spacing: 0.5px;
@@ -102,29 +205,30 @@
             justify-content: center;
             gap: 8px;
             transition: all 0.2s ease;
-            margin-top: 0.5rem;
+            margin-top: 0.4rem;
         }
         .login-btn:hover {
-            box-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
+            box-shadow: 0 0 25px rgba(0, 255, 204, 0.5);
             transform: translateY(-2px);
         }
         .error-banner {
             background: rgba(239, 68, 68, 0.15);
             border: 1px solid #ef4444;
             color: #ef4444;
-            padding: 0.8rem;
+            padding: 0.8rem 1rem;
             border-radius: 8px;
             font-family: var(--font-mono);
             font-size: 0.8rem;
             margin-bottom: 1.2rem;
             text-align: center;
+            line-height: 1.4;
         }
         .back-link {
             display: block;
             text-align: center;
             margin-top: 1.5rem;
             font-family: var(--font-mono);
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             color: var(--text-secondary);
             text-decoration: none;
             transition: color 0.2s ease;
@@ -132,37 +236,139 @@
         .back-link:hover {
             color: var(--accent-primary);
         }
+        .auth-view {
+            display: none;
+        }
+        .auth-view.active {
+            display: block;
+        }
+        @media (max-width: 480px) {
+            body {
+                padding: 1rem;
+            }
+            .login-card {
+                padding: 1.6rem 1.2rem;
+                border-radius: 14px;
+            }
+            .login-logo {
+                font-size: 1.6rem;
+            }
+            .login-input {
+                font-size: 0.88rem;
+                padding: 10px 12px 10px 36px;
+            }
+            .login-btn {
+                padding: 11px 16px;
+                font-size: 0.84rem;
+            }
+        }
     </style>
 </head>
 <body>
+    <div class="auth-blob auth-blob-1"></div>
+    <div class="auth-blob auth-blob-2"></div>
+
     <div class="login-card">
         <div class="login-header">
             <span class="login-logo">NL<span style="color:#b026ff;">.</span>ADMIN</span>
             <br>
-            <span class="login-badge">AUTHENTICATED CONSOLE</span>
+            <span class="login-badge">AUTHENTICATED ACCESS TERMINAL</span>
         </div>
 
         {% if error %}
         <div class="error-banner">
+            <i data-lucide="alert-triangle" style="width: 14px; height: 14px; vertical-align: middle; margin-right: 4px;"></i>
             {{ error }}
         </div>
         {% endif %}
 
-        <form method="POST" action="/admin/login" class="login-form">
-            <div class="input-group">
-                <label for="password">ROOT SECURITY PASSCODE</label>
-                <input type="password" id="password" name="password" required autofocus placeholder="Enter Admin Passcode..." class="login-input">
-            </div>
-            <button type="submit" class="login-btn">
-                <span>UNLOCK SYSTEM</span> &rarr;
+        <!-- Tab Selector: Credentials vs GitHub Token -->
+        <div class="auth-tabs">
+            <button type="button" class="auth-tab-btn active" id="tab-btn-pwd" onclick="switchAuthView('pwd')">
+                <i data-lucide="key-round"></i> Passcode Auth
             </button>
-            <div style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-secondary); text-align: center; margin-top: 0.5rem;">
-                Default Passcode: <code>admin123</code>
+            <button type="button" class="auth-tab-btn" id="tab-btn-gh" onclick="switchAuthView('gh')">
+                <i data-lucide="github"></i> GitHub Fast Auth
+            </button>
+        </div>
+
+        <!-- VIEW 1: USERNAME & PASSWORD AUTH -->
+        <div id="view-pwd" class="auth-view active">
+            <form method="POST" action="/admin/login" class="login-form">
+                <div class="input-group">
+                    <label for="username">ADMIN USERNAME</label>
+                    <div class="input-wrapper">
+                        <i data-lucide="user" class="input-icon"></i>
+                        <input type="text" id="username" name="username" value="admin" required placeholder="admin" class="login-input">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="password">ROOT SECURITY PASSCODE</label>
+                    <div class="input-wrapper">
+                        <i data-lucide="lock" class="input-icon"></i>
+                        <input type="password" id="password" name="password" required autofocus placeholder="Enter Admin Passcode..." class="login-input">
+                        <button type="button" class="reveal-pwd-btn" onclick="togglePasswordVisibility('password', this)" title="Show/Hide Password">
+                            <i data-lucide="eye" style="width: 16px; height: 16px;"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <label class="remember-wrap">
+                    <input type="checkbox" name="remember" checked>
+                    <span>Keep session active on this machine</span>
+                </label>
+
+                <button type="submit" class="login-btn">
+                    <span>⚡ UNLOCK MISSION CONTROL</span> &rarr;
+                </button>
+
+                <div style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-secondary); text-align: center; margin-top: 0.4rem;">
+                    <i data-lucide="lock" style="width: 12px; height: 12px; display: inline-block; vertical-align: middle;"></i> Secured by Scrypt Salted Encryption &amp; Brute-Force Rate Limiting
+                </div>
+            </form>
+        </div>
+
+        <!-- VIEW 2: GITHUB DEVELOPER FAST AUTH -->
+        <div id="view-gh" class="auth-view">
+            {% if github_oauth_enabled %}
+            <a href="/admin/login/github/oauth" class="login-btn" style="background: #24292f; color: #fff; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 1.2rem; border: 1px solid rgba(255,255,255,0.18);">
+                <svg height="18" width="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>
+                <span>Authorize via GitHub OAuth</span> &rarr;
+            </a>
+            <div style="text-align: center; font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-secondary); margin-bottom: 1.2rem; position: relative;">
+                <span>— OR ENTER DEVELOPER TOKEN —</span>
             </div>
-            <div style="display: flex; align-items: center; justify-content: center; gap: 6px; font-family: var(--font-mono); font-size: 0.72rem; color: #10b981; margin-top: 0.8rem; background: rgba(16, 185, 129, 0.08); padding: 6px 12px; border-radius: 20px; border: 1px solid rgba(16, 185, 129, 0.25);">
-                <i data-lucide="badge-check" style="width: 14px; height: 14px;"></i> Bound to Verified GitHub: @namanartist
-            </div>
-        </form>
+            {% endif %}
+
+            <form id="gh-auth-form" class="login-form" onsubmit="handleGithubAuth(event)">
+                <div class="input-group">
+                    <label for="gh-token">GITHUB PERSONAL ACCESS TOKEN (PAT)</label>
+                    <div class="input-wrapper">
+                        <i data-lucide="shield-check" class="input-icon"></i>
+                        <input type="password" id="gh-token" required placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" class="login-input">
+                        <button type="button" class="reveal-pwd-btn" onclick="togglePasswordVisibility('gh-token', this)" title="Show/Hide Token">
+                            <i data-lucide="eye" style="width: 16px; height: 16px;"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <p style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-secondary); line-height: 1.5; margin: 0;">
+                    Instant cryptographic verification: Verifies token ownership of official GitHub account <strong>@{{ data.profile.github_user if data and data.profile and data.profile.github_user else 'namanartist' }}</strong>.
+                </p>
+
+                <div id="gh-auth-status" style="display: none; font-family: var(--font-mono); font-size: 0.78rem; padding: 0.6rem; border-radius: 6px;"></div>
+
+                <button type="submit" class="login-btn" style="background: #10b981; color: #030305;">
+                    <span>🛡️ AUTHENTICATE WITH GITHUB</span> &rarr;
+                </button>
+            </form>
+        </div>
+
+        <!-- Verified Identity Chip -->
+        <div style="display: flex; align-items: center; justify-content: center; gap: 6px; font-family: var(--font-mono); font-size: 0.72rem; color: #10b981; margin-top: 1.4rem; background: rgba(16, 185, 129, 0.08); padding: 6px 12px; border-radius: 20px; border: 1px solid rgba(16, 185, 129, 0.25);">
+            <i data-lucide="badge-check" style="width: 14px; height: 14px;"></i> Bound to Verified Developer: @{{ data.profile.github_user if data and data.profile and data.profile.github_user else 'namanartist' }}
+        </div>
 
         <a href="/" class="back-link">&larr; Return to Public Portfolio</a>
     </div>
@@ -171,7 +377,66 @@
         document.addEventListener('DOMContentLoaded', () => {
             if (window.lucide) lucide.createIcons();
         });
+
+        function switchAuthView(type) {
+            document.querySelectorAll('.auth-tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.auth-view').forEach(v => v.classList.remove('active'));
+
+            if (type === 'pwd') {
+                document.getElementById('tab-btn-pwd').classList.add('active');
+                document.getElementById('view-pwd').classList.add('active');
+            } else {
+                document.getElementById('tab-btn-gh').classList.add('active');
+                document.getElementById('view-gh').classList.add('active');
+            }
+            if (window.lucide) lucide.createIcons();
+        }
+
+        function togglePasswordVisibility(inputId, btn) {
+            const input = document.getElementById(inputId);
+            if (!input) return;
+            const isPassword = input.type === 'password';
+            input.type = isPassword ? 'text' : 'password';
+            btn.innerHTML = isPassword 
+                ? '<i data-lucide="eye-off" style="width: 16px; height: 16px;"></i>' 
+                : '<i data-lucide="eye" style="width: 16px; height: 16px;"></i>';
+            if (window.lucide) lucide.createIcons();
+        }
+
+        async function handleGithubAuth(e) {
+            e.preventDefault();
+            const token = document.getElementById('gh-token').value.trim();
+            const statusBox = document.getElementById('gh-auth-status');
+            if (!token) return;
+
+            statusBox.style.display = 'block';
+            statusBox.style.background = 'rgba(0, 255, 204, 0.1)';
+            statusBox.style.color = 'var(--accent-primary)';
+            statusBox.innerText = 'Connecting to GitHub API & verifying token...';
+
+            try {
+                const resp = await fetch('/admin/login/github', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ github_token: token })
+                });
+                const res = await resp.json();
+                if (resp.ok && res.redirect) {
+                    statusBox.style.background = 'rgba(16, 185, 129, 0.15)';
+                    statusBox.style.color = '#10b981';
+                    statusBox.innerText = '✅ ' + (res.message || 'Authenticated! Redirecting to Dashboard...');
+                    setTimeout(() => { window.location.href = res.redirect; }, 800);
+                } else {
+                    statusBox.style.background = 'rgba(239, 68, 68, 0.15)';
+                    statusBox.style.color = '#ef4444';
+                    statusBox.innerText = '❌ ' + (res.message || 'GitHub Authentication failed.');
+                }
+            } catch (err) {
+                statusBox.style.background = 'rgba(239, 68, 68, 0.15)';
+                statusBox.style.color = '#ef4444';
+                statusBox.innerText = '❌ Network connection error.';
+            }
+        }
     </script>
 </body>
 </html>
-

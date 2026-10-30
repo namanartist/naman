@@ -326,5 +326,14 @@
         "name": "HTML5 & CSS3"
       }
     ]
+  },
+  "admin_auth": {
+    "username": "namanartist",
+    "password_hash": "scrypt:32768:8:1$nEfHHeupARaERUcv$aa320e93561c00a1bc4b272a99a3b75b0e2d02fb5e0a751bd4210997a76b4301e6587f6da6344f38f366a97df65e7401c835ef5e16e903a12a15db0bc564a73c",
+    "login_attempts": 0,
+    "locked_until": null,
+    "last_login": "2026-10-30 20:37:20 UTC",
+    "last_ip": "127.0.0.1",
+    "credentials_updated_at": "2026-10-30T20:34:39.750381Z"
   }
 }

@@ -17,6 +17,7 @@ import urllib.request
 import json
 from functools import wraps
 from flask import Flask, render_template, request, jsonify, g, session, redirect, url_for, flash
+from werkzeug.security import generate_password_hash, check_password_hash
 
 # Ensure backend directory is in python path
 BACKEND_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -29,7 +30,9 @@ TEMPLATES_DIR = os.path.join(FRONTEND_DIR, 'templates')
 STATIC_DIR = os.path.join(FRONTEND_DIR, 'static')
 DATABASE = os.path.join(BACKEND_DIR, 'messages.db')
 DATA_FILE = os.path.join(BACKEND_DIR, 'portfolio_data.json')
-ADMIN_PASSWORD = os.environ.get('ADMIN_PASSWORD', 'admin123')
+ADMIN_PASSWORD = os.environ.get('ADMIN_PASSWORD')
+GITHUB_CLIENT_ID = os.environ.get('GITHUB_CLIENT_ID')
+GITHUB_CLIENT_SECRET = os.environ.get('GITHUB_CLIENT_SECRET')
 
 from local_llm import local_llm_engine
 
@@ -539,29 +542,251 @@ def api_chat():
 # ============================================================================
 # BACKEND ADMIN MANAGEMENT SYSTEM (/admin)
 # ============================================================================
+
+# ============================================================================
+# CRYPTOGRAPHIC ADMIN AUTHENTICATION HELPERS
+# ============================================================================
+def get_admin_auth():
+    """Retrieve or initialize secure hashed admin credentials from JSON storage"""
+    data = load_portfolio_data()
+    auth = data.get("admin_auth", {})
+    username = auth.get("username") or os.environ.get("ADMIN_USERNAME", "admin")
+    password_hash = auth.get("password_hash")
+    if not password_hash:
+        if ADMIN_PASSWORD:
+            password_hash = generate_password_hash(ADMIN_PASSWORD)
+        else:
+            import secrets
+            init_secret = secrets.token_urlsafe(12)
+            password_hash = generate_password_hash(init_secret)
+            print(f"\n[SECURITY] Initialized secure admin password: {init_secret}\n")
+        auth["username"] = username
+        auth["password_hash"] = password_hash
+        auth["login_attempts"] = 0
+        auth["locked_until"] = None
+        data["admin_auth"] = auth
+        save_portfolio_data(data)
+    return auth
+
+
+def record_failed_login():
+    data = load_portfolio_data()
+    auth = data.setdefault("admin_auth", {})
+    attempts = auth.get("login_attempts", 0) + 1
+    auth["login_attempts"] = attempts
+    if attempts >= 5:
+        lock_until = datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(seconds=60)
+        auth["locked_until"] = lock_until.isoformat()
+    data["admin_auth"] = auth
+    save_portfolio_data(data)
+
+
+def record_successful_login(username, ip_addr):
+    data = load_portfolio_data()
+    auth = data.setdefault("admin_auth", {})
+    auth["login_attempts"] = 0
+    auth["locked_until"] = None
+    auth["last_login"] = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
+    auth["last_ip"] = ip_addr
+    data["admin_auth"] = auth
+    save_portfolio_data(data)
+
 @app.route('/admin/login', methods=['GET', 'POST'])
 def admin_login():
     if session.get('is_admin'):
         return redirect(url_for('admin_dashboard'))
 
     error = None
+    data = load_portfolio_data()
+    auth = get_admin_auth()
+
+    # Rate limiting lockout check
+    locked_until_str = auth.get('locked_until')
+    if locked_until_str:
+        try:
+            lock_time = datetime.datetime.fromisoformat(locked_until_str.replace("Z", "+00:00"))
+            now_utc = datetime.datetime.now(datetime.timezone.utc)
+            if now_utc < lock_time:
+                remaining_sec = int((lock_time - now_utc).total_seconds())
+                error = f"Security Lockout: Too many failed attempts. Try again in {remaining_sec} seconds."
+                if request.is_json:
+                    return jsonify({"status": "error", "message": error, "locked": True, "retry_after": remaining_sec}), 429
+                return render_template('admin_login.html', error=error, data=data, locked=True, github_oauth_enabled=bool(GITHUB_CLIENT_ID and GITHUB_CLIENT_SECRET)), 429
+        except Exception:
+            pass
+
     if request.method == 'POST':
-        password = request.form.get('password', '').strip()
-        if password == ADMIN_PASSWORD:
+        form_data = request.get_json() if request.is_json else request.form
+        username = (form_data.get('username') or 'admin').strip()
+        password = (form_data.get('password') or '').strip()
+        remember = bool(form_data.get('remember'))
+        ip = request.headers.get('X-Forwarded-For', request.remote_addr)
+
+        configured_user = auth.get('username', 'admin')
+        allowed_users = [configured_user.lower(), 'admin', 'naman', 'namanartist']
+
+        if username.lower() not in allowed_users:
+            record_failed_login()
+            attempts = auth.get('login_attempts', 0) + 1
+            error = f"Invalid Credentials. Failed attempts: {attempts}/5"
+            if request.is_json:
+                return jsonify({"status": "error", "message": error, "attempts_remaining": max(0, 5 - attempts)}), 401
+            return render_template('admin_login.html', error=error, data=data, github_oauth_enabled=bool(GITHUB_CLIENT_ID and GITHUB_CLIENT_SECRET))
+
+        # Check password hash with fallback check
+        pwd_hash = auth.get('password_hash')
+        is_valid = False
+        if pwd_hash and check_password_hash(pwd_hash, password):
+            is_valid = True
+        elif ADMIN_PASSWORD and password == ADMIN_PASSWORD:
+            is_valid = True
+
+        if is_valid:
             session['is_admin'] = True
-            session.permanent = True
+            session['admin_user'] = username
+            session['login_time'] = datetime.datetime.utcnow().isoformat()
+            if remember:
+                session.permanent = True
+            record_successful_login(username, ip)
+
             next_url = request.args.get('next') or url_for('admin_dashboard')
+            if request.is_json:
+                return jsonify({"status": "success", "redirect": next_url})
             return redirect(next_url)
         else:
-            error = "Authentication failed: Invalid Cyber Security Passcode."
+            record_failed_login()
+            attempts = auth.get('login_attempts', 0) + 1
+            error = f"Authentication Failed: Invalid password. Attempt {attempts}/5"
+            if request.is_json:
+                return jsonify({"status": "error", "message": error, "attempts_remaining": max(0, 5 - attempts)}), 401
 
-    return render_template('admin_login.html', error=error)
+    return render_template('admin_login.html', error=error, data=data, github_oauth_enabled=bool(GITHUB_CLIENT_ID and GITHUB_CLIENT_SECRET))
+
+
+@app.route('/admin/login/github', methods=['POST'])
+def admin_login_github():
+    """Fast login via verified GitHub Personal Access Token or identity check"""
+    payload = request.get_json() or request.form or {}
+    token = (payload.get('github_token') or '').strip()
+    data = load_portfolio_data()
+    expected_user = data.get("profile", {}).get("github_user", "namanartist").lower()
+
+    if not token:
+        return jsonify({"status": "error", "message": "GitHub Personal Access Token is required."}), 400
+
+    try:
+        req = urllib.request.Request(
+            'https://api.github.com/user',
+            headers={
+                'Authorization': f'Bearer {token}',
+                'User-Agent': 'NamanPortfolio-Flask/1.0',
+                'Accept': 'application/vnd.github.v3+json'
+            }
+        )
+        with urllib.request.urlopen(req, timeout=6) as response:
+            if response.status == 200:
+                user_info = json.loads(response.read().decode('utf-8'))
+                gh_login = (user_info.get('login') or '').lower()
+                if gh_login == expected_user:
+                    session['is_admin'] = True
+                    session['admin_user'] = f"github:{gh_login}"
+                    session['login_time'] = datetime.datetime.utcnow().isoformat()
+                    session.permanent = True
+                    ip = request.headers.get('X-Forwarded-For', request.remote_addr)
+                    record_successful_login(gh_login, ip)
+                    return jsonify({
+                        "status": "success",
+                        "message": f"Welcome, verified GitHub developer @{gh_login}!",
+                        "redirect": url_for('admin_dashboard')
+                    })
+                else:
+                    return jsonify({
+                        "status": "error",
+                        "message": f"GitHub user @{gh_login} is not authorized for this portfolio (expected @{expected_user})."
+                    }), 403
+    except Exception as e:
+        return jsonify({"status": "error", "message": f"GitHub authentication error: {str(e)}"}), 401
+
+    return jsonify({"status": "error", "message": "Invalid token or network failure."}), 400
+
+
+@app.route('/admin/login/github/oauth')
+def admin_github_oauth_start():
+    """Initiates GitHub standard OAuth 2.0 Web Flow"""
+    if not GITHUB_CLIENT_ID:
+        return redirect(url_for('admin_login', error='GitHub OAuth Client ID is not configured on server.'))
+    callback_url = url_for('admin_github_oauth_callback', _external=True)
+    github_auth_url = f"https://github.com/login/oauth/authorize?client_id={GITHUB_CLIENT_ID}&redirect_uri={urllib.parse.quote(callback_url)}&scope=read:user"
+    return redirect(github_auth_url)
+
+
+@app.route('/admin/login/github/callback')
+def admin_github_oauth_callback():
+    """Handles GitHub standard OAuth 2.0 code exchange and identity verification"""
+    code = request.args.get('code')
+    if not code or not GITHUB_CLIENT_ID or not GITHUB_CLIENT_SECRET:
+        return redirect(url_for('admin_login', error='GitHub OAuth failed: missing authorization code or server secrets.'))
+
+    data = load_portfolio_data()
+    expected_user = data.get("profile", {}).get("github_user", "namanartist").lower()
+
+    try:
+        # Exchange code for access token
+        token_payload = json.dumps({
+            "client_id": GITHUB_CLIENT_ID,
+            "client_secret": GITHUB_CLIENT_SECRET,
+            "code": code
+        }).encode('utf-8')
+
+        token_req = urllib.request.Request(
+            'https://github.com/login/oauth/access_token',
+            data=token_payload,
+            headers={
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'User-Agent': 'NamanPortfolio-Flask/1.0'
+            }
+        )
+        with urllib.request.urlopen(token_req, timeout=8) as resp:
+            token_res = json.loads(resp.read().decode('utf-8'))
+            access_token = token_res.get('access_token')
+
+        if not access_token:
+            return redirect(url_for('admin_login', error='Failed to exchange GitHub OAuth access token.'))
+
+        # Query authenticated GitHub user
+        user_req = urllib.request.Request(
+            'https://api.github.com/user',
+            headers={
+                'Authorization': f'Bearer {access_token}',
+                'User-Agent': 'NamanPortfolio-Flask/1.0',
+                'Accept': 'application/vnd.github.v3+json'
+            }
+        )
+        with urllib.request.urlopen(user_req, timeout=6) as resp:
+            user_info = json.loads(resp.read().decode('utf-8'))
+            gh_login = (user_info.get('login') or '').lower()
+
+        if gh_login == expected_user:
+            session['is_admin'] = True
+            session['admin_user'] = f"github:{gh_login}"
+            session['login_time'] = datetime.datetime.utcnow().isoformat()
+            session.permanent = True
+            ip = request.headers.get('X-Forwarded-For', request.remote_addr)
+            record_successful_login(gh_login, ip)
+            return redirect(url_for('admin_dashboard'))
+        else:
+            return redirect(url_for('admin_login', error=f"Unauthorized: Authenticated as @{gh_login}, but admin account is bound to @{expected_user}."))
+    except Exception as e:
+        return redirect(url_for('admin_login', error=f"GitHub OAuth error: {str(e)}"))
 
 
 @app.route('/admin/logout')
 def admin_logout():
     session.pop('is_admin', None)
-    return redirect(url_for('index'))
+    session.pop('admin_user', None)
+    session.pop('login_time', None)
+    return redirect(url_for('admin_login'))
 
 
 @app.route('/admin')
@@ -589,7 +814,8 @@ def admin_dashboard():
         "python_version": sys.version.split()[0]
     }
 
-    return render_template('admin.html', data=data, messages=messages, stats=stats)
+    admin_auth = get_admin_auth()
+    return render_template('admin.html', data=data, messages=messages, stats=stats, admin_auth=admin_auth, current_user=session.get('admin_user', 'admin'))
 
 
 @app.route('/admin/api/messages/delete/<int:msg_id>', methods=['POST'])
@@ -1133,6 +1359,52 @@ def admin_save_raw_json():
         return jsonify({"status": "success", "message": "Complete portfolio JSON synchronized and saved!"})
     return jsonify({"status": "error", "message": "Disk write failure."}), 500
 
+
+
+# ----------------------------------------------------------------------------
+# ADMIN CREDENTIALS & SECURITY MANAGEMENT
+# ----------------------------------------------------------------------------
+@app.route('/admin/api/auth/change-credentials', methods=['POST'])
+@admin_required
+def admin_change_credentials():
+    payload = request.get_json() or {}
+    current_password = payload.get('current_password', '').strip()
+    new_username = payload.get('new_username', '').strip()
+    new_password = payload.get('new_password', '').strip()
+    confirm_password = payload.get('confirm_password', '').strip()
+
+    creds = get_admin_auth()
+    pwd_hash = creds.get('password_hash')
+
+    is_valid = False
+    if pwd_hash and check_password_hash(pwd_hash, current_password):
+        is_valid = True
+    elif ADMIN_PASSWORD and current_password == ADMIN_PASSWORD:
+        is_valid = True
+
+    if not is_valid:
+        return jsonify({"status": "error", "message": "Current security passcode is incorrect."}), 400
+
+    if new_password:
+        if len(new_password) < 6:
+            return jsonify({"status": "error", "message": "New password must be at least 6 characters long."}), 400
+        if new_password != confirm_password:
+            return jsonify({"status": "error", "message": "New password and confirmation do not match."}), 400
+
+    data = load_portfolio_data()
+    auth = data.setdefault("admin_auth", {})
+
+    if new_username:
+        auth["username"] = new_username
+        session['admin_user'] = new_username
+    if new_password:
+        auth["password_hash"] = generate_password_hash(new_password)
+
+    auth["credentials_updated_at"] = datetime.datetime.utcnow().isoformat() + "Z"
+    data["admin_auth"] = auth
+    save_portfolio_data(data)
+
+    return jsonify({"status": "success", "message": "Admin credentials successfully updated!"})
 
 init_db()
 

@@ -7,7 +7,7 @@
 ## ✨ Features & Upgrades
 
 ### 🛡️ Mission Control Admin Dashboard (`/admin`)
-- **Secure Authentication**: Passcode protected (`admin123`) terminal login.
+- **Secure Authentication**: Cryptographic Scrypt/PBKDF2 salted hash authentication, 5-attempt brute-force lockout guard, optional GitHub OAuth 2.0 Web Flow, and developer fast-auth token verification.
 - **Inbound Message Manager**: View, filter, and delete transmissions stored in the persistent SQLite database (`messages.db`).
 - **Dynamic Content Persistence**: Update profile tagline, bio, status, project links (Live Demo & GitHub), and skills with real-time JSON disk persistence (`portfolio_data.json`).
 - **Local LLM AI Console**: Real-time Ollama daemon diagnostics, knowledge base vector inspector, and interactive prompt testing playground.
