@@ -457,6 +457,7 @@ if (typeof Lenis !== 'undefined' && !prefersReducedMotion) {
     }
 
     requestAnimationFrame(raf);
+    window.lenis.on('scroll', runScrollHandlers);
     // Anchor links use window.lenis.scrollTo (see the anchor handler at the top of this file)
 }
 
@@ -1146,6 +1147,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let width = 0, height = 0, dpr = 1;
 
     let edges = []; // sorted by startNorm so a frame can binary-search how many have started
+    let brainNodes = []; // persistent reference for ambient silhouette and live synchrotron
 
     const COLOR_BUCKETS = 16;
     const CYAN = [0, 255, 204];
@@ -1174,20 +1176,21 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function isBrain(x, y) {
-        const hw = Math.min(width * 0.15, 150); // Hemisphere width
-        const hh = Math.min(height * 0.25, 200); // Hemisphere height
+        // Responsive hemisphere bounds scaled from mobile to high-res screens
+        const hw = Math.min(Math.max(width * 0.22, 110), 160);
+        const hh = Math.min(Math.max(height * 0.26, 140), 220);
 
         const taper = 1.0 + (y / hh) * 0.25; // Narrower at top (y < 0)
 
-        // Left
+        // Left hemisphere
         const dxL = (x + hw * 0.5) / (hw * taper);
         const dyL = y / hh;
-        const inLeft = (dxL * dxL + dyL * dyL <= 1) && x < -5;
+        const inLeft = (dxL * dxL + dyL * dyL <= 1) && x < -4;
 
-        // Right
+        // Right hemisphere
         const dxR = (x - hw * 0.5) / (hw * taper);
         const dyR = y / hh;
-        const inRight = (dxR * dxR + dyR * dyR <= 1) && x > 5;
+        const inRight = (dxR * dxR + dyR * dyR <= 1) && x > 4;
 
         return inLeft || inRight;
     }
@@ -1199,7 +1202,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const maxLink = spacing * 1.6; // allow horiz, vert, and diagonal
 
         // 1. Generate Brain Nodes (indexed by grid cell for O(1) neighbour lookup)
-        const brainNodes = [];
+        brainNodes = [];
         const grid = new Map();
         let ix = 0;
         for (let x = -width / 2; x <= width / 2; x += spacing, ix++) {
@@ -1316,17 +1319,52 @@ document.addEventListener("DOMContentLoaded", () => {
         edges.sort((a, b) => a.startNorm - b.startNorm);
     }
 
-    // Cached section metrics: avoids a getBoundingClientRect() layout read every frame
+    // Cached section metrics: computed accurately relative to page scroll & Lenis
     let sectionTop = 0;
     let sectionScrollable = 1;
+
+    function getScrollPos() {
+        if (window.lenis && typeof window.lenis.scroll === 'number') {
+            return window.lenis.scroll;
+        }
+        return window.pageYOffset || document.documentElement.scrollTop || window.scrollY || 0;
+    }
+
     function measureSection() {
-        sectionTop = docOffsetTop(section);
+        if (!section) return;
+        const rect = section.getBoundingClientRect();
+        const currentScroll = getScrollPos();
+        sectionTop = rect.top + currentScroll;
         sectionScrollable = Math.max(1, section.offsetHeight - window.innerHeight);
     }
 
     function getScrollProgress() {
-        const progress = (window.scrollY - sectionTop) / sectionScrollable;
+        const currentScroll = getScrollPos();
+        const progress = (currentScroll - sectionTop) / sectionScrollable;
         return Math.max(0, Math.min(1, progress));
+    }
+
+    const hud = document.getElementById('neural-sync-hud');
+    const label = document.getElementById('neural-sync-label');
+    const fill = document.getElementById('neural-sync-fill');
+    const pct = document.getElementById('neural-sync-pct');
+
+    function updateSyncHud(progress) {
+        if (!hud) return;
+        const percent = Math.round(progress * 100);
+        if (fill) fill.style.width = `${percent}%`;
+        if (pct) pct.innerText = `${percent}% SYNCHRONIZED`;
+
+        if (percent === 0) {
+            hud.classList.remove('synced');
+            if (label) label.innerText = '⚡ SCROLL TO INITIATE NEURAL SYNC';
+        } else if (percent < 100) {
+            hud.classList.remove('synced');
+            if (label) label.innerText = `🧠 SYNAPSE MAPPING ACTIVE (${percent}%)`;
+        } else {
+            hud.classList.add('synced');
+            if (label) label.innerText = '✓ NEURAL CORE FULLY SYNCHRONIZED';
+        }
     }
 
     function strokeBatch(batch, bucket) {
@@ -1345,6 +1383,17 @@ document.addEventListener("DOMContentLoaded", () => {
         ctx.clearRect(0, 0, width, height);
         ctx.translate(width / 2, height / 2); // Center origin
         ctx.lineCap = 'round';
+
+        // 0. Ambient dormant brain silhouette
+        if (brainNodes.length) {
+            ctx.fillStyle = 'rgba(0, 255, 204, 0.08)';
+            ctx.beginPath();
+            for (let i = 0; i < brainNodes.length; i++) {
+                ctx.moveTo(brainNodes[i].x + 1.2, brainNodes[i].y);
+                ctx.arc(brainNodes[i].x, brainNodes[i].y, 1.2, 0, Math.PI * 2);
+            }
+            ctx.fill();
+        }
 
         // Edges are sorted by start time: binary-search how many have started
         let lo = 0, hi = edges.length;
@@ -1472,6 +1521,7 @@ document.addEventListener("DOMContentLoaded", () => {
         measureSection();
         lastProgress = getScrollProgress();
         draw(lastProgress);
+        updateSyncHud(lastProgress);
     }
 
     // Debounced, and ignores small height-only changes (mobile address bar showing/hiding while scrolling)
@@ -1487,14 +1537,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
     onLayoutChange(measureSection);
 
-    onScroll(() => {
+    function updateBrainOnScroll() {
         const progress = getScrollProgress();
-        // Only draw if progress changed AND we are inside (or just leaving) the section
-        if (progress !== lastProgress && (progress > 0 || lastProgress > 0) && (progress < 1 || lastProgress < 1)) {
+        const currentScroll = getScrollPos();
+        const inSection = (currentScroll + window.innerHeight >= sectionTop - 150) && (currentScroll <= sectionTop + section.offsetHeight + 150);
+
+        if (inSection || Math.abs(progress - lastProgress) > 0.0005) {
             draw(progress);
             lastProgress = progress;
+            updateSyncHud(progress);
         }
-    });
+    }
+
+    onScroll(updateBrainOnScroll);
+    if (window.lenis) {
+        window.lenis.on('scroll', updateBrainOnScroll);
+    }
 
     // Init
     rebuild();
