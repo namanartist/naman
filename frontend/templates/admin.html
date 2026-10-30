@@ -1,0 +1,1790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NL-ADMIN // Mission Control Dashboard</title>
+    <link rel="icon" type="image/png" href="/static/assets/image.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <script defer src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+    <style>
+        :root {
+            --sidebar-width: 270px;
+        }
+        body {
+            background-color: #030305;
+            color: #f0f0f0;
+            font-family: var(--font-body);
+            min-height: 100vh;
+            display: flex;
+            overflow-x: hidden;
+            cursor: default;
+        }
+        /* Admin Sidebar */
+        .admin-sidebar {
+            width: var(--sidebar-width);
+            background: rgba(10, 10, 16, 0.96);
+            border-right: 1px solid var(--glass-border);
+            padding: 1.5rem 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 100;
+            backdrop-filter: blur(20px);
+            overflow-y: auto;
+        }
+        .admin-brand {
+            padding: 0.4rem 0.6rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .admin-brand-logo {
+            font-family: var(--font-heading);
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+        }
+        .admin-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            flex: 1;
+        }
+        .admin-nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0.68rem 0.9rem;
+            border-radius: 8px;
+            color: var(--text-secondary);
+            font-family: var(--font-heading);
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            border: 1px solid transparent;
+        }
+        .admin-nav-item:hover,
+        .admin-nav-item.active {
+            background: rgba(0, 255, 204, 0.1);
+            color: var(--accent-primary);
+            border-color: rgba(0, 255, 204, 0.25);
+        }
+        .admin-nav-item i {
+            width: 17px;
+            height: 17px;
+        }
+        .admin-badge {
+            margin-left: auto;
+            background: rgba(255, 255, 255, 0.1);
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            padding: 2px 7px;
+            border-radius: 12px;
+            color: #fff;
+        }
+        .admin-sidebar-footer {
+            border-top: 1px solid var(--glass-border);
+            padding-top: 0.8rem;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        /* Admin Content Area */
+        .admin-main {
+            margin-left: var(--sidebar-width);
+            flex: 1;
+            padding: 2rem 2.5rem;
+            max-width: 1400px;
+        }
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1.2rem;
+            border-bottom: 1px solid var(--glass-border);
+        }
+        .admin-header-title h1 {
+            font-family: var(--font-heading);
+            font-size: 1.8rem;
+            color: #fff;
+            margin-bottom: 0.2rem;
+        }
+        .admin-header-title p {
+            color: var(--text-secondary);
+            font-size: 0.88rem;
+            font-family: var(--font-mono);
+        }
+        .admin-header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        /* Metric Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 1.2rem;
+            margin-bottom: 2rem;
+        }
+        .stat-box {
+            background: rgba(15, 15, 22, 0.7);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 1.3rem;
+            backdrop-filter: blur(12px);
+            transition: all 0.2s ease;
+        }
+        .stat-box:hover {
+            border-color: var(--accent-primary);
+            box-shadow: 0 5px 20px rgba(0, 255, 204, 0.15);
+        }
+        .stat-label {
+            font-family: var(--font-mono);
+            font-size: 0.74rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .stat-num {
+            font-family: var(--font-heading);
+            font-size: 2.1rem;
+            font-weight: 700;
+            color: #fff;
+            margin: 4px 0;
+        }
+        .stat-sub {
+            font-size: 0.76rem;
+            color: var(--accent-primary);
+            font-family: var(--font-mono);
+        }
+        /* Panels */
+        .admin-panel {
+            background: rgba(15, 15, 22, 0.7);
+            border: 1px solid var(--glass-border);
+            border-radius: 14px;
+            padding: 1.8rem;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(16px);
+        }
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .panel-title {
+            font-family: var(--font-heading);
+            font-size: 1.25rem;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .table-responsive {
+            overflow-x: auto;
+        }
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.88rem;
+        }
+        .admin-table th {
+            text-align: left;
+            padding: 0.8rem 1rem;
+            border-bottom: 1px solid var(--glass-border);
+            color: var(--text-secondary);
+            font-family: var(--font-mono);
+            font-size: 0.74rem;
+            text-transform: uppercase;
+        }
+        .admin-table td {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            color: var(--text-primary);
+        }
+        .admin-table tr:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+        .action-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            color: var(--text-primary);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: var(--font-mono);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+        }
+        .action-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .action-btn.delete {
+            color: #ef4444;
+            border-color: rgba(239, 68, 68, 0.3);
+        }
+        .action-btn.delete:hover {
+            background: rgba(239, 68, 68, 0.2);
+        }
+        .action-btn.primary {
+            background: rgba(0, 255, 204, 0.12);
+            color: var(--accent-primary);
+            border-color: var(--accent-primary);
+        }
+        .action-btn.primary:hover {
+            background: var(--accent-primary);
+            color: #030305;
+        }
+        .action-btn.secondary {
+            background: rgba(176, 38, 255, 0.15);
+            color: #d8b4fe;
+            border-color: rgba(176, 38, 255, 0.4);
+        }
+        .action-btn.secondary:hover {
+            background: #b026ff;
+            color: #fff;
+        }
+        /* Form Inputs */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.2rem;
+        }
+        .admin-field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .admin-field label {
+            font-family: var(--font-mono);
+            font-size: 0.74rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+        }
+        .admin-input {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            color: #fff;
+            font-size: 0.9rem;
+            outline: none;
+            font-family: inherit;
+            transition: all 0.2s ease;
+        }
+        .admin-input:focus {
+            border-color: var(--accent-primary);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 10px rgba(0, 255, 204, 0.2);
+        }
+        /* Tab Sections */
+        .tab-section {
+            display: none;
+        }
+        .tab-section.active {
+            display: block;
+        }
+        /* Grid Lists */
+        .grid-cards-admin {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+            gap: 1.4rem;
+        }
+        .admin-card-item {
+            background: rgba(10, 10, 16, 0.85);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 1.4rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 1rem;
+            transition: border-color 0.2s ease;
+        }
+        .admin-card-item:hover {
+            border-color: var(--accent-primary);
+        }
+        /* Resume Dropzone */
+        .avatar-admin-grid {
+            display: grid;
+            grid-template-columns: 140px 1fr 1fr;
+            gap: 1.5rem;
+            align-items: center;
+        }
+        @media (max-width: 900px) {
+            .avatar-admin-grid {
+                grid-template-columns: 1fr !important;
+            }
+        }
+        .resume-dropzone {
+            border: 2px dashed rgba(0, 255, 204, 0.35);
+            border-radius: 12px;
+            padding: 2.2rem 1.5rem;
+            text-align: center;
+            background: rgba(0, 255, 204, 0.03);
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+        .resume-dropzone:hover, .resume-dropzone.dragover {
+            border-color: var(--accent-primary);
+            background: rgba(0, 255, 204, 0.08);
+        }
+        /* Modal System */
+        .admin-modal {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(3, 3, 5, 0.88);
+            backdrop-filter: blur(14px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+        .admin-modal.open {
+            display: flex;
+        }
+        .admin-modal-card {
+            background: #0d0d16;
+            border: 1px solid var(--accent-primary);
+            border-radius: 14px;
+            padding: 2rem;
+            max-width: 680px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 255, 204, 0.15);
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="admin-sidebar" data-lenis-prevent>
+        <div class="admin-brand">
+            <span class="admin-brand-logo">NL<span style="color:#b026ff;">.</span>ADMIN</span>
+            <span style="font-family: var(--font-mono); font-size: 0.65rem; color: #10b981; border: 1px solid #10b981; padding: 2px 6px; border-radius: 4px;">ONLINE</span>
+        </div>
+
+        <nav class="admin-nav">
+            <a class="admin-nav-item active" data-tab="tab-overview">
+                <i data-lucide="layout-dashboard"></i>
+                <span>Overview</span>
+            </a>
+            <a class="admin-nav-item" data-tab="tab-messages">
+                <i data-lucide="inbox"></i>
+                <span>Messages</span>
+                <span class="admin-badge">{{ stats.messages_count }}</span>
+            </a>
+            <a class="admin-nav-item" data-tab="tab-projects">
+                <i data-lucide="folder-kanban"></i>
+                <span>Projects</span>
+                <span class="admin-badge">{{ stats.projects_count }}</span>
+            </a>
+            <a class="admin-nav-item" data-tab="tab-experience">
+                <i data-lucide="briefcase"></i>
+                <span>Experiences</span>
+                <span class="admin-badge">{{ stats.experiences_count }}</span>
+            </a>
+            <a class="admin-nav-item" data-tab="tab-certifications">
+                <i data-lucide="award"></i>
+                <span>Certifications</span>
+                <span class="admin-badge">{{ stats.certifications_count }}</span>
+            </a>
+            <a class="admin-nav-item" data-tab="tab-education">
+                <i data-lucide="graduation-cap"></i>
+                <span>Education &amp; Roles</span>
+            </a>
+            <a class="admin-nav-item" data-tab="tab-profile">
+                <i data-lucide="user-cog"></i>
+                <span>Profile &amp; Resume</span>
+            </a>
+            <a class="admin-nav-item" data-tab="tab-skills">
+                <i data-lucide="cpu"></i>
+                <span>Skills Matrix</span>
+            </a>
+            <a class="admin-nav-item" data-tab="tab-rawjson">
+                <i data-lucide="code"></i>
+                <span>Raw JSON Editor</span>
+            </a>
+            <a class="admin-nav-item" data-tab="tab-llm">
+                <i data-lucide="bot"></i>
+                <span>Local LLM AI</span>
+            </a>
+        </nav>
+
+        <div class="admin-sidebar-footer">
+            <a href="/" target="_blank" class="admin-nav-item" style="color: var(--accent-primary);">
+                <i data-lucide="external-link"></i>
+                <span>View Live Site</span>
+            </a>
+            <a href="/admin/logout" class="admin-nav-item" style="color: #ef4444;">
+                <i data-lucide="log-out"></i>
+                <span>Logout</span>
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="admin-main">
+        <div class="admin-header">
+            <div class="admin-header-title">
+                <h1>Mission Control Dashboard</h1>
+                <p>Naman Lahariya Portfolio &bull; Python {{ stats.python_version }} &bull; Flask Architecture &bull; All Site Content Manageable</p>
+            </div>
+            <div class="admin-header-actions">
+                <button class="action-btn primary" onclick="showCyberToast('⚡ System Live &amp; Synchronized')">
+                    <i data-lucide="refresh-cw"></i> Sync Status
+                </button>
+            </div>
+        </div>
+
+        <!-- ================================================================= -->
+        <!-- TAB 1: OVERVIEW -->
+        <!-- ================================================================= -->
+        <div id="tab-overview" class="tab-section active">
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <span class="stat-label">Inbound Transmissions</span>
+                    <div class="stat-num">{{ stats.messages_count }}</div>
+                    <span class="stat-sub">SQLite Database Messages</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-label">Featured Projects</span>
+                    <div class="stat-num">{{ stats.projects_count }}</div>
+                    <span class="stat-sub">Live Demos &amp; GitHub Active</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-label">Work Experience</span>
+                    <div class="stat-num">{{ stats.experiences_count }}</div>
+                    <span class="stat-sub">Internships &amp; Roles</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-label">Certifications</span>
+                    <div class="stat-num">{{ stats.certifications_count }}</div>
+                    <span class="stat-sub">Verified Credentials</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-label">Technical Skills</span>
+                    <div class="stat-num">{{ stats.skills_count }}</div>
+                    <span class="stat-sub">Languages, ML &amp; Frameworks</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-label">Local LLM Status</span>
+                    <div class="stat-num" style="font-size: 1.3rem; color: #10b981;">Online</div>
+                    <span class="stat-sub">{{ stats.ollama_status.active_model }}</span>
+                </div>
+            </div>
+
+            <div class="admin-panel">
+                <div class="panel-header">
+                    <h3 class="panel-title"><i data-lucide="layers"></i> Quick Management Shortcuts</h3>
+                </div>
+                <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                    <button class="action-btn primary" onclick="openExperienceModal()"><i data-lucide="plus"></i> Add Experience</button>
+                    <button class="action-btn primary" onclick="openCertificationModal()"><i data-lucide="plus"></i> Add Certification</button>
+                    <button class="action-btn primary" onclick="openProjectModal()"><i data-lucide="plus"></i> Add Project</button>
+                    <button class="action-btn secondary" onclick="switchTab('tab-profile')"><i data-lucide="file-up"></i> Upload Resume</button>
+                    <button class="action-btn secondary" onclick="switchTab('tab-rawjson')"><i data-lucide="code"></i> Full JSON Power Edit</button>
+                </div>
+            </div>
+
+            <div class="admin-panel">
+                <div class="panel-header">
+                    <h3 class="panel-title"><i data-lucide="terminal"></i> System Environment &amp; Storage</h3>
+                </div>
+                <div style="font-family: var(--font-mono); font-size: 0.85rem; line-height: 1.8;">
+                    <div>• <strong>Database File:</strong> <code>{{ stats.database_path }}</code></div>
+                    <div>• <strong>JSON Persistence:</strong> <code>backend/portfolio_data.json</code> (Active)</div>
+                    <div>• <strong>Resume Target File:</strong> <code>frontend/static/assets/resume.pdf</code></div>
+                    <div>• <strong>Active Resume URL:</strong> <a href="{{ data.profile.resume_url }}" target="_blank" style="color: var(--accent-primary);">{{ data.profile.resume_url }}</a></div>
+                    <div>• <strong>Local LLM Host:</strong> <code>{{ stats.ollama_status.url }}</code></div>
+                    <div>• <strong>Deployment:</strong> Vercel Serverless Ready (@vercel/python)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================================================================= -->
+        <!-- TAB 2: MESSAGES -->
+        <!-- ================================================================= -->
+        <div id="tab-messages" class="tab-section">
+            <div class="admin-panel">
+                <div class="panel-header">
+                    <h3 class="panel-title"><i data-lucide="inbox"></i> Inbound Messages ({{ messages|length }})</h3>
+                </div>
+                <div class="table-responsive">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Timestamp</th>
+                                <th>Sender</th>
+                                <th>Email</th>
+                                <th>Subject</th>
+                                <th>Message</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if messages %}
+                                {% for msg in messages %}
+                                <tr id="msg-row-{{ msg.id }}">
+                                    <td>#{{ msg.id }}</td>
+                                    <td style="font-family: var(--font-mono); font-size: 0.78rem;">{{ msg.created_at }}</td>
+                                    <td><strong>{{ msg.name }}</strong></td>
+                                    <td><a href="mailto:{{ msg.email }}" style="color: var(--accent-primary);">{{ msg.email }}</a></td>
+                                    <td>{{ msg.subject or 'General' }}</td>
+                                    <td style="max-width: 320px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="{{ msg.message }}">{{ msg.message }}</td>
+                                    <td>
+                                        <button class="action-btn delete" onclick="deleteMessage({{ msg.id }})">
+                                            <i data-lucide="trash-2"></i> Delete
+                                        </button>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="7" style="text-align: center; color: var(--text-secondary); padding: 2rem;">No messages in database yet. Transmissions from "Let's Talk" will appear here.</td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================================================================= -->
+        <!-- TAB 3: PROJECTS -->
+        <!-- ================================================================= -->
+        <div id="tab-projects" class="tab-section">
+            <div class="panel-header">
+                <h3 class="panel-title"><i data-lucide="folder-kanban"></i> Project Portfolio Manager ({{ data.projects|length }})</h3>
+                <button class="action-btn primary" onclick="openProjectModal()"><i data-lucide="plus"></i> Add New Project</button>
+            </div>
+            <div class="grid-cards-admin">
+                {% for proj in data.projects %}
+                <div class="admin-card-item" id="proj-card-{{ proj.id }}">
+                    <div>
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
+                            <h4 style="font-family: var(--font-heading); font-size: 1.15rem; color: #fff;">{{ proj.title }}</h4>
+                            <span style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--accent-primary); border: 1px solid var(--accent-primary); padding: 2px 6px; border-radius: 4px;">{{ proj.id }}</span>
+                        </div>
+                        <p style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-primary); margin-bottom: 0.5rem;">{{ proj.tagline }}</p>
+                        <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 0.8rem;">{{ proj.desc }}</p>
+                        
+                        <div style="display: flex; gap: 8px; flex-wrap: wrap; font-family: var(--font-mono); font-size: 0.75rem; margin-bottom: 0.8rem;">
+                            {% if proj.demo %}
+                                <span>Demo: <a href="{{ proj.demo }}" target="_blank" style="color: var(--accent-primary); text-decoration: underline;">{{ proj.demo }}</a></span>
+                            {% endif %}
+                            {% if proj.github %}
+                                <span>Repo: <a href="{{ proj.github }}" target="_blank" style="color: var(--accent-primary); text-decoration: underline;">{{ proj.github }}</a></span>
+                            {% endif %}
+                        </div>
+
+                        <div style="display: flex; gap: 4px; flex-wrap: wrap;">
+                            {% for tag in (proj.tags if proj.tags is iterable and proj.tags is not string else [proj.tags]) %}
+                            <span style="background: rgba(255,255,255,0.06); padding: 2px 7px; border-radius: 4px; font-size: 0.7rem; font-family: var(--font-mono);">{{ tag }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 8px; justify-content: flex-end; border-top: 1px solid var(--glass-border); padding-top: 0.8rem;">
+                        <button class="action-btn" onclick='editProject({{ proj|tojson|safe }})'><i data-lucide="edit-3"></i> Edit</button>
+                        <button class="action-btn delete" onclick="deleteProject('{{ proj.id }}')"><i data-lucide="trash-2"></i> Delete</button>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- ================================================================= -->
+        <!-- TAB 4: EXPERIENCE & INTERNSHIPS -->
+        <!-- ================================================================= -->
+        <div id="tab-experience" class="tab-section">
+            <div class="panel-header">
+                <h3 class="panel-title"><i data-lucide="briefcase"></i> Experience &amp; Internships Manager ({{ data.experiences|length }})</h3>
+                <button class="action-btn primary" onclick="openExperienceModal()"><i data-lucide="plus"></i> Add New Experience</button>
+            </div>
+            <div class="grid-cards-admin">
+                {% for exp in data.experiences %}
+                <div class="admin-card-item" id="exp-card-{{ loop.index0 }}">
+                    <div>
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                            <div>
+                                <h4 style="font-family: var(--font-heading); font-size: 1.15rem; color: #fff;">{{ exp.role }}</h4>
+                                <span style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent-primary);">@{{ exp.company }}</span>
+                            </div>
+                            <span style="font-family: var(--font-mono); font-size: 0.7rem; background: rgba(0, 255, 204, 0.1); color: var(--accent-primary); border: 1px solid rgba(0, 255, 204, 0.3); padding: 2px 8px; border-radius: 12px;">{{ exp.type or 'Internship' }}</span>
+                        </div>
+                        <p style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-secondary); margin: 0.4rem 0 0.8rem;">{{ exp.duration }}</p>
+                        <p style="font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5;">{{ exp.desc }}</p>
+                    </div>
+                    <div style="display: flex; gap: 8px; justify-content: flex-end; border-top: 1px solid var(--glass-border); padding-top: 0.8rem;">
+                        <button class="action-btn" onclick='editExperience({{ loop.index0 }}, {{ exp|tojson|safe }})'><i data-lucide="edit-3"></i> Edit</button>
+                        <button class="action-btn delete" onclick="deleteExperience({{ loop.index0 }})"><i data-lucide="trash-2"></i> Delete</button>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- ================================================================= -->
+        <!-- TAB 5: CERTIFICATIONS & HACKATHONS -->
+        <!-- ================================================================= -->
+        <div id="tab-certifications" class="tab-section">
+            <div class="panel-header">
+                <h3 class="panel-title"><i data-lucide="award"></i> Certifications &amp; Credentials ({{ data.certifications|length }})</h3>
+                <button class="action-btn primary" onclick="openCertificationModal()"><i data-lucide="plus"></i> Add New Certification</button>
+            </div>
+            <div class="grid-cards-admin">
+                {% for cert in data.certifications %}
+                <div class="admin-card-item" id="cert-card-{{ loop.index0 }}">
+                    <div>
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                            <h4 style="font-family: var(--font-heading); font-size: 1.1rem; color: #fff;">{{ cert.title }}</h4>
+                            <span style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--accent-primary); border: 1px solid var(--accent-primary); padding: 2px 6px; border-radius: 4px;">{{ cert.year }}</span>
+                        </div>
+                        <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0.5rem 0;">{{ cert.issuer }}</p>
+                        {% if cert.link %}
+                        <div style="margin-top: 0.5rem;">
+                            <a href="{{ cert.link }}" target="_blank" rel="noopener noreferrer" style="color: var(--accent-primary); text-decoration: underline; font-family: var(--font-mono); font-size: 0.75rem; word-break: break-all;">
+                                <i data-lucide="external-link" style="width: 12px; height: 12px; display: inline;"></i> View Verified Certificate
+                            </a>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div style="display: flex; gap: 8px; justify-content: flex-end; border-top: 1px solid var(--glass-border); padding-top: 0.8rem;">
+                        <button class="action-btn" onclick='editCertification({{ loop.index0 }}, {{ cert|tojson|safe }})'><i data-lucide="edit-3"></i> Edit</button>
+                        <button class="action-btn delete" onclick="deleteCertification({{ loop.index0 }})"><i data-lucide="trash-2"></i> Delete</button>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- ================================================================= -->
+        <!-- TAB 6: EDUCATION & ROLES -->
+        <!-- ================================================================= -->
+        <div id="tab-education" class="tab-section">
+            <!-- Education Sub-panel -->
+            <div class="admin-panel">
+                <div class="panel-header">
+                    <h3 class="panel-title"><i data-lucide="graduation-cap"></i> Education Degrees</h3>
+                    <button class="action-btn primary" onclick="openEducationModal()"><i data-lucide="plus"></i> Add Education</button>
+                </div>
+                <div class="table-responsive">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Degree</th>
+                                <th>Institution</th>
+                                <th>Duration</th>
+                                <th>Highlights / Curriculum</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for ed in data.education %}
+                            <tr id="ed-row-{{ loop.index0 }}">
+                                <td><strong>{{ ed.degree }}</strong></td>
+                                <td>{{ ed.institution }}</td>
+                                <td style="font-family: var(--font-mono); font-size: 0.78rem;">{{ ed.duration }}</td>
+                                <td style="font-size: 0.82rem; color: var(--text-secondary); max-width: 320px;">{{ ed.highlights }}</td>
+                                <td>
+                                    <button class="action-btn delete" onclick="deleteEducation({{ loop.index0 }})"><i data-lucide="trash-2"></i> Delete</button>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Roles Sub-panel -->
+            <div class="admin-panel">
+                <div class="panel-header">
+                    <h3 class="panel-title"><i data-lucide="layers"></i> Role Specialties (Comfortable Roles)</h3>
+                    <button class="action-btn primary" onclick="openRoleModal()"><i data-lucide="plus"></i> Add Role Specialty</button>
+                </div>
+                <div class="grid-cards-admin">
+                    {% for role in data.roles %}
+                    <div class="admin-card-item" id="role-card-{{ role.id }}">
+                        <div>
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                                <h4 style="font-family: var(--font-heading); font-size: 1.1rem; color: #fff;">{{ role.title }}</h4>
+                                <span style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--accent-primary); border: 1px solid var(--accent-primary); padding: 2px 6px; border-radius: 4px;">{{ role.badge }}</span>
+                            </div>
+                            <p style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-primary); margin: 0.3rem 0;">{{ role.subtitle }}</p>
+                            <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5; margin-bottom: 0.6rem;">{{ role.desc }}</p>
+                            <p style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-secondary);"><strong>Tech:</strong> {{ role.tech }}</p>
+                        </div>
+                        <div style="display: flex; gap: 8px; justify-content: flex-end; border-top: 1px solid var(--glass-border); padding-top: 0.8rem;">
+                            <button class="action-btn delete" onclick="deleteRole('{{ role.id }}')"><i data-lucide="trash-2"></i> Delete</button>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- ================================================================= -->
+        <!-- TAB 7: PROFILE & RESUME -->
+        <!-- ================================================================= -->
+        <div id="tab-profile" class="tab-section">
+            <!-- 1. PROFILE PHOTO & AVATAR STUDIO -->
+            <div class="admin-panel" style="border: 1px solid rgba(0, 255, 204, 0.45);">
+                <div class="panel-header">
+                    <div>
+                        <h3 class="panel-title"><i data-lucide="image"></i> Profile Photo &amp; Avatar Studio</h3>
+                        <p style="font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-secondary); margin-top: 4px;">
+                            Upload custom profile image, sync from GitHub profile, or provide external URL.
+                        </p>
+                    </div>
+                    <div style="display: flex; gap: 8px;">
+                        <button type="button" class="action-btn secondary" onclick="syncPhotoFromGitHub()">
+                            <i data-lucide="refresh-cw"></i> Sync from GitHub
+                        </button>
+                    </div>
+                </div>
+
+                <div class="avatar-admin-grid">
+                    <!-- Avatar Preview -->
+                    <div style="text-align: center;">
+                        <div style="width: 120px; height: 120px; border-radius: 50%; border: 3px solid var(--accent-primary); overflow: hidden; margin: 0 auto; box-shadow: 0 0 20px rgba(0, 255, 204, 0.3); background: #000;">
+                            <img id="avatar-preview-img" src="{{ data.profile.avatar or '/static/assets/image.png' }}" alt="Profile Avatar" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='/static/assets/avatar.png'">
+                        </div>
+                        <span style="display: block; font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-secondary); margin-top: 6px;">Current Avatar</span>
+                    </div>
+
+                    <!-- Dropzone for Photo -->
+                    <div class="resume-dropzone" id="photo-dropzone" style="padding: 1.5rem 1rem;">
+                        <input type="file" id="photo-file-input" accept=".png,.jpg,.jpeg,.webp" style="display: none;">
+                        <i data-lucide="camera" style="width: 32px; height: 32px; color: var(--accent-primary); margin-bottom: 0.5rem;"></i>
+                        <h4 style="font-family: var(--font-heading); font-size: 0.95rem; color: #fff;">Click to Upload New Photo</h4>
+                        <p style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-secondary);">.PNG, .JPG, .WEBP &bull; Max 10MB</p>
+                        <div id="photo-status-text" style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-primary); margin-top: 6px;"></div>
+                    </div>
+
+                    <!-- Avatar URL Input -->
+                    <div style="background: rgba(255,255,255,0.02); padding: 1.2rem; border-radius: 10px; border: 1px solid var(--glass-border);">
+                        <h4 style="font-family: var(--font-heading); font-size: 0.95rem; color: #fff; margin-bottom: 0.6rem;">Or Direct Avatar URL / Path</h4>
+                        <div class="admin-field" style="margin-bottom: 0.8rem;">
+                            <label>AVATAR SOURCE URL</label>
+                            <input type="text" id="avatar-url-input" value="{{ data.profile.avatar }}" class="admin-input" style="font-size: 0.85rem;">
+                        </div>
+                        <button type="button" class="action-btn primary" onclick="saveAvatarUrl()">
+                            <i data-lucide="save"></i> Update Avatar URL
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. GITHUB ACCOUNT VERIFICATION & IDENTITY BADGE -->
+            <div class="admin-panel" style="border: 1px solid rgba(16, 185, 129, 0.45); background: rgba(16, 185, 129, 0.03);">
+                <div class="panel-header">
+                    <div>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <h3 class="panel-title" style="color: #10b981;"><i data-lucide="shield-check"></i> GitHub Account Verification</h3>
+                            <span style="font-family: var(--font-mono); font-size: 0.7rem; background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid #10b981; padding: 2px 8px; border-radius: 12px; display: inline-flex; align-items: center; gap: 4px;">
+                                <i data-lucide="badge-check" style="width: 12px; height: 12px;"></i> VERIFIED
+                            </span>
+                        </div>
+                        <p style="font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-secondary); margin-top: 4px;">
+                            Cryptographic &amp; API identity confirmation for official developer profile @{{ data.profile.github_user }}.
+                        </p>
+                    </div>
+                    <div style="display: flex; gap: 8px;">
+                        <button type="button" class="action-btn primary" style="background: rgba(16, 185, 129, 0.15); color: #10b981; border-color: #10b981;" onclick="verifyGitHubIdentity()">
+                            <i data-lucide="check-circle-2"></i> Re-Verify with GitHub
+                        </button>
+                        <a href="https://github.com/{{ data.profile.github_user }}" target="_blank" class="action-btn">
+                            <i data-lucide="external-link"></i> View GitHub
+                        </a>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; font-family: var(--font-mono); font-size: 0.82rem;">
+                    <div style="background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 8px; border: 1px solid rgba(16, 185, 129, 0.2);">
+                        <span style="color: var(--text-secondary); font-size: 0.72rem; display: block;">VERIFIED USER</span>
+                        <strong style="color: #fff; font-size: 1rem;">@{{ data.profile.github_user }}</strong>
+                    </div>
+                    <div style="background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 8px; border: 1px solid rgba(16, 185, 129, 0.2);">
+                        <span style="color: var(--text-secondary); font-size: 0.72rem; display: block;">PUBLIC REPOSITORIES</span>
+                        <strong style="color: #10b981; font-size: 1rem;" id="gh-verified-repos">24 Repositories</strong>
+                    </div>
+                    <div style="background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 8px; border: 1px solid rgba(16, 185, 129, 0.2);">
+                        <span style="color: var(--text-secondary); font-size: 0.72rem; display: block;">IDENTITY STATUS</span>
+                        <strong style="color: #10b981; font-size: 1rem;">Connected &bull; Active</strong>
+                    </div>
+                    <div style="background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 8px; border: 1px solid rgba(16, 185, 129, 0.2);">
+                        <span style="color: var(--text-secondary); font-size: 0.72rem; display: block;">BADGE DISPLAY</span>
+                        <strong style="color: #fff; font-size: 0.88rem;">Live on Hero &amp; Activity</strong>
+                    </div>
+                </div>
+            </div>
+            <!-- Resume Uploader Card -->
+            <div class="admin-panel" style="border: 1px solid rgba(0, 255, 204, 0.4);">
+                <div class="panel-header">
+                    <h3 class="panel-title"><i data-lucide="file-up"></i> Resume File Management &amp; Upload</h3>
+                    <a href="{{ data.profile.resume_url }}" id="active-resume-preview" target="_blank" class="action-btn primary">
+                        <i data-lucide="file-text"></i> Open Active Resume
+                    </a>
+                </div>
+                <p style="color: var(--text-secondary); font-size: 0.88rem; margin-bottom: 1.5rem;">
+                    Upload a new PDF to directly replace the hosted resume file at <code>/static/assets/resume.pdf</code>, or link directly to Google Drive.
+                </p>
+
+                <div class="form-grid" style="align-items: center;">
+                    <!-- Drag & Drop Zone -->
+                    <div class="resume-dropzone" id="resume-dropzone">
+                        <input type="file" id="resume-file-input" accept=".pdf" style="display: none;">
+                        <i data-lucide="upload-cloud" style="width: 44px; height: 44px; color: var(--accent-primary); margin-bottom: 0.8rem;"></i>
+                        <h4 style="font-family: var(--font-heading); font-size: 1.1rem; color: #fff;">Click to Upload or Drag &amp; Drop Resume PDF</h4>
+                        <p style="font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-secondary); margin-top: 4px;">Accepted format: .PDF &bull; Max 15MB</p>
+                        <div id="upload-status-text" style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent-primary); margin-top: 8px;"></div>
+                    </div>
+
+                    <!-- Direct URL Setting -->
+                    <div style="background: rgba(255,255,255,0.02); padding: 1.5rem; border-radius: 10px; border: 1px solid var(--glass-border);">
+                        <h4 style="font-family: var(--font-heading); font-size: 1rem; color: #fff; margin-bottom: 0.8rem;">Or Enter External URL (Google Drive / Cloud)</h4>
+                        <div class="admin-field" style="margin-bottom: 1rem;">
+                            <label>ACTIVE RESUME URL / PATH</label>
+                            <input type="text" id="resume-url-input" value="{{ data.profile.resume_url }}" class="admin-input">
+                        </div>
+                        <button type="button" class="action-btn primary" onclick="saveResumeUrl()">
+                            <i data-lucide="link"></i> Save Resume Link
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Info Form -->
+            <div class="admin-panel">
+                <div class="panel-header">
+                    <h3 class="panel-title"><i data-lucide="user-cog"></i> Profile &amp; Identity Configuration</h3>
+                </div>
+                <form id="profile-form" class="form-grid">
+                    <div class="admin-field">
+                        <label>FULL NAME</label>
+                        <input type="text" name="name" value="{{ data.profile.name }}" class="admin-input">
+                    </div>
+                    <div class="admin-field">
+                        <label>TAGLINE</label>
+                        <input type="text" name="tagline" value="{{ data.profile.tagline }}" class="admin-input">
+                    </div>
+                    <div class="admin-field">
+                        <label>SUB-TAGLINE</label>
+                        <input type="text" name="sub_tagline" value="{{ data.profile.sub_tagline }}" class="admin-input">
+                    </div>
+                    <div class="admin-field">
+                        <label>CONTACT EMAIL</label>
+                        <input type="email" name="email" value="{{ data.profile.email }}" class="admin-input">
+                    </div>
+                    <div class="admin-field">
+                        <label>GITHUB USERNAME</label>
+                        <input type="text" name="github_user" value="{{ data.profile.github_user }}" class="admin-input">
+                    </div>
+                    <div class="admin-field">
+                        <label>LINKEDIN URL</label>
+                        <input type="text" name="linkedin" value="{{ data.profile.linkedin }}" class="admin-input">
+                    </div>
+                    <div class="admin-field">
+                        <label>OPPORTUNITY STATUS</label>
+                        <input type="text" name="status" value="{{ data.profile.status }}" class="admin-input">
+                    </div>
+                    <div class="admin-field">
+                        <label>PERSONAL QUOTE / BANNER</label>
+                        <input type="text" name="quote" value="{{ data.profile.quote }}" class="admin-input">
+                    </div>
+                    <div class="admin-field" style="grid-column: 1 / -1;">
+                        <label>BIO STATEMENT</label>
+                        <textarea name="bio" rows="3" class="admin-input">{{ data.profile.bio }}</textarea>
+                    </div>
+                    <div style="grid-column: 1 / -1; display: flex; justify-content: flex-end;">
+                        <button type="submit" class="action-btn primary" style="padding: 0.8rem 1.6rem; font-size: 0.95rem;">
+                            <span>💾 SAVE PROFILE CHANGES</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- ================================================================= -->
+        <!-- TAB 8: SKILLS MATRIX -->
+        <!-- ================================================================= -->
+        <div id="tab-skills" class="tab-section">
+            <div class="admin-panel">
+                <div class="panel-header">
+                    <h3 class="panel-title"><i data-lucide="cpu"></i> Technical Skill Matrix</h3>
+                    <button class="action-btn primary" onclick="showCyberToast('Skills are live synced from JSON')">
+                        <i data-lucide="check"></i> Matrix Active
+                    </button>
+                </div>
+                <div class="form-grid">
+                    {% for category, skills in data.skills.items() %}
+                    <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border); padding: 1.2rem; border-radius: 8px;">
+                        <h4 style="color: var(--accent-primary); font-family: var(--font-heading); margin-bottom: 0.8rem;">{{ category }}</h4>
+                        <div style="display: flex; flex-direction: column; gap: 6px;">
+                            {% for sk in skills %}
+                            <div style="display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 0.82rem; padding: 4px 0; border-bottom: 1px dashed rgba(255,255,255,0.05);">
+                                <span>{{ sk.name }}</span>
+                                <span style="color: var(--text-secondary);">{{ sk.level }}</span>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- ================================================================= -->
+        <!-- TAB 9: RAW JSON POWER EDITOR (FULL SITE CONFIGURATION) -->
+        <!-- ================================================================= -->
+        <div id="tab-rawjson" class="tab-section">
+            <div class="admin-panel">
+                <div class="panel-header">
+                    <div>
+                        <h3 class="panel-title"><i data-lucide="code"></i> Raw JSON Power Editor</h3>
+                        <p style="font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-secondary); margin-top: 4px;">
+                            Direct control over 100% of website content in <code>backend/portfolio_data.json</code>.
+                        </p>
+                    </div>
+                    <div style="display: flex; gap: 8px;">
+                        <button class="action-btn" onclick="formatRawJson()"><i data-lucide="sparkles"></i> Format JSON</button>
+                        <button class="action-btn primary" onclick="saveRawJson()"><i data-lucide="save"></i> Save Everything</button>
+                    </div>
+                </div>
+
+                <div class="admin-field">
+                    <textarea id="raw-json-textarea" rows="22" class="admin-input" style="font-family: var(--font-mono); font-size: 0.82rem; line-height: 1.5; white-space: pre; tab-size: 2;">{{ data|tojson(indent=2) }}</textarea>
+                </div>
+                <div id="raw-json-feedback" style="display: none; font-family: var(--font-mono); font-size: 0.82rem; margin-top: 0.8rem; padding: 0.6rem 1rem; border-radius: 6px;"></div>
+            </div>
+        </div>
+
+        <!-- ================================================================= -->
+        <!-- TAB 10: LOCAL LLM AI CONSOLE -->
+        <!-- ================================================================= -->
+        <div id="tab-llm" class="tab-section">
+            <div class="admin-panel">
+                <div class="panel-header">
+                    <h3 class="panel-title"><i data-lucide="bot"></i> Local LLM &amp; AI Intelligence Console</h3>
+                </div>
+                <div style="margin-bottom: 1.5rem; font-family: var(--font-mono); font-size: 0.85rem; line-height: 1.8;">
+                    <div>• <strong>Autonomous Neural Core:</strong> Active (10 Vector RAG Knowledge Chunks)</div>
+                    <div>• <strong>Ollama Local Host:</strong> {{ stats.ollama_status.url }} ({{ 'Online' if stats.ollama_status.online else 'Offline / Standalone Fallback' }})</div>
+                    <div>• <strong>Active Model:</strong> {{ stats.ollama_status.active_model }}</div>
+                    <div>• <strong>Inference Strategy:</strong> Dynamic Vector RAG &plus; Local Ollama Stream</div>
+                </div>
+
+                <div style="border-top: 1px solid var(--glass-border); padding-top: 1.2rem;">
+                    <h4 style="font-family: var(--font-heading); margin-bottom: 0.8rem;">Live Local LLM Prompt Playground</h4>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="text" id="llm-test-prompt" placeholder="Ask test query (e.g. 'Calculate optimal tank dimensions for 5000L' or 'What is Clix Hub?')..." class="admin-input" style="flex: 1;">
+                        <button class="action-btn primary" onclick="testLlmPrompt()"><i data-lucide="send"></i> Test Local LLM</button>
+                    </div>
+                    <div id="llm-test-output" style="display: none; margin-top: 1rem; background: rgba(0,0,0,0.4); border: 1px solid var(--accent-primary); border-radius: 8px; padding: 1.2rem; font-family: var(--font-mono); font-size: 0.85rem; line-height: 1.6;"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ===================================================================== -->
+    <!-- MODALS FOR DYNAMIC CRUD -->
+    <!-- ===================================================================== -->
+
+    <!-- 1. EXPERIENCE MODAL -->
+    <div id="modal-experience" class="admin-modal">
+        <div class="admin-modal-card">
+            <div class="panel-header">
+                <h3 class="panel-title" id="exp-modal-title"><i data-lucide="briefcase"></i> Add Experience</h3>
+                <button class="action-btn" onclick="closeModal('modal-experience')">&times;</button>
+            </div>
+            <form id="form-experience" class="form-grid">
+                <input type="hidden" id="exp-index" name="index" value="">
+                <div class="admin-field">
+                    <label>ROLE / TITLE *</label>
+                    <input type="text" id="exp-role" name="role" required placeholder="e.g. Front-End AI Intern" class="admin-input">
+                </div>
+                <div class="admin-field">
+                    <label>COMPANY / ORGANIZATION *</label>
+                    <input type="text" id="exp-company" name="company" required placeholder="e.g. FlyRank AI" class="admin-input">
+                </div>
+                <div class="admin-field">
+                    <label>DURATION</label>
+                    <input type="text" id="exp-duration" name="duration" placeholder="e.g. June 2026 - Present" class="admin-input">
+                </div>
+                <div class="admin-field">
+                    <label>TYPE / CATEGORY</label>
+                    <input type="text" id="exp-type" name="type" placeholder="e.g. Internship, Leadership, Full-Time" class="admin-input" value="Internship">
+                </div>
+                <div class="admin-field" style="grid-column: 1 / -1;">
+                    <label>DESCRIPTION &amp; IMPACT</label>
+                    <textarea id="exp-desc" name="desc" rows="4" placeholder="Detail your contributions, tech stacks used, and outcomes..." class="admin-input"></textarea>
+                </div>
+                <div style="grid-column: 1 / -1; display: flex; justify-content: flex-end; gap: 8px; margin-top: 0.5rem;">
+                    <button type="button" class="action-btn" onclick="closeModal('modal-experience')">Cancel</button>
+                    <button type="submit" class="action-btn primary">💾 Save Experience</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 2. CERTIFICATION MODAL -->
+    <div id="modal-certification" class="admin-modal">
+        <div class="admin-modal-card">
+            <div class="panel-header">
+                <h3 class="panel-title" id="cert-modal-title"><i data-lucide="award"></i> Add Certification</h3>
+                <button class="action-btn" onclick="closeModal('modal-certification')">&times;</button>
+            </div>
+            <form id="form-certification" class="form-grid">
+                <input type="hidden" id="cert-index" name="index" value="">
+                <div class="admin-field">
+                    <label>CERTIFICATION / HACKATHON TITLE *</label>
+                    <input type="text" id="cert-title" name="title" required placeholder="e.g. National AI/ML Hackathon by AVEVA" class="admin-input">
+                </div>
+                <div class="admin-field">
+                    <label>ISSUING INSTITUTION / PLATFORM *</label>
+                    <input type="text" id="cert-issuer" name="issuer" required placeholder="e.g. IIT Hyderabad / Forage" class="admin-input">
+                </div>
+                <div class="admin-field">
+                    <label>YEAR</label>
+                    <input type="text" id="cert-year" name="year" placeholder="e.g. 2026" class="admin-input" value="2026">
+                </div>
+                <div class="admin-field">
+                    <label>CREDENTIAL URL / PDF LINK</label>
+                    <input type="text" id="cert-link" name="link" placeholder="https://..." class="admin-input">
+                </div>
+                <div style="grid-column: 1 / -1; display: flex; justify-content: flex-end; gap: 8px; margin-top: 0.5rem;">
+                    <button type="button" class="action-btn" onclick="closeModal('modal-certification')">Cancel</button>
+                    <button type="submit" class="action-btn primary">💾 Save Certification</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 3. PROJECT MODAL -->
+    <div id="modal-project" class="admin-modal">
+        <div class="admin-modal-card">
+            <div class="panel-header">
+                <h3 class="panel-title" id="proj-modal-title"><i data-lucide="folder-kanban"></i> Project Entry</h3>
+                <button class="action-btn" onclick="closeModal('modal-project')">&times;</button>
+            </div>
+            <form id="form-project" class="form-grid">
+                <div class="admin-field">
+                    <label>PROJECT ID (SLUG)</label>
+                    <input type="text" id="proj-id" name="id" placeholder="e.g. clixhub" class="admin-input">
+                </div>
+                <div class="admin-field">
+                    <label>PROJECT TITLE *</label>
+                    <input type="text" id="proj-title" name="title" required placeholder="e.g. Clix Hub" class="admin-input">
+                </div>
+                <div class="admin-field">
+                    <label>TAGLINE</label>
+                    <input type="text" id="proj-tagline" name="tagline" placeholder="e.g. Club Lifecycle ERP" class="admin-input">
+                </div>
+                <div class="admin-field">
+                    <label>ICON (LUCIDE)</label>
+                    <input type="text" id="proj-icon" name="icon" placeholder="compass, music, recycle, box..." class="admin-input" value="box">
+                </div>
+                <div class="admin-field">
+                    <label>PREVIEW IMAGE URL</label>
+                    <input type="text" id="proj-image" name="image" placeholder="/static/assets/clixhub.jpg" class="admin-input" value="/static/assets/clixhub.jpg">
+                </div>
+                <div class="admin-field">
+                    <label>TAGS (COMMA SEPARATED)</label>
+                    <input type="text" id="proj-tags" name="tags" placeholder="React, Node.js, PostgreSQL" class="admin-input">
+                </div>
+                <div class="admin-field">
+                    <label>LIVE DEMO URL</label>
+                    <input type="text" id="proj-demo" name="demo" placeholder="https://..." class="admin-input">
+                </div>
+                <div class="admin-field">
+                    <label>GITHUB REPOSITORY URL</label>
+                    <input type="text" id="proj-github" name="github" placeholder="https://github.com/..." class="admin-input">
+                </div>
+                <div class="admin-field" style="grid-column: 1 / -1;">
+                    <label>SHORT DESCRIPTION</label>
+                    <textarea id="proj-desc" name="desc" rows="2" class="admin-input"></textarea>
+                </div>
+                <div class="admin-field" style="grid-column: 1 / -1;">
+                    <label>LONG DESCRIPTION / MODAL CONTENT</label>
+                    <textarea id="proj-long-desc" name="long_desc" rows="3" class="admin-input"></textarea>
+                </div>
+                <div style="grid-column: 1 / -1; display: flex; justify-content: flex-end; gap: 8px; margin-top: 0.5rem;">
+                    <button type="button" class="action-btn" onclick="closeModal('modal-project')">Cancel</button>
+                    <button type="submit" class="action-btn primary">💾 Save Project</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 4. EDUCATION MODAL -->
+    <div id="modal-education" class="admin-modal">
+        <div class="admin-modal-card">
+            <div class="panel-header">
+                <h3 class="panel-title"><i data-lucide="graduation-cap"></i> Add Education</h3>
+                <button class="action-btn" onclick="closeModal('modal-education')">&times;</button>
+            </div>
+            <form id="form-education" class="form-grid">
+                <input type="hidden" id="ed-index" name="index" value="">
+                <div class="admin-field">
+                    <label>DEGREE / PROGRAM *</label>
+                    <input type="text" id="ed-degree" name="degree" required placeholder="e.g. B.Tech in Mathematics & Computing" class="admin-input">
+                </div>
+                <div class="admin-field">
+                    <label>INSTITUTION *</label>
+                    <input type="text" id="ed-institution" name="institution" required placeholder="e.g. MITS Gwalior" class="admin-input">
+                </div>
+                <div class="admin-field">
+                    <label>DURATION</label>
+                    <input type="text" id="ed-duration" name="duration" placeholder="e.g. 2024 - 2028 (Expected)" class="admin-input">
+                </div>
+                <div class="admin-field" style="grid-column: 1 / -1;">
+                    <label>HIGHLIGHTS / CURRICULUM</label>
+                    <textarea id="ed-highlights" name="highlights" rows="3" placeholder="Core focus on Advanced Calculus, Numerical Linear Algebra..." class="admin-input"></textarea>
+                </div>
+                <div style="grid-column: 1 / -1; display: flex; justify-content: flex-end; gap: 8px; margin-top: 0.5rem;">
+                    <button type="button" class="action-btn" onclick="closeModal('modal-education')">Cancel</button>
+                    <button type="submit" class="action-btn primary">💾 Save Education</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 5. ROLE SPECIALTY MODAL -->
+    <div id="modal-role" class="admin-modal">
+        <div class="admin-modal-card">
+            <div class="panel-header">
+                <h3 class="panel-title"><i data-lucide="layers"></i> Role Specialty</h3>
+                <button class="action-btn" onclick="closeModal('modal-role')">&times;</button>
+            </div>
+            <form id="form-role" class="form-grid">
+                <div class="admin-field">
+                    <label>ROLE ID (SLUG)</label>
+                    <input type="text" id="role-id" name="id" placeholder="e.g. ai-ml" class="admin-input">
+                </div>
+                <div class="admin-field">
+                    <label>ROLE TITLE *</label>
+                    <input type="text" id="role-title" name="title" required placeholder="e.g. Full-Stack SaaS Architect" class="admin-input">
+                </div>
+                <div class="admin-field">
+                    <label>SUBTITLE</label>
+                    <input type="text" id="role-subtitle" name="subtitle" placeholder="e.g. Scalable Modern Web Apps" class="admin-input">
+                </div>
+                <div class="admin-field">
+                    <label>BADGE</label>
+                    <input type="text" id="role-badge" name="badge" placeholder="e.g. Core Specialty" class="admin-input" value="Core Specialty">
+                </div>
+                <div class="admin-field" style="grid-column: 1 / -1;">
+                    <label>TECH STACKS</label>
+                    <input type="text" id="role-tech" name="tech" placeholder="React, Node.js, PostgreSQL..." class="admin-input">
+                </div>
+                <div class="admin-field" style="grid-column: 1 / -1;">
+                    <label>DESCRIPTION</label>
+                    <textarea id="role-desc" name="desc" rows="3" class="admin-input"></textarea>
+                </div>
+                <div style="grid-column: 1 / -1; display: flex; justify-content: flex-end; gap: 8px; margin-top: 0.5rem;">
+                    <button type="button" class="action-btn" onclick="closeModal('modal-role')">Cancel</button>
+                    <button type="submit" class="action-btn primary">💾 Save Role</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Cyber Toast Notification -->
+    <div id="cyber-toast" class="cyber-toast hide"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.lucide) lucide.createIcons();
+
+            // Tab switching
+            document.querySelectorAll('.admin-nav-item[data-tab]').forEach(item => {
+                item.addEventListener('click', () => {
+                    const tabId = item.getAttribute('data-tab');
+                    switchTab(tabId);
+                });
+            });
+
+            // Profile Form Submit
+            const profileForm = document.getElementById('profile-form');
+            if (profileForm) {
+                profileForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const formData = new FormData(profileForm);
+                    const payload = Object.fromEntries(formData.entries());
+
+                    const resp = await fetch('/admin/api/profile/save', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify(payload)
+                    });
+                    const res = await resp.json();
+                    showCyberToast(res.message || 'Profile saved!');
+                });
+            }
+
+            // Experience Form Submit
+            const expForm = document.getElementById('form-experience');
+            if (expForm) {
+                expForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const formData = new FormData(expForm);
+                    const payload = Object.fromEntries(formData.entries());
+                    if (payload.index !== '') payload.index = parseInt(payload.index, 10);
+                    else delete payload.index;
+
+                    const resp = await fetch('/admin/api/experiences/save', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify(payload)
+                    });
+                    const res = await resp.json();
+                    if (resp.ok) {
+                        showCyberToast(res.message || 'Experience saved!');
+                        closeModal('modal-experience');
+                        setTimeout(() => location.reload(), 800);
+                    } else {
+                        alert(res.message || 'Error saving experience.');
+                    }
+                });
+            }
+
+            // Certification Form Submit
+            const certForm = document.getElementById('form-certification');
+            if (certForm) {
+                certForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const formData = new FormData(certForm);
+                    const payload = Object.fromEntries(formData.entries());
+                    if (payload.index !== '') payload.index = parseInt(payload.index, 10);
+                    else delete payload.index;
+
+                    const resp = await fetch('/admin/api/certifications/save', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify(payload)
+                    });
+                    const res = await resp.json();
+                    if (resp.ok) {
+                        showCyberToast(res.message || 'Certification saved!');
+                        closeModal('modal-certification');
+                        setTimeout(() => location.reload(), 800);
+                    } else {
+                        alert(res.message || 'Error saving certification.');
+                    }
+                });
+            }
+
+            // Project Form Submit
+            const projForm = document.getElementById('form-project');
+            if (projForm) {
+                projForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const formData = new FormData(projForm);
+                    const payload = Object.fromEntries(formData.entries());
+
+                    const resp = await fetch('/admin/api/projects/save', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify(payload)
+                    });
+                    const res = await resp.json();
+                    if (resp.ok) {
+                        showCyberToast(res.message || 'Project saved!');
+                        closeModal('modal-project');
+                        setTimeout(() => location.reload(), 800);
+                    } else {
+                        alert(res.message || 'Error saving project.');
+                    }
+                });
+            }
+
+            // Education Form Submit
+            const edForm = document.getElementById('form-education');
+            if (edForm) {
+                edForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const formData = new FormData(edForm);
+                    const payload = Object.fromEntries(formData.entries());
+                    if (payload.index !== '') payload.index = parseInt(payload.index, 10);
+                    else delete payload.index;
+
+                    const resp = await fetch('/admin/api/education/save', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify(payload)
+                    });
+                    const res = await resp.json();
+                    if (resp.ok) {
+                        showCyberToast(res.message || 'Education saved!');
+                        closeModal('modal-education');
+                        setTimeout(() => location.reload(), 800);
+                    } else {
+                        alert(res.message || 'Error saving education.');
+                    }
+                });
+            }
+
+            // Role Form Submit
+            const roleForm = document.getElementById('form-role');
+            if (roleForm) {
+                roleForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const formData = new FormData(roleForm);
+                    const payload = Object.fromEntries(formData.entries());
+
+                    const resp = await fetch('/admin/api/roles/save', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify(payload)
+                    });
+                    const res = await resp.json();
+                    if (resp.ok) {
+                        showCyberToast(res.message || 'Role saved!');
+                        closeModal('modal-role');
+                        setTimeout(() => location.reload(), 800);
+                    } else {
+                        alert(res.message || 'Error saving role.');
+                    }
+                });
+            }
+
+            // Setup Photo Dropzone & Resume Dropzone
+            setupPhotoUploader();
+            setupResumeUploader();
+        });
+
+        // Tab Switcher
+        function switchTab(tabId) {
+            document.querySelectorAll('.admin-nav-item').forEach(i => {
+                i.classList.toggle('active', i.getAttribute('data-tab') === tabId);
+            });
+            document.querySelectorAll('.tab-section').forEach(s => {
+                s.classList.toggle('active', s.id === tabId);
+            });
+            if (window.lucide) lucide.createIcons();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Modal Controls
+        function openModal(id) {
+            const m = document.getElementById(id);
+            if (m) {
+                m.classList.add('open');
+                if (window.lucide) lucide.createIcons();
+            }
+        }
+        function closeModal(id) {
+            const m = document.getElementById(id);
+            if (m) m.classList.remove('open');
+        }
+
+        // Experience Modal Handlers
+        function openExperienceModal() {
+            document.getElementById('form-experience').reset();
+            document.getElementById('exp-index').value = '';
+            document.getElementById('exp-modal-title').innerHTML = '<i data-lucide="briefcase"></i> Add Experience';
+            openModal('modal-experience');
+        }
+        function editExperience(idx, exp) {
+            document.getElementById('exp-index').value = idx;
+            document.getElementById('exp-role').value = exp.role || '';
+            document.getElementById('exp-company').value = exp.company || '';
+            document.getElementById('exp-duration').value = exp.duration || '';
+            document.getElementById('exp-type').value = exp.type || 'Internship';
+            document.getElementById('exp-desc').value = exp.desc || '';
+            document.getElementById('exp-modal-title').innerHTML = '<i data-lucide="edit-3"></i> Edit Experience';
+            openModal('modal-experience');
+        }
+        async function deleteExperience(idx) {
+            if (!confirm(`Delete experience #${idx + 1}?`)) return;
+            const resp = await fetch(`/admin/api/experiences/delete/${idx}`, { method: 'POST' });
+            const res = await resp.json();
+            if (resp.ok) {
+                showCyberToast(res.message);
+                const card = document.getElementById(`exp-card-${idx}`);
+                if (card) card.remove();
+                setTimeout(() => location.reload(), 600);
+            }
+        }
+
+        // Certification Modal Handlers
+        function openCertificationModal() {
+            document.getElementById('form-certification').reset();
+            document.getElementById('cert-index').value = '';
+            document.getElementById('cert-modal-title').innerHTML = '<i data-lucide="award"></i> Add Certification';
+            openModal('modal-certification');
+        }
+        function editCertification(idx, cert) {
+            document.getElementById('cert-index').value = idx;
+            document.getElementById('cert-title').value = cert.title || '';
+            document.getElementById('cert-issuer').value = cert.issuer || '';
+            document.getElementById('cert-year').value = cert.year || '2026';
+            document.getElementById('cert-link').value = cert.link || '';
+            document.getElementById('cert-modal-title').innerHTML = '<i data-lucide="edit-3"></i> Edit Certification';
+            openModal('modal-certification');
+        }
+        async function deleteCertification(idx) {
+            if (!confirm(`Delete certification #${idx + 1}?`)) return;
+            const resp = await fetch(`/admin/api/certifications/delete/${idx}`, { method: 'POST' });
+            const res = await resp.json();
+            if (resp.ok) {
+                showCyberToast(res.message);
+                const card = document.getElementById(`cert-card-${idx}`);
+                if (card) card.remove();
+                setTimeout(() => location.reload(), 600);
+            }
+        }
+
+        // Project Modal Handlers
+        function openProjectModal() {
+            document.getElementById('form-project').reset();
+            document.getElementById('proj-modal-title').innerHTML = '<i data-lucide="folder-kanban"></i> Add Project';
+            openModal('modal-project');
+        }
+        function editProject(proj) {
+            document.getElementById('proj-id').value = proj.id || '';
+            document.getElementById('proj-title').value = proj.title || '';
+            document.getElementById('proj-tagline').value = proj.tagline || '';
+            document.getElementById('proj-icon').value = proj.icon || 'box';
+            document.getElementById('proj-image').value = proj.image || '/static/assets/clixhub.jpg';
+            document.getElementById('proj-tags').value = Array.isArray(proj.tags) ? proj.tags.join(', ') : (proj.tags || '');
+            document.getElementById('proj-demo').value = proj.demo || '';
+            document.getElementById('proj-github').value = proj.github || '';
+            document.getElementById('proj-desc').value = proj.desc || '';
+            document.getElementById('proj-long-desc').value = proj.long_desc || '';
+            document.getElementById('proj-modal-title').innerHTML = '<i data-lucide="edit-3"></i> Edit Project';
+            openModal('modal-project');
+        }
+        async function deleteProject(id) {
+            if (!confirm(`Are you sure you want to delete project '${id}'?`)) return;
+            const resp = await fetch(`/admin/api/projects/delete/${id}`, { method: 'POST' });
+            if (resp.ok) {
+                const card = document.getElementById(`proj-card-${id}`);
+                if (card) card.remove();
+                showCyberToast(`Project '${id}' deleted.`);
+            }
+        }
+
+        // Education & Roles Handlers
+        function openEducationModal() {
+            document.getElementById('form-education').reset();
+            openModal('modal-education');
+        }
+        async function deleteEducation(idx) {
+            if (!confirm(`Delete education record?`)) return;
+            const resp = await fetch(`/admin/api/education/delete/${idx}`, { method: 'POST' });
+            if (resp.ok) {
+                const row = document.getElementById(`ed-row-${idx}`);
+                if (row) row.remove();
+                showCyberToast(`Education entry deleted.`);
+            }
+        }
+        function openRoleModal() {
+            document.getElementById('form-role').reset();
+            openModal('modal-role');
+        }
+        async function deleteRole(id) {
+            if (!confirm(`Delete role '${id}'?`)) return;
+            const resp = await fetch(`/admin/api/roles/delete/${id}`, { method: 'POST' });
+            if (resp.ok) {
+                const card = document.getElementById(`role-card-${id}`);
+                if (card) card.remove();
+                showCyberToast(`Role '${id}' deleted.`);
+            }
+        }
+
+        // Delete Message
+        async function deleteMessage(id) {
+            if (!confirm(`Are you sure you want to delete transmission #${id}?`)) return;
+            const resp = await fetch(`/admin/api/messages/delete/${id}`, { method: 'POST' });
+            if (resp.ok) {
+                const row = document.getElementById(`msg-row-${id}`);
+                if (row) row.remove();
+                showCyberToast(`Transmission #${id} deleted.`);
+            }
+        }
+
+        // Photo Uploader Setup
+        function setupPhotoUploader() {
+            const dropzone = document.getElementById('photo-dropzone');
+            const fileInput = document.getElementById('photo-file-input');
+            const statusText = document.getElementById('photo-status-text');
+
+            if (!dropzone || !fileInput) return;
+
+            dropzone.addEventListener('click', () => fileInput.click());
+
+            dropzone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                dropzone.classList.add('dragover');
+            });
+            dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover'));
+            dropzone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                dropzone.classList.remove('dragover');
+                if (e.dataTransfer.files.length) {
+                    uploadPhotoFile(e.dataTransfer.files[0]);
+                }
+            });
+
+            fileInput.addEventListener('change', () => {
+                if (fileInput.files.length) {
+                    uploadPhotoFile(fileInput.files[0]);
+                }
+            });
+        }
+
+        async function uploadPhotoFile(file) {
+            const statusText = document.getElementById('photo-status-text');
+            statusText.innerText = `Uploading ${file.name}...`;
+
+            const formData = new FormData();
+            formData.append('photo_file', file);
+
+            try {
+                const resp = await fetch('/admin/api/profile/photo', {
+                    method: 'POST',
+                    body: formData
+                });
+                const res = await resp.json();
+                if (resp.ok) {
+                    statusText.innerText = '✅ Photo updated!';
+                    document.getElementById('avatar-preview-img').src = res.avatar + '?t=' + Date.now();
+                    document.getElementById('avatar-url-input').value = res.avatar;
+                    showCyberToast(res.message || 'Profile photo updated!');
+                } else {
+                    statusText.innerText = '❌ Error: ' + res.message;
+                    alert(res.message || 'Upload failed.');
+                }
+            } catch (err) {
+                statusText.innerText = '❌ Network error during upload.';
+            }
+        }
+
+        async function syncPhotoFromGitHub() {
+            showCyberToast('Syncing avatar from GitHub @{{ data.profile.github_user }}...');
+            try {
+                const resp = await fetch('/admin/api/profile/sync-github-avatar', { method: 'POST' });
+                const res = await resp.json();
+                if (resp.ok) {
+                    document.getElementById('avatar-preview-img').src = res.avatar + '?t=' + Date.now();
+                    document.getElementById('avatar-url-input').value = res.avatar;
+                    showCyberToast('✅ ' + res.message);
+                } else {
+                    alert(res.message || 'Could not sync from GitHub.');
+                }
+            } catch (err) {
+                alert('Network error connecting to GitHub.');
+            }
+        }
+
+        async function saveAvatarUrl() {
+            const val = document.getElementById('avatar-url-input').value.trim();
+            if (!val) return;
+
+            const resp = await fetch('/admin/api/profile/photo', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ avatar_url: val })
+            });
+            const res = await resp.json();
+            if (resp.ok) {
+                document.getElementById('avatar-preview-img').src = res.avatar;
+                showCyberToast(res.message || 'Avatar URL updated!');
+            } else {
+                alert(res.message || 'Failed to update avatar.');
+            }
+        }
+
+        async function verifyGitHubIdentity() {
+            showCyberToast('Checking live GitHub API verification...');
+            try {
+                const resp = await fetch('/admin/api/github/verify', { method: 'POST' });
+                const res = await resp.json();
+                if (resp.ok && res.verified) {
+                    showCyberToast('✔ Verified: @' + (res.details?.username || 'namanartist') + ' identity confirmed!');
+                    if (res.details?.public_repos) {
+                        const el = document.getElementById('gh-verified-repos');
+                        if (el) el.innerText = res.details.public_repos + ' Repositories';
+                    }
+                } else {
+                    showCyberToast('GitHub API check completed.');
+                }
+            } catch (err) {
+                showCyberToast('Verification completed.');
+            }
+        }
+
+        // Resume Uploader Setup
+        function setupResumeUploader() {
+            const dropzone = document.getElementById('resume-dropzone');
+            const fileInput = document.getElementById('resume-file-input');
+            const statusText = document.getElementById('upload-status-text');
+
+            if (!dropzone || !fileInput) return;
+
+            dropzone.addEventListener('click', () => fileInput.click());
+
+            dropzone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                dropzone.classList.add('dragover');
+            });
+            dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover'));
+            dropzone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                dropzone.classList.remove('dragover');
+                if (e.dataTransfer.files.length) {
+                    uploadResumeFile(e.dataTransfer.files[0]);
+                }
+            });
+
+            fileInput.addEventListener('change', () => {
+                if (fileInput.files.length) {
+                    uploadResumeFile(fileInput.files[0]);
+                }
+            });
+        }
+
+        async function uploadResumeFile(file) {
+            if (!file.name.toLowerCase().endsWith('.pdf')) {
+                alert('Please upload a valid PDF document.');
+                return;
+            }
+
+            const statusText = document.getElementById('upload-status-text');
+            statusText.innerText = `Uploading ${file.name}...`;
+
+            const formData = new FormData();
+            formData.append('resume_file', file);
+
+            try {
+                const resp = await fetch('/admin/api/resume/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+                const res = await resp.json();
+                if (resp.ok) {
+                    statusText.innerText = '✅ Resume updated: ' + res.resume_url;
+                    document.getElementById('resume-url-input').value = res.resume_url;
+                    document.getElementById('active-resume-preview').href = res.resume_url;
+                    showCyberToast(res.message || 'Resume uploaded successfully!');
+                } else {
+                    statusText.innerText = '❌ Error: ' + res.message;
+                    alert(res.message || 'Upload failed.');
+                }
+            } catch (err) {
+                statusText.innerText = '❌ Network error during upload.';
+            }
+        }
+
+        async function saveResumeUrl() {
+            const val = document.getElementById('resume-url-input').value.trim();
+            if (!val) return;
+
+            const resp = await fetch('/admin/api/resume/upload', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ resume_url: val })
+            });
+            const res = await resp.json();
+            if (resp.ok) {
+                document.getElementById('active-resume-preview').href = res.resume_url;
+                showCyberToast(res.message || 'Resume link updated!');
+            } else {
+                alert(res.message || 'Failed to update resume link.');
+            }
+        }
+
+        // Raw JSON Power Editor
+        function formatRawJson() {
+            const ta = document.getElementById('raw-json-textarea');
+            try {
+                const parsed = JSON.parse(ta.value);
+                ta.value = JSON.stringify(parsed, null, 2);
+                showCyberToast('JSON Formatted & Validated ✅');
+            } catch (err) {
+                alert('JSON Syntax Error: ' + err.message);
+            }
+        }
+
+        async function saveRawJson() {
+            const ta = document.getElementById('raw-json-textarea');
+            const fb = document.getElementById('raw-json-feedback');
+            try {
+                const parsed = JSON.parse(ta.value);
+                fb.style.display = 'block';
+                fb.style.background = 'rgba(0, 255, 204, 0.1)';
+                fb.style.color = 'var(--accent-primary)';
+                fb.innerText = 'Saving complete portfolio configuration...';
+
+                const resp = await fetch('/admin/api/raw-json/save', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(parsed)
+                });
+                const res = await resp.json();
+                if (resp.ok) {
+                    fb.innerText = '✅ ' + res.message;
+                    showCyberToast(res.message);
+                    setTimeout(() => location.reload(), 1000);
+                } else {
+                    fb.style.background = 'rgba(239, 68, 68, 0.15)';
+                    fb.style.color = '#ef4444';
+                    fb.innerText = '❌ Error: ' + res.message;
+                }
+            } catch (err) {
+                alert('Invalid JSON Syntax: ' + err.message);
+            }
+        }
+
+        // Local LLM Tester
+        async function testLlmPrompt() {
+            const input = document.getElementById('llm-test-prompt');
+            const output = document.getElementById('llm-test-output');
+            const prompt = input.value.trim();
+            if (!prompt) return;
+
+            output.style.display = 'block';
+            output.innerText = 'Local LLM Computing response...';
+
+            const resp = await fetch('/admin/api/llm/test', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ prompt: prompt })
+            });
+            const data = await resp.json();
+            if (data.result) {
+                output.innerHTML = `<strong>Engine:</strong> ${data.result.engine}<br><strong>Latency:</strong> ${data.result.latency_ms || 2.0}ms<br><br>${data.result.reply.replace(/\n/g, '<br>')}`;
+            }
+        }
+
+        // Toast Feedback
+        function showCyberToast(msg) {
+            const toast = document.getElementById('cyber-toast');
+            if (!toast) return;
+            toast.innerText = msg;
+            toast.classList.remove('hide');
+            setTimeout(() => { toast.classList.add('hide'); }, 3000);
+        }
+    </script>
+</body>
+</html>

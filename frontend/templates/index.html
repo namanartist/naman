@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Naman Lahariya | Full-Stack Developer &amp; AI Systems Engineer</title>
+    <meta name="description" content="Portfolio of Naman Lahariya - B.Tech in Mathematics &amp; Computing at MITS Gwalior. AI Intern at Decode Labs, Front-End AI Intern at FlyRank AI. Specializing in scalable SaaS platforms and AI solutions.">
+    <link rel="icon" type="image/png" href="{{ data.profile.avatar or '/static/assets/image.png' }}">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <script defer src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+    <script>
+        // Check for saved theme preference to prevent FOUC
+        const savedTheme = localStorage.getItem('portfolio-theme') || localStorage.getItem('naman-portfolio-theme');
+        if (savedTheme === 'light') {
+            document.documentElement.classList.add('light-theme');
+        }
+    </script>
+</head>
+
+<body class="loading">
+    <!-- 1. Preloader -->
+    <div id="preloader" class="preloader">
+        <div class="loader-content">
+            <span class="logo loader-logo">NL<span class="blink">_</span></span>
+            <div class="boot-text" id="boot-text" style="display: none;">SYSTEM INITIALIZING...</div>
+            <div class="progress-bar" id="progress-bar">
+                <div class="progress"></div>
+            </div>
+            <p class="loader-text" id="loader-text">INITIALIZING PORTFOLIO...</p>
+        </div>
+    </div>
+
+    <!-- 2. Full-Screen Glass Menu & Hamburger -->
+    <div class="menu-toggle magnetic" id="menu-toggle">
+        <span></span><span></span><span></span>
+    </div>
+    <nav id="glass-menu" class="glass-menu hide" data-lenis-prevent>
+        <ul class="menu-links">
+            <li><a href="#hero" class="magnetic menu-link"><span class="menu-num">01.</span> Home</a></li>
+            <li><a href="#about" class="magnetic menu-link"><span class="menu-num">02.</span> About</a></li>
+            <li><a href="#neural-core-section" class="magnetic menu-link"><span class="menu-num">03.</span> Neural Core</a></li>
+            <li><a href="#roles" class="magnetic menu-link"><span class="menu-num">04.</span> Roles</a></li>
+            <li><a href="#experience" class="magnetic menu-link"><span class="menu-num">05.</span> Experience</a></li>
+            <li><a href="#projects" class="magnetic menu-link"><span class="menu-num">06.</span> Projects</a></li>
+            <li><a href="#optimizer" class="magnetic menu-link"><span class="menu-num">07.</span> Calculus Sandbox</a></li>
+            <li><a href="#skills" class="magnetic menu-link"><span class="menu-num">08.</span> Skills</a></li>
+            <li><a href="#education" class="magnetic menu-link"><span class="menu-num">09.</span> Education</a></li>
+            <li><a href="#github" class="magnetic menu-link"><span class="menu-num">10.</span> GitHub</a></li>
+            <li><a href="#contact" class="magnetic menu-link"><span class="menu-num">11.</span> Let's Talk</a></li>
+        </ul>
+    </nav>
+
+    <!-- 3. Audio Toggle Button -->
+    <button id="audio-toggle" class="audio-toggle magnetic" aria-label="Toggle Sound">
+        <!-- Sound On Icon -->
+        <svg id="sound-icon-on" viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2"
+            fill="none" style="display: none;">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+        </svg>
+        <!-- Sound Off Icon -->
+        <svg id="sound-icon-off" viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2"
+            fill="none">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+            <line x1="23" y1="9" x2="17" y2="15"></line>
+            <line x1="17" y1="9" x2="23" y2="15"></line>
+        </svg>
+    </button>
+    <!-- Nudge pointing at the sound button; shown briefly after the preloader -->
+    <div id="sound-hint" class="sound-hint" aria-hidden="true">
+        <svg class="sound-hint-arrow" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor"
+            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="20" y1="12" x2="4" y2="12"></line>
+            <polyline points="10 6 4 12 10 18"></polyline>
+        </svg>
+        <span>Turn on sound effects</span>
+    </div>
+
+    <!-- 4. Easter Egg Console -->
+    <div id="easter-egg" class="easter-egg hide">
+        <div class="ee-header">Root Access Granted</div>
+        <div class="ee-body" id="ee-body">
+            <span>> </span><input type="text" id="ee-input" autocomplete="off" spellcheck="false">
+        </div>
+    </div>
+
+    <!-- 5. Easter Egg Features -->
+    <div id="hearts-container" class="hearts-container"></div>
+    <div id="tech-modal" class="tech-modal hide">
+        <div class="tech-modal-content glass-card">
+            <button id="close-tech-modal" class="tech-close-btn">&times;</button>
+            <h3 class="tech-title">System Initialised Successfully</h3>
+            <canvas id="neural-canvas"></canvas>
+        </div>
+    </div>
+    <div class="cursor-dot" data-cursor-dot></div>
+    <div class="cursor-outline" data-cursor-outline></div>
+
+    <!-- INTERACTIVE BACKGROUND -->
+    <canvas id="bg-canvas"></canvas>
+    <div class="bg-grid"></div>
+
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+
+    <!-- Theme Toggle -->
+    <button id="theme-toggle" class="audio-toggle magnetic theme-btn" aria-label="Toggle Theme"
+        style="right: 40px; left: auto; top: auto; bottom: 40px;">
+        <i data-lucide="sun" class="sun-icon"></i>
+        <i data-lucide="moon" class="moon-icon"></i>
+    </button>
+    <nav class="navbar glass" style="justify-content: flex-start; align-items: center; pointer-events: none; padding: 1rem 2.5rem;">
+        <a href="#hero" class="logo" style="pointer-events: auto;">NL.</a>
+    </nav>
+    <!-- SCROLL-DRIVEN CIRCUIT SVG -->
+    <svg id="scroll-circuit" viewBox="0 0 100 2000" preserveAspectRatio="none">
+        <path id="circuit-glow"
+            d="M 20 0 L 20 200 L 50 250 L 50 600 L 20 650 L 20 1200 L 80 1300 L 80 1700 L 20 1800 L 20 2000" />
+        <path id="circuit-path"
+            d="M 20 0 L 20 200 L 50 250 L 50 600 L 20 650 L 20 1200 L 80 1300 L 80 1700 L 20 1800 L 20 2000" />
+    </svg>
+
+    <main class="content-wrapper">
+        <!-- HERO SECTION -->
+        <section id="hero" class="split-hero">
+            <div class="hero-left">
+                <div class="hero-image-wrapper glass-card">
+                    <img src="{{ data.profile.avatar or '/static/assets/image.png' }}" alt="{{ data.profile.name }}" class="hero-image" id="profile-avatar-img" decoding="async"
+                        onerror="this.src='/static/assets/avatar.png'">
+                </div>
+            </div>
+
+            <div class="hero-right">
+                <div class="hero-badge-wrap" style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                    <button type="button" class="hero-badge" id="open-badge" aria-expanded="false"
+                        aria-controls="open-popover">
+                        <span class="dot"></span> Available for new opportunities
+                    </button>
+                    <a href="https://github.com/{{ data.profile.github_user }}" target="_blank" rel="noopener noreferrer" class="github-verified-badge magnetic" title="Verified GitHub Developer: @{{ data.profile.github_user }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                        </svg>
+                        <span class="gh-verified-text">Verified GitHub</span>
+                        <i data-lucide="badge-check" class="gh-check-icon"></i>
+                    </a>
+                    <div class="open-popover" id="open-popover" role="region" aria-label="Open to opportunities">
+                        <p class="open-popover-title">Open to work &#128640;</p>
+                        <ul class="open-popover-chips">
+                            <li>&#127891; Full-Stack SaaS Roles</li>
+                            <li>&#129504; Applied AI / ML Engineering</li>
+                            <li>&#128241; Distributed Cloud Systems</li>
+                        </ul>
+                        <a href="#contact" class="open-popover-cta" id="open-popover-cta">Let&rsquo;s talk <span
+                                aria-hidden="true">&rarr;</span></a>
+                    </div>
+                </div>
+
+                <h1 class="hero-huge-title">
+                    <span class="greeting-script">Hey, there</span><br>
+                    <span class="name-bold glitch" data-text="I AM NAMAN LAHARIYA">I AM NAMAN LAHARIYA</span>
+                </h1>
+
+                <p class="hero-tagline">Full-Stack Developer &amp; AI Systems Engineer</p>
+
+                <p class="hero-description">
+                    I craft scalable SaaS platforms, intelligent AI solutions, and high-performance applications with clean architecture.
+                </p>
+
+                <div class="hero-role">
+                    <span class="role-line">B.TECH IN MATHEMATICS &amp; COMPUTING</span>
+                    <span class="role-line">@ <a href="https://web.mitsgwalior.in/" target="_blank" rel="noopener"
+                            class="company-link">MITS GWALIOR</a></span>
+                </div>
+
+                <div class="hero-actions" style="margin-top: 2rem;">
+                    <a href="#projects" class="btn-primary">See what I&rsquo;ve built</a>
+                    <a href="{{ data.profile.resume_url }}" target="_blank" rel="noopener noreferrer" class="btn-primary"
+                        style="gap: 8px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                        Resume
+                    </a>
+                    <a href="#contact" class="btn-ghost">Let&rsquo;s talk <span aria-hidden="true">&rarr;</span></a>
+                </div>
+            </div>
+            <div class="scroll-indicator-container">
+                <a href="#about" class="scroll-indicator">
+                    <div class="mouse"></div>
+                    <div class="arrow"></div>
+                </a>
+            </div>
+        </section>
+
+        <!-- ABOUT ME SECTION -->
+        <section id="about" class="about">
+            <h2 class="section-title dynamic-heading" id="about-heading">ABOUT ME</h2>
+            <div class="curtain-reveal-container">
+                <div class="curtain-panel left"></div>
+                <div class="curtain-panel right"></div>
+                <div class="glass-card about-text reveal-content">
+                    <p>👋 Hello, World! I'm Naman Lahariya.</p>
+                    <blockquote class="about-quote">
+                        System Status: Differential calculus in the mind, scalable code in the fingers.
+                    </blockquote>
+                    <p>I'm a B.Tech student in Mathematics and Computing at Madhav Institute of Technology and Science (MITS), Gwalior. I work on real-world engineering at the intersection of scalable SaaS web platforms and artificial intelligence.</p>
+                    <p>Currently, I am working as a <strong>Front-End AI Intern at FlyRank AI</strong> and <strong>AI Intern at Decode Labs</strong>, developing cutting-edge user interfaces and real-world machine learning implementations. See what I've built in the <a href="#projects" class="about-link">Projects</a> section, or <a href="#contact" class="about-link">say hello</a>.</p>
+
+                    <details class="beyond-code">
+                        <summary>
+                            <span class="beyond-title">🎭 Beyond Code</span>
+                            <span class="beyond-sub">Mathematics, systems &amp; creative UI</span>
+                            <i data-lucide="chevron-down" class="beyond-chevron"></i>
+                        </summary>
+                        <div class="beyond-body">
+                            <p>When I'm not debugging or compiling code, my brain explores the deep beauty of mathematics and human-centered design:</p>
+                            <ul>
+                                <li><strong>Applied Optimization:</strong> Using multivariable differential calculus to optimize real-world material and geometric constraints.</li>
+                                <li><strong>Modern UX Systems:</strong> Designing micro-interactions, dark cyberpunk aesthetic interfaces, and intuitive workflows.</li>
+                                <li><strong>Leadership &amp; Community:</strong> Organizing campus technical initiatives and fostering student collaboration in full-stack engineering.</li>
+                            </ul>
+                            <p>Want to brainstorm an innovative project or discuss high-concurrency systems? Drop me a message.</p>
+                        </div>
+                    </details>
+                </div>
+            </div>
+        </section>
+
+        <!-- NEURAL CORE BRAIN SECTION (SCROLL SCRUBBED 3D) -->
+        <section id="neural-core-section" class="neural-core-section">
+            <div id="brain-canvas-container">
+                <canvas id="circuit-brain"></canvas>
+            </div>
+        </section>
+
+        <!-- ROLES SECTION (Horizontal Scroll) -->
+        <section id="roles" class="experience-wrapper">
+            <div class="experience-sticky">
+                <h2 class="section-title split-text"
+                    style="position: absolute; top: 120px; left: 10%; right: 10%; margin: 0; text-align: left; text-transform: uppercase; z-index: 2;">Roles I Am
+                    <span class="highlight">Comfortable With</span>
+                </h2>
+                <div class="experience-track">
+                    <!-- Cards -->
+                    {% for role in data.roles %}
+                    <div class="glass-card exp-card role-card" data-title="{{ role.title }}"
+                        data-subtitle="{{ role.subtitle }}" data-image="{{ role.image or '/static/assets/frontend-dev.png' }}"
+                        data-desc="{{ role.desc }}">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
+                            <h3>{{ role.title }}</h3>
+                            {% if role.badge %}
+                            <span class="role-badge" style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--accent-primary); border: 1px solid var(--accent-primary); padding: 2px 8px; border-radius: 12px;">{{ role.badge }}</span>
+                            {% endif %}
+                        </div>
+                        <p class="accent">{{ role.subtitle }}</p>
+                        <p class="role-desc">{{ role.desc }}</p>
+                        {% if role.tech %}
+                        <p style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.8rem; border-top: 1px dashed var(--glass-border); padding-top: 0.5rem;"><strong>Tech:</strong> {{ role.tech }}</p>
+                        {% endif %}
+                        <div class="card-hint">Click to view details <i data-lucide="arrow-up-right"></i></div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <!-- Roles Horizontal Progress Bar -->
+                <div class="roles-progress-container">
+                    <div class="roles-progress-bar" id="roles-progress"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SKILLS SECTION -->
+        <section id="skills" class="skills">
+            <h2 class="section-title split-text">Technical <span class="highlight">Skills</span></h2>
+
+            <div class="skills-key">
+                <span class="key-item"><span class="key-dot lang-dot"></span> Languages</span>
+                <span class="key-item"><span class="key-dot ml-dot"></span> ML &amp; Data Science</span>
+                <span class="key-item"><span class="key-dot web-dot"></span> Frameworks &amp; Web</span>
+                <span class="key-item"><span class="key-dot tool-dot"></span> Architecture &amp; Tools</span>
+            </div>
+
+            <div id="terminal-sandbox" class="terminal-window glass-card">
+                <div class="terminal-header">
+                    <span class="term-btn close"></span>
+                    <span class="term-btn minimize"></span>
+                    <span class="term-btn expand"></span>
+                    <span class="term-title">naman@portfolio: ~/skills</span>
+                </div>
+                <div id="terminal-body" class="terminal-body">
+                    <!-- Animation content injected by JS -->
+                </div>
+            </div>
+
+            <!-- Hidden Data Source for JS Decryption -->
+            <div id="skills-data" style="display: none;">
+                <span class="lang-tag">C++</span>
+                <span class="lang-tag">Python</span>
+                <span class="lang-tag">JavaScript</span>
+                <span class="lang-tag">TypeScript</span>
+                <span class="lang-tag">SQL</span>
+                <span class="lang-tag">HTML5</span>
+                <span class="lang-tag">CSS3</span>
+
+                <span class="ml-tag">PyTorch</span>
+                <span class="ml-tag">TensorFlow</span>
+                <span class="ml-tag">Scikit-Learn</span>
+                <span class="ml-tag">OpenCV</span>
+                <span class="ml-tag">NumPy</span>
+                <span class="ml-tag">Pandas</span>
+                <span class="ml-tag">Matplotlib</span>
+                <span class="ml-tag">Computer Vision</span>
+                <span class="ml-tag">Mathematical Modeling</span>
+                <span class="ml-tag">Differential Calculus</span>
+
+                <span class="web-tag">React.js</span>
+                <span class="web-tag">Next.js</span>
+                <span class="web-tag">Flask</span>
+                <span class="web-tag">FastAPI</span>
+                <span class="web-tag">Node.js</span>
+                <span class="web-tag">Express.js</span>
+                <span class="web-tag">Tailwind CSS</span>
+                <span class="web-tag">PostgreSQL</span>
+                <span class="web-tag">MongoDB</span>
+                <span class="web-tag">Supabase</span>
+                <span class="web-tag">WebSockets</span>
+
+                <span class="tool-tag">REST APIs</span>
+                <span class="tool-tag">Microservices</span>
+                <span class="tool-tag">Git/GitHub</span>
+                <span class="tool-tag">Docker</span>
+                <span class="tool-tag">Linux</span>
+                <span class="tool-tag">Vercel</span>
+                <span class="tool-tag">AWS</span>
+                <span class="tool-tag">Postman</span>
+                <span class="tool-tag">Jupyter Notebook</span>
+                <span class="tool-tag">Google Colab</span>
+            </div>
+        </section>
+
+        <!-- EXPERIENCE SECTION -->
+        <section id="experience" class="experience">
+            <h2 class="section-title">Professional <span class="highlight">Experience</span></h2>
+            <div class="epic-timeline">
+                {% for exp in data.experiences %}
+                <div class="timeline-row">
+                    <div class="timeline-left">
+                        <div class="timeline-date">{{ exp.duration }}</div>
+                        <h3>{{ exp.role }} <br><span class="highlight">@{{ exp.company }}</span></h3>
+                        {% if exp.type %}
+                        <span style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--accent-primary); text-transform: uppercase; letter-spacing: 0.5px;">{{ exp.type }}</span>
+                        {% endif %}
+                    </div>
+                    <div class="timeline-center">
+                        <div class="timeline-node"></div>
+                        <div class="timeline-line"></div>
+                    </div>
+                    <div class="timeline-right">
+                        <div class="glass-card desc-card">
+                            <p>{{ exp.desc }}</p>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <!-- PROJECTS SECTION -->
+        <!-- INFINITE STROKE MARQUEE -->
+        <div class="marquee-container">
+            <div class="marquee-content">
+                <span>PROJECTS • ROLES • EXPERIENCE • EDUCATION • TECHNOLOGY STACKS •&nbsp;</span>
+                <span>PROJECTS • ROLES • EXPERIENCE • EDUCATION • TECHNOLOGY STACKS •&nbsp;</span>
+                <span>PROJECTS • ROLES • EXPERIENCE • EDUCATION • TECHNOLOGY STACKS •&nbsp;</span>
+                <span>PROJECTS • ROLES • EXPERIENCE • EDUCATION • TECHNOLOGY STACKS •&nbsp;</span>
+            </div>
+        </div>
+
+        <section id="projects" class="projects">
+            <h2 class="section-title split-text">Featured <span class="highlight">Projects</span></h2>
+            <div class="projects-stack">
+                {% for proj in data.projects %}
+                <div class="glass-card project-card sticky-project role-card" style="cursor: pointer;"
+                    data-title="{{ proj.title }}" data-subtitle="{{ proj.tagline }}"
+                    data-image="{{ proj.image }}"
+                    data-demo="{{ proj.demo }}"
+                    data-github="{{ proj.github }}"
+                    data-techstack="{% if proj.tags is string %}{{ proj.tags }}{% else %}{{ proj.tags|join(', ') }}{% endif %}"
+                    data-desc="{{ proj.long_desc or proj.desc }}">
+                    <div class="project-header">
+                        <i data-lucide="{{ proj.icon or 'box' }}"></i>
+                        <h3>{{ proj.title }}</h3>
+                    </div>
+                    <p class="project-tagline">{{ proj.tagline }}</p>
+                    <p>{{ proj.desc }}</p>
+                    <div class="project-card-actions">
+                        {% if proj.demo %}
+                        <a href="{{ proj.demo }}" target="_blank" rel="noopener noreferrer" class="proj-action-link demo-link" onclick="event.stopPropagation()">
+                            <i data-lucide="{% if 'drive.google' in proj.demo %}file-text{% else %}external-link{% endif %}"></i> {% if 'drive.google' in proj.demo %}Research Paper{% else %}Live Demo{% endif %}
+                        </a>
+                        {% endif %}
+                        {% if proj.id == 'tank-optimization' %}
+                        <a href="#optimizer" class="proj-action-link demo-link" style="border-color: rgba(176, 38, 255, 0.4); color: #d8b4fe;" onclick="event.stopPropagation()">
+                            <i data-lucide="calculator"></i> Live Sandbox
+                        </a>
+                        {% endif %}
+                        {% if proj.github %}
+                        <a href="{{ proj.github }}" target="_blank" rel="noopener noreferrer" class="proj-action-link code-link" onclick="event.stopPropagation()">
+                            <i data-lucide="github"></i> Source Code
+                        </a>
+                        {% endif %}
+                    </div>
+                    <div class="card-hint">Click card to view details <i data-lucide="arrow-up-right"></i></div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <!-- APPLIED MATHEMATICS // TANK MATERIAL OPTIMIZER -->
+        <section id="optimizer" class="optimizer-section">
+            <div class="optimizer-header">
+                <span class="optimizer-badge">RESEARCH &amp; COMPUTATIONAL GEOMETRY</span>
+                <h2 class="section-title">Applied Mathematics // <span class="highlight">Tank Optimizer</span></h2>
+                <p class="optimizer-subtitle">Interactive Multivariable Calculus Simulation &mdash; Real-Time Derivative &amp; Minimum Area Analysis</p>
+            </div>
+
+            <div class="optimizer-grid">
+                <!-- Left: Mathematical Model & Controls -->
+                <div class="glass-card optimizer-card">
+                    <div class="optimizer-card-header">
+                        <i data-lucide="calculator" class="optimizer-icon"></i>
+                        <div>
+                            <h3 style="font-size: 1.25rem; font-family: var(--font-heading); color: var(--accent-primary);">Analytical Formulation</h3>
+                            <span style="font-size: 0.8rem; color: var(--text-secondary); font-family: var(--font-mono);">LAGRANGE MULTIPLIERS &amp; DERIVATIVES</span>
+                        </div>
+                    </div>
+                    <div class="math-formula-box">
+                        <div class="math-row">
+                            <span class="math-label">Target Volume:</span>
+                            <code>V = &pi; &middot; r&sup2; &middot; h &implies; h = V / (&pi; &middot; r&sup2;)</code>
+                        </div>
+                        <div class="math-row">
+                            <span class="math-label">Surface Area:</span>
+                            <code>A(r) = 2&pi;r&sup2; + 2&pi;rh = 2&pi;r&sup2; + 2V / r</code>
+                        </div>
+                        <div class="math-row">
+                            <span class="math-label">Derivative Extrema:</span>
+                            <code>dA/dr = 4&pi;r - 2V / r&sup2; = 0 &implies; r* = &sup3;&radic;(V / 2&pi;)</code>
+                        </div>
+                        <div class="math-row highlight-row">
+                            <span class="math-label">Optimal Ratio:</span>
+                            <span class="math-badge">h* = 2r* (Height = Diameter)</span>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Sliders -->
+                    <div class="slider-controls">
+                        <div class="slider-group">
+                            <div class="slider-header">
+                                <label for="volume-slider">Target Volume (V):</label>
+                                <span id="volume-val" class="slider-val">2000 L</span>
+                            </div>
+                            <input type="range" id="volume-slider" min="500" max="8000" step="50" value="2000" class="cyber-slider">
+                        </div>
+
+                        <div class="slider-group">
+                            <div class="slider-header">
+                                <label for="radius-slider">Test Radius (r):</label>
+                                <span id="radius-val" class="slider-val">5.00 m</span>
+                            </div>
+                            <input type="range" id="radius-slider" min="1.0" max="15.0" step="0.1" value="5.0" class="cyber-slider">
+                        </div>
+
+                        <button id="snap-optimal-btn" type="button" class="btn-primary magnetic" style="margin-top: 0.75rem; justify-content: center; width: 100%; border: none; cursor: pointer;">
+                            <span>⚡ SNAP TO OPTIMAL r*</span>
+                        </button>
+                    </div>
+
+                    <!-- Live Computed Metrics -->
+                    <div class="metrics-grid">
+                        <div class="metric-card">
+                            <span class="metric-label">Optimal Area (A*)</span>
+                            <span id="metric-optimal-area" class="metric-value">878.76 m&sup2;</span>
+                        </div>
+                        <div class="metric-card">
+                            <span class="metric-label">Current Area (A)</span>
+                            <span id="metric-current-area" class="metric-value">957.08 m&sup2;</span>
+                        </div>
+                        <div class="metric-card">
+                            <span class="metric-label">Current Height (h)</span>
+                            <span id="metric-height" class="metric-value">25.46 m</span>
+                        </div>
+                        <div class="metric-card" id="efficiency-metric-card">
+                            <span class="metric-label">Material Efficiency</span>
+                            <span id="metric-excess" class="metric-value highlight">+8.91% excess</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Live Canvas Plots -->
+                <div class="glass-card optimizer-card">
+                    <div class="optimizer-card-header">
+                        <i data-lucide="activity" class="optimizer-icon"></i>
+                        <div>
+                            <h3 style="font-size: 1.25rem; font-family: var(--font-heading); color: var(--accent-primary);">Real-Time Calculus Curve &amp; 3D Model</h3>
+                            <span style="font-size: 0.8rem; color: var(--text-secondary); font-family: var(--font-mono);">DYNAMIC GRAPH &amp; ISOMETRIC CYLINDER</span>
+                        </div>
+                    </div>
+                    <div class="visualizers-wrap">
+                        <div class="viz-panel">
+                            <div class="viz-header">
+                                <span>Area Function A(r) &amp; Global Minimum (r*, A*)</span>
+                                <span class="viz-tag">dA/dr = 0</span>
+                            </div>
+                            <canvas id="calc-curve-canvas" width="460" height="190"></canvas>
+                        </div>
+                        <div class="viz-panel" style="margin-top: 1rem;">
+                            <div class="viz-header">
+                                <span>3D Isometric Tank Wireframe</span>
+                                <span id="aspect-ratio-tag" class="viz-tag">Ratio h/2r: 2.55</span>
+                            </div>
+                            <canvas id="calc-3d-canvas" width="460" height="190"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- EDUCATION & ACHIEVEMENTS SECTION -->
+        <section id="education" class="education">
+            <h2 class="section-title">Education &amp; <span class="highlight">Achievements</span></h2>
+            <div class="education-grid">
+                {% for ed in data.education %}
+                <div class="glass-card ed-card">
+                    <i data-lucide="graduation-cap" class="ed-icon"></i>
+                    <h3>{{ ed.degree }}</h3>
+                    <p>{{ ed.institution }}</p>
+                    <p class="date">{{ ed.duration }}</p>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 0.5rem;">{{ ed.highlights }}</p>
+                </div>
+                {% endfor %}
+                <div class="glass-card ed-card">
+                    <i data-lucide="award" class="ed-icon"></i>
+                    <h3>Honors &amp; Hackathons</h3>
+                    <ul class="achievement-list">
+                        <li><strong>National AI/ML Hackathon:</strong> Competitor in AVEVA national hackathon organized by IIT Hyderabad (2026).</li>
+                        <li><strong>Hacksagon Hackathon:</strong> Active participant in national technical contests on Unstop (2023).</li>
+                        <li><strong>Clix Hub ERP:</strong> Architect of full-scale club lifecycle system deployed for student bodies at MITS.</li>
+                    </ul>
+                </div>
+                <div class="glass-card ed-card">
+                    <i data-lucide="shield-check" class="ed-icon"></i>
+                    <h3>Certifications &amp; Credentials</h3>
+                    <ul class="achievement-list">
+                        {% for cert in data.certifications %}
+                        <li>
+                            <strong>{{ cert.title }}:</strong> {{ cert.issuer }} ({{ cert.year }})
+                            {% if cert.link %}
+                            <br><a href="{{ cert.link }}" target="_blank" rel="noopener noreferrer" style="color: var(--accent-primary); text-decoration: underline; font-family: var(--font-mono); font-size: 0.78rem; display: inline-flex; align-items: center; gap: 4px; margin-top: 2px;">
+                                <i data-lucide="external-link" style="width: 12px; height: 12px;"></i> View Credential
+                            </a>
+                            {% endif %}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONNECT CHANNELS SECTION -->
+        <section id="connect" class="contact">
+            <h2 class="section-title">Connect &amp; <span class="highlight">Reach Out</span></h2>
+            <div class="contact-links">
+                <a href="mailto:namanlahariya@gmail.com" class="glass-card contact-card">
+                    <i data-lucide="mail"></i>
+                    <h3>Email Me</h3>
+                    <p>namanlahariya@gmail.com</p>
+                </a>
+                <a href="https://linkedin.com/in/naman-lahariya" target="_blank" rel="noopener noreferrer" class="glass-card contact-card">
+                    <svg class="brand-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24"
+                        height="24" fill="currentColor">
+                        <path
+                            d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+                    </svg>
+                    <h3>LinkedIn</h3>
+                    <p>Connect professionally</p>
+                </a>
+                <a href="https://github.com/namanartist" target="_blank" rel="noopener noreferrer" class="glass-card contact-card">
+                    <svg class="brand-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24"
+                        height="24" fill="currentColor">
+                        <path
+                            d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                    </svg>
+                    <h3>GitHub</h3>
+                    <p>View my repositories</p>
+                </a>
+            </div>
+        </section>
+
+        <!-- LIVE GITHUB ACTIVITY -->
+        <section id="github" class="github-strip" data-github-user="namanartist">
+            <h2 class="section-title">Live <span class="highlight">GitHub</span> Activity</h2>
+            <div class="gh-card">
+                <div class="gh-head">
+                    <a class="gh-user" href="https://github.com/{{ data.profile.github_user }}" target="_blank" rel="noopener">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22"
+                            fill="currentColor" aria-hidden="true">
+                            <path
+                                d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                        </svg>
+                        <span>@{{ data.profile.github_user }}</span>
+                        <span class="gh-verified-pill" style="margin-left: 8px; font-family: var(--font-mono); font-size: 0.7rem; color: #10b981; background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.3); padding: 2px 8px; border-radius: 12px; display: inline-flex; align-items: center; gap: 4px;">
+                            <i data-lucide="badge-check" style="width: 12px; height: 12px;"></i> Verified Developer
+                        </span>
+                    </a>
+                    <span class="gh-live"><span class="gh-live-dot"></span>Live</span>
+                    <div class="gh-stats" id="gh-stats"></div>
+                </div>
+
+                <div class="gh-graph-scroll" id="gh-graph-scroll" data-lenis-prevent>
+                    <div class="gh-graph-inner">
+                        <div class="gh-months" id="gh-months" aria-hidden="true"></div>
+                        <div class="gh-graph" id="gh-graph" role="img"
+                            aria-label="GitHub contribution graph for the last year"></div>
+                    </div>
+                </div>
+                <div class="gh-legend" aria-hidden="true">
+                    <span>Less</span>
+                    <span class="gh-cell" data-level="0"></span>
+                    <span class="gh-cell" data-level="1"></span>
+                    <span class="gh-cell" data-level="2"></span>
+                    <span class="gh-cell" data-level="3"></span>
+                    <span class="gh-cell" data-level="4"></span>
+                    <span>More</span>
+                </div>
+
+                <h3 class="gh-sub">Recent commits</h3>
+                <ul class="gh-commits" id="gh-commits"></ul>
+
+                <p class="gh-status" id="gh-status" role="status">Loading live activity…</p>
+                <a class="gh-more" href="https://github.com/namanartist" target="_blank" rel="noopener">View full
+                    profile on GitHub &rarr;</a>
+                <div class="gh-tip" id="gh-tip" role="tooltip"></div>
+            </div>
+        </section>
+    </main>
+
+    <!-- LET'S TALK / DIRECT TRANSMISSION FOOTER -->
+    <footer id="contact" class="parallax-footer lets-talk-section">
+        <div class="footer-content">
+            <div class="lets-talk-grid">
+                <!-- Left: Big Brand Statement & Direct Channels -->
+                <div class="lets-talk-left">
+                    <span class="lets-talk-badge">DIRECT TRANSMISSION &bull; OPEN FOR ROLES</span>
+                    <h2 class="huge-footer-text">LET'S<br><span class="highlight">TALK.</span></h2>
+                    <p class="lets-talk-sub">Have an interesting project, engineering problem, or AI opportunity? Transmit your message directly to Naman's database.</p>
+                    
+                    <div class="lets-talk-channels">
+                        <a href="mailto:namanlahariya@gmail.com" class="talk-channel-pill magnetic">
+                            <i data-lucide="mail"></i> namanlahariya@gmail.com
+                        </a>
+                        <a href="https://linkedin.com/in/naman-lahariya" target="_blank" rel="noopener noreferrer" class="talk-channel-pill magnetic">
+                            <i data-lucide="linkedin"></i> LinkedIn
+                        </a>
+                        <a href="https://github.com/namanartist" target="_blank" rel="noopener noreferrer" class="talk-channel-pill magnetic">
+                            <i data-lucide="github"></i> @namanartist
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Right: The Transmit Message Form -->
+                <div class="lets-talk-right">
+                    <form id="contact-form" class="glass-card lets-talk-form">
+                        <div class="form-header" style="display: flex; align-items: center; gap: 10px; margin-bottom: 1.2rem;">
+                            <i data-lucide="send" style="width: 22px; height: 22px; color: var(--accent-primary);"></i>
+                            <div>
+                                <h3 class="form-title" style="font-family: var(--font-heading); font-size: 1.3rem; margin: 0;">Transmit Direct Message</h3>
+                                <span class="form-sub" style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-secondary);">Direct SQLite persistence &bull; Sub-second delivery</span>
+                            </div>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0.8rem;">
+                            <input type="text" name="name" required placeholder="Your Name" class="cyber-input">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0.8rem;">
+                            <input type="email" name="email" required placeholder="Your Email Address" class="cyber-input">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0.8rem;">
+                            <input type="text" name="subject" placeholder="Subject / Opportunity Scope" class="cyber-input">
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0.8rem;">
+                            <textarea name="message" required rows="4" placeholder="Your Message / Details..." class="cyber-input" style="resize: vertical;"></textarea>
+                        </div>
+                        <input type="text" name="company_bot_field" style="display:none;" tabindex="-1" autocomplete="off">
+                        <button type="submit" class="btn-primary magnetic submit-btn" style="width: 100%; justify-content: center; border: none; cursor: pointer; padding: 0.85rem;">
+                            <span>⚡ TRANSMIT MESSAGE</span>
+                        </button>
+                        <div id="form-feedback" style="display: none; font-family: var(--font-mono); font-size: 0.85rem; padding: 0.8rem; border-radius: 6px; margin-top: 0.8rem;"></div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2026 Naman Lahariya. All rights reserved. MITS Gwalior &bull; B.Tech Mathematics &amp; Computing.</p>
+                <div class="footer-socials">
+                    <a href="/admin" class="magnetic" title="Mission Control Dashboard"><i data-lucide="lock" style="width: 14px; height: 14px; vertical-align: middle;"></i> Admin</a>
+                    <a href="https://linkedin.com/in/naman-lahariya" target="_blank" rel="noopener noreferrer" class="magnetic">LinkedIn</a>
+                    <a href="https://github.com/namanartist" target="_blank" rel="noopener noreferrer" class="magnetic">GitHub</a>
+                    <a href="mailto:namanlahariya@gmail.com" class="magnetic">Email</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- AI Twin Chatbot Floating Action Button -->
+    <button id="ai-chat-btn" class="ai-chat-fab magnetic" aria-label="Open Naman AI Twin">
+        <span class="ai-fab-pulse"></span>
+        <i data-lucide="bot" class="ai-fab-icon"></i>
+        <span class="ai-fab-label">Ask AI Twin</span>
+    </button>
+
+    <!-- Floating Quick Launch Button (Ctrl+K / ⌘K) -->
+    <button id="cmd-palette-float-btn" class="cmd-float-btn magnetic" aria-label="Open Quick Launch (Ctrl+K)">
+        <span class="cmd-float-key">⌘K</span>
+        <span class="cmd-float-text">Quick Launch</span>
+    </button>
+
+    <!-- AI Twin Chat Drawer -->
+    <div id="ai-chat-drawer" class="ai-chat-drawer hide" role="dialog" aria-modal="true" aria-label="Naman AI Digital Twin">
+        <div class="ai-chat-header">
+            <div class="ai-header-left">
+                <div class="ai-avatar-badge">
+                    <i data-lucide="bot"></i>
+                    <span class="ai-live-dot"></span>
+                </div>
+                <div>
+                    <h3 class="ai-title">NL-AI CORE // SYSTEM TWIN</h3>
+                    <span class="ai-sub">MITS Gwalior &bull; B.Tech Mathematics &amp; Computing</span>
+                    <span class="ai-model-tag" id="ai-model-badge" style="display: inline-flex; align-items: center; gap: 4px; font-size: 0.68rem; font-family: var(--font-mono); color: var(--accent-primary); background: rgba(0,255,204,0.1); padding: 2px 6px; border-radius: 4px; border: 1px solid rgba(0,255,204,0.25); margin-top: 3px;">
+                        <i data-lucide="cpu" style="width: 11px; height: 11px;"></i> Smart Local LLM Online
+                    </span>
+                </div>
+            </div>
+            <button id="close-ai-chat" class="ai-close-btn magnetic" aria-label="Close Chat">&times;</button>
+        </div>
+        
+        <div class="ai-chat-messages" id="ai-chat-messages" data-lenis-prevent>
+            <div class="ai-msg ai-msg-bot">
+                <div class="ai-msg-bubble">
+                    <p>👋 <strong>Greetings!</strong> I am Naman Lahariya's digital twin.</p>
+                    <p>Ask me about my SaaS architecture (<strong>Clix Hub ERP</strong>), applied machine learning (<strong>Decode Labs</strong>, <strong>CleanUp</strong>), <strong>Tank Optimization Calculus</strong>, or hiring availability!</p>
+                </div>
+                <span class="ai-msg-time">Just now</span>
+            </div>
+        </div>
+
+        <div class="ai-chips-container" id="ai-chips-container">
+            <button class="ai-chip" data-query="Calculate optimal tank dimensions for 5000L">📐 Solve 5000L Tank</button>
+            <button class="ai-chip" data-query="Show me Clix Hub RBAC code">💻 Show RBAC Code</button>
+            <button class="ai-chip" data-query="Compare Naman projects">📊 Compare Projects</button>
+            <button class="ai-chip" data-query="Why should a company hire Naman?">⚡ Why Hire Naman?</button>
+            <button class="ai-chip" data-query="Tell me about Clix Hub">🚀 Clix Hub ERP</button>
+        </div>
+
+        <form id="ai-chat-form" class="ai-chat-input-form">
+            <input type="text" id="ai-chat-input" placeholder="Ask AI Twin anything about Naman..." autocomplete="off">
+            <button type="submit" class="ai-send-btn magnetic" aria-label="Send Message">
+                <i data-lucide="send"></i>
+            </button>
+        </form>
+    </div>
+
+    <!-- Command Palette (Ctrl+K / ⌘K) Modal -->
+    <div id="cmd-palette-modal" class="cmd-palette-modal hide" role="dialog" aria-modal="true" aria-label="Command Palette">
+        <div class="cmd-palette-backdrop" id="cmd-palette-backdrop"></div>
+        <div class="cmd-palette-box glass-card" data-lenis-prevent>
+            <div class="cmd-palette-input-wrap">
+                <i data-lucide="search" class="cmd-search-icon"></i>
+                <input type="text" id="cmd-palette-input" placeholder="Type a command or jump to section... (Press Esc to close)" autocomplete="off" spellcheck="false">
+                <span class="cmd-esc-badge">ESC</span>
+            </div>
+            <div class="cmd-palette-list" id="cmd-palette-list">
+                <!-- Dynamically populated via JS -->
+            </div>
+            <div class="cmd-palette-footer">
+                <span><kbd>&uarr;</kbd><kbd>&darr;</kbd> to navigate</span>
+                <span><kbd>&crarr;</kbd> to select</span>
+                <span><kbd>esc</kbd> to dismiss</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cyber Toast Notification -->
+    <div id="cyber-toast" class="cyber-toast hide" role="alert" aria-live="polite"></div>
+
+    <!-- Role Popup Modal -->
+    <div id="role-modal" class="role-modal hide">
+        <div class="role-modal-content glass-card" data-lenis-prevent>
+            <button id="close-role-modal" class="close-btn magnetic"><i data-lucide="x"></i></button>
+            <div class="role-modal-image">
+                <img id="role-modal-img" src="" alt="Role Image" decoding="async">
+            </div>
+            <div class="role-modal-body">
+                <h2 id="role-modal-title"></h2>
+                <h4 id="role-modal-subtitle" class="accent"></h4>
+                <p id="role-modal-desc"></p>
+                
+                <div id="role-modal-techstack-container" style="display: none; margin-top: 2rem;">
+                    <h3 style="color: var(--accent-primary); margin-bottom: 0.5rem; font-size: 1.5rem;">Tech Stacks Used</h3>
+                    <p id="role-modal-techstack" style="color: var(--text-secondary);"></p>
+                </div>
+
+                <div id="role-modal-actions" style="margin-top: 2rem; display: flex; gap: 1rem; flex-wrap: wrap;">
+                    <a id="role-modal-demo-btn" href="#" target="_blank" rel="noopener noreferrer" class="btn-primary magnetic" style="display: none; text-decoration: none; padding: 0.7rem 1.4rem;">
+                        <span><i data-lucide="external-link"></i> Launch Live Demo</span>
+                    </a>
+                    <a id="role-modal-github-btn" href="#" target="_blank" rel="noopener noreferrer" class="btn-primary magnetic" style="display: none; text-decoration: none; padding: 0.7rem 1.4rem; background: rgba(255,255,255,0.06); border-color: var(--glass-border);">
+                        <span><i data-lucide="github"></i> View GitHub Repo</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Libraries -->
+    <script>
+        window.__NL_RESUME_URL = "{{ data.profile.resume_url }}";
+        window.__NL_GITHUB_URL = "{{ data.profile.github }}";
+        window.__NL_LINKEDIN_URL = "{{ data.profile.linkedin }}";
+        window.__NL_EMAIL = "{{ data.profile.email }}";
+    </script>
+    <script defer src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
+    <script defer src="/static/js/main.js"></script>
+</body>
+
+</html>

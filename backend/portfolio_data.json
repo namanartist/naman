@@ -1,0 +1,330 @@
+{
+  "certifications": [
+    {
+      "issuer": "Indian Institute of Technology (IIT), Hyderabad",
+      "link": "https://d2c-cdn-mumbai.s3.ap-south-1.amazonaws.com/lambda-pdfs/certificate-images/a736759b-a787-4b1e-8a13-b9634a34274b.pdf",
+      "title": "National AI/ML Hackathon by AVEVA",
+      "year": "2026"
+    },
+    {
+      "issuer": "Forage",
+      "link": "https://www.theforage.com/completion-certificates/Sj7temL583QAYpHXD/E6McHJDKsQYh79moz_Sj7temL583QAYpHXD_69a7c4dbf44d771db9856097_1772603982134_completion_certificate.pdf",
+      "title": "Deloitte Virtual Job Simulation",
+      "year": "2026"
+    },
+    {
+      "issuer": "Forage",
+      "link": "https://www.theforage.com/completion-certificates/9PBTqmSxAf6zZTseP/E9pA6qsdbeyEkp3ti_9PBTqmSxAf6zZTseP_69a7c4dbf44d771db9856097_1772605652041_completion_certificate.pdf",
+      "title": "J.P. Morgan Virtual Case Study Program",
+      "year": "2026"
+    },
+    {
+      "issuer": "Unstop (D2C)",
+      "link": "https://d2c-cdn-mumbai.s3.ap-south-1.amazonaws.com/lambda-pdfs/certificate-images/673aa818-789f-45bf-9ad3-188bea83ce23.pdf",
+      "title": "Hacksagon Hackathon",
+      "year": "2023"
+    }
+  ],
+  "education": [
+    {
+      "degree": "B.Tech in Mathematics & Computing",
+      "duration": "2024 - 2028 (Expected)",
+      "highlights": "Core focus on Advanced Calculus, Numerical Linear Algebra, Data Structures, Operating Systems, Machine Learning, and Discrete Mathematics.",
+      "institution": "Madhav Institute of Technology and Science (MITS), Gwalior"
+    }
+  ],
+  "experiences": [
+    {
+      "company": "FlyRank AI",
+      "desc": "Spearheading modern front-end engineering for AI-driven platforms. Crafting high-conversion interactive user interfaces, implementing generative AI workflow integrations, and optimizing web performance metrics.",
+      "duration": "June 2026 - July 2026",
+      "role": "Front-End AI Intern",
+      "type": "Internship"
+    },
+    {
+      "company": "Decode Labs",
+      "desc": "Working on hands-on production artificial intelligence models, real-world data pipelines, and machine learning experimentation for enterprise client solutions.",
+      "duration": "June 2026 - July 2026",
+      "role": "Artificial Intelligence Intern",
+      "type": "Internship"
+    },
+    {
+      "company": "InAmigos Foundation (IAF)",
+      "desc": "Designed and deployed responsive web portals, accessible community impact dashboards, and integrated donation/volunteer management systems.",
+      "duration": "May 2026 - June 2026",
+      "role": "Web Development Intern",
+      "type": "Virtual Internship"
+    },
+    {
+      "company": "Internshala",
+      "desc": "Championed tech education and internship programs across MITS campus, driving student registrations and facilitating hands-on career sessions.",
+      "duration": "Jan 2026 - Feb 2026",
+      "role": "Campus Ambassador",
+      "type": "Leadership"
+    },
+    {
+      "company": "Corizo Edutech Pvt. Ltd.",
+      "desc": "Executed data-driven digital growth campaigns, leveraging SEO/SEM strategies and analytics to scale organic visibility and brand reach.",
+      "duration": "Sep 2025 - Nov 2025",
+      "role": "Digital Marketing Intern",
+      "type": "Internship"
+    }
+  ],
+  "profile": {
+    "avatar": "/static/assets/avatar.png",
+    "bio": "I craft scalable SaaS platforms, intelligent AI solutions, and high-performance web applications rooted in strong mathematical foundations and modern engineering.",
+    "email": "namanlahariya@gmail.com",
+    "github": "https://github.com/namanartist",
+    "github_avatar_synced_at": "2026-10-30T19:47:00.722697Z",
+    "github_id": 192575836,
+    "github_repos": 24,
+    "github_user": "namanartist",
+    "github_verified": true,
+    "github_verified_at": "2026-10-30 19:47 UTC",
+    "linkedin": "https://linkedin.com/in/naman-lahariya",
+    "name": "Naman Lahariya",
+    "quote": "System Status: Differential calculus in the mind, scalable code in the fingers.",
+    "resume_url": "/static/assets/resume.pdf",
+    "short_name": "NL",
+    "status": "Available for new opportunities",
+    "status_chips": [
+      {
+        "icon": "\ud83c\udf93",
+        "text": "Internships & Full-Time Roles"
+      },
+      {
+        "icon": "\ud83e\udde0",
+        "text": "AI / ML & Full-Stack SaaS"
+      },
+      {
+        "icon": "\u26a1",
+        "text": "High-Performance Systems"
+      }
+    ],
+    "sub_tagline": "B.Tech in Mathematics & Computing @ MITS Gwalior",
+    "tagline": "Full-Stack Developer & AI Systems Engineer"
+  },
+  "projects": [
+    {
+      "demo": "https://clixhub.vercel.app",
+      "desc": "A full-scale SaaS platform engineered for educational institutions and organizations. Manages complete club lifecycles, event scheduling, member authentication, automated ticketing, and digital governance for student bodies at MITS Gwalior.",
+      "github": "https://github.com/namanartist/clixhub-erp",
+      "icon": "compass",
+      "id": "clixhub",
+      "image": "/static/assets/clixhub.jpg",
+      "long_desc": "Built over 4 months of intensive engineering, Clix Hub replaces fragmented paper records and disparate spreadsheets with a unified institutional ERP. Features role-based access control (RBAC), multi-tier administrative approval workflows, real-time analytics for event engagement, and secure member profile management.",
+      "tagline": "Club Lifecycle & Experience SaaS ERP",
+      "tags": [
+        "SaaS ERP",
+        "Full-Stack",
+        "RBAC",
+        "Cloud Deployment",
+        "PostgreSQL"
+      ],
+      "title": "Clix Hub"
+    },
+    {
+      "demo": "https://namanartist.github.io/namsify",
+      "desc": "High-fidelity music streaming ecosystem blending seamless audio playback, personalized curation, modern UI/UX design, and cloud delivery for contemporary digital listeners.",
+      "github": "https://github.com/namanartist/namsify-streaming",
+      "icon": "music",
+      "id": "namsify",
+      "image": "/static/assets/namsify.jpg",
+      "long_desc": "Namsify delivers a platinum-tier audio listening experience with zero-latency streaming pipelines, custom equalizer presets, adaptive bitrate audio streaming, and playlist synchronization powered by scalable cloud storage and dynamic client caching.",
+      "tagline": "Next-Gen Audio & Music Streaming Platform",
+      "tags": [
+        "Full-Stack",
+        "Web Audio API",
+        "Streaming",
+        "UI/UX Architecture"
+      ],
+      "title": "Namsify"
+    },
+    {
+      "demo": "https://cleanup-ai.vercel.app",
+      "desc": "An intelligent waste monitoring and civic engagement system powered by artificial intelligence and IoT concepts.",
+      "github": "https://github.com/namanartist/cleanup-ai",
+      "icon": "recycle",
+      "id": "cleanup-app",
+      "image": "/static/assets/cleanup.jpg",
+      "long_desc": "Features deep learning computer vision for automated waste classification (biodegradable vs. recyclable), real-time garbage vehicle tracking via telemetry, and an authenticated citizen reporting portal designed to streamline municipal recycling operations.",
+      "tagline": "AI-Powered Smart Waste Management System",
+      "tags": [
+        "AI / ML",
+        "Computer Vision",
+        "PyTorch",
+        "OpenCV",
+        "FastAPI"
+      ],
+      "title": "CleanUp App"
+    },
+    {
+      "demo": "https://hopebridgefoundationin.netlify.app/",
+      "desc": "Modern responsive web portal built for InAmigos Foundation to showcase their social impact initiatives, donation drives, and volunteer enrollment.",
+      "github": "https://github.com/namanartist/hopebridge-foundation",
+      "icon": "heart",
+      "id": "hopebridge",
+      "image": "/static/assets/inamigos.jpg",
+      "long_desc": "Engineered with strict accessibility standards (WCAG), fluid mobile responsiveness, and high SEO scores to maximize community outreach and digital donor engagement.",
+      "tagline": "Responsive Non-Profit Community Portal",
+      "tags": [
+        "Web Portal",
+        "Community",
+        "Accessibility",
+        "Responsive Design"
+      ],
+      "title": "Hopebridge Foundation"
+    },
+    {
+      "demo": "https://drive.google.com/file/d/14Uy3gxO3UKVFWD2vjh7aPZDBr6UJwFtd/view?usp=drivesdk",
+      "desc": "Applied multivariable differential calculus to optimize cylindrical and prismatic industrial tank dimensions, minimizing material surface area while preserving precise storage volume.",
+      "github": "https://github.com/namanartist/tank-optimization",
+      "icon": "box",
+      "id": "tank-optimization",
+      "image": "https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&q=80&w=800",
+      "long_desc": "Formulated mathematical objective functions with non-linear constraints and derived analytical extrema using Lagrange multipliers. Backed by computational simulations in Python to prove material savings exceeding 18% over conventional designs.",
+      "tagline": "Differential Calculus & Computational Geometry",
+      "tags": [
+        "Calculus",
+        "Mathematical Modeling",
+        "Optimization",
+        "Python"
+      ],
+      "title": "Optimization of Tank Material"
+    }
+  ],
+  "roles": [
+    {
+      "badge": "Core Specialty",
+      "desc": "Architecting resilient, full-lifecycle SaaS platforms using React, Node.js, Next.js, and Flask. Specialized in multi-tenant architectures, secure authentication, and high-concurrency systems.",
+      "icon": "layers",
+      "id": "full-stack",
+      "subtitle": "Scalable Modern Web Apps",
+      "tech": "React, Next.js, Node.js, Express, Flask, PostgreSQL, MongoDB, Tailwind CSS, Docker",
+      "title": "Full-Stack SaaS Architect"
+    },
+    {
+      "badge": "Applied Intelligence",
+      "desc": "Designing and deploying real-world machine learning solutions: deep learning waste classification, predictive analytics, NLP embeddings, and edge model inference.",
+      "icon": "brain",
+      "id": "ai-ml",
+      "subtitle": "Computer Vision & Predictive Models",
+      "tech": "PyTorch, TensorFlow, Scikit-Learn, OpenCV, NumPy, Pandas, FastAPI, Jupyter",
+      "title": "AI & Machine Learning Engineer"
+    },
+    {
+      "badge": "High Throughput",
+      "desc": "Building robust RESTful and WebSocket-powered APIs, microservices, and database schemas engineered for sub-second latency and zero-downtime reliability.",
+      "icon": "server",
+      "id": "backend-api",
+      "subtitle": "Distributed APIs & Real-Time Flow",
+      "tech": "Python, Flask, REST APIs, WebSockets, Supabase, PostgreSQL, Vercel, AWS",
+      "title": "Backend & Cloud Systems"
+    },
+    {
+      "badge": "Academic Foundation",
+      "desc": "Applying advanced multivariable differential calculus, linear algebra, numerical analysis, and algorithmic optimization to solve complex computational geometry and engineering challenges.",
+      "icon": "calculator",
+      "id": "computational-math",
+      "subtitle": "Optimization & Modeling",
+      "tech": "Calculus, Lagrange Multipliers, Numerical Linear Algebra, NumPy, SciPy, MATLAB",
+      "title": "Computational Mathematics & Calculus"
+    }
+  ],
+  "skills": {
+    "Databases & Tools": [
+      {
+        "level": "Advanced",
+        "name": "PostgreSQL"
+      },
+      {
+        "level": "Proficient",
+        "name": "MongoDB"
+      },
+      {
+        "level": "Advanced",
+        "name": "SQLite"
+      },
+      {
+        "level": "Intermediate",
+        "name": "Docker"
+      },
+      {
+        "level": "Advanced",
+        "name": "Git & GitHub"
+      },
+      {
+        "level": "Advanced",
+        "name": "Vercel & Netlify"
+      },
+      {
+        "level": "Advanced",
+        "name": "Web Audio API"
+      },
+      {
+        "level": "Proficient",
+        "name": "Linux / Bash"
+      }
+    ],
+    "Frameworks & Libraries": [
+      {
+        "level": "Advanced",
+        "name": "React.js"
+      },
+      {
+        "level": "Advanced",
+        "name": "Next.js"
+      },
+      {
+        "level": "Advanced",
+        "name": "Flask"
+      },
+      {
+        "level": "Advanced",
+        "name": "Node.js & Express"
+      },
+      {
+        "level": "Intermediate",
+        "name": "PyTorch"
+      },
+      {
+        "level": "Intermediate",
+        "name": "OpenCV"
+      },
+      {
+        "level": "Intermediate",
+        "name": "FastAPI"
+      },
+      {
+        "level": "Expert",
+        "name": "Tailwind CSS"
+      }
+    ],
+    "Languages": [
+      {
+        "level": "Advanced",
+        "name": "Python"
+      },
+      {
+        "level": "Advanced",
+        "name": "JavaScript (ES6+)"
+      },
+      {
+        "level": "Intermediate",
+        "name": "TypeScript"
+      },
+      {
+        "level": "Proficient",
+        "name": "C / C++"
+      },
+      {
+        "level": "Advanced",
+        "name": "SQL"
+      },
+      {
+        "level": "Expert",
+        "name": "HTML5 & CSS3"
+      }
+    ]
+  }
+}

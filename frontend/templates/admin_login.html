@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NL-ADMIN // Access Terminal</title>
+    <link rel="icon" type="image/png" href="/static/assets/image.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <script defer src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+    <style>
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            background: #030305;
+            color: #f0f0f0;
+            font-family: var(--font-body);
+            position: relative;
+        }
+        .login-card {
+            width: 100%;
+            max-width: 440px;
+            background: rgba(10, 10, 16, 0.85);
+            backdrop-filter: blur(24px);
+            border: 1px solid var(--accent-primary);
+            box-shadow: 0 20px 60px rgba(0, 255, 204, 0.2);
+            border-radius: 16px;
+            padding: 2.5rem;
+            position: relative;
+            z-index: 2;
+        }
+        .login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .login-logo {
+            font-family: var(--font-heading);
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--accent-primary);
+            letter-spacing: -1px;
+            display: inline-block;
+        }
+        .login-badge {
+            display: inline-block;
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            color: var(--accent-primary);
+            background: rgba(0, 255, 204, 0.1);
+            border: 1px solid rgba(0, 255, 204, 0.3);
+            padding: 3px 10px;
+            border-radius: 12px;
+            margin-top: 0.5rem;
+            letter-spacing: 1px;
+        }
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+        .input-group label {
+            display: block;
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.4rem;
+        }
+        .login-input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 8px;
+            padding: 0.85rem 1rem;
+            color: #fff;
+            font-family: var(--font-mono);
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+        .login-input:focus {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 15px rgba(0, 255, 204, 0.25);
+        }
+        .login-btn {
+            background: var(--accent-primary);
+            color: #030305;
+            border: none;
+            border-radius: 8px;
+            padding: 0.85rem;
+            font-family: var(--font-heading);
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+            margin-top: 0.5rem;
+        }
+        .login-btn:hover {
+            box-shadow: 0 0 20px rgba(0, 255, 204, 0.5);
+            transform: translateY(-2px);
+        }
+        .error-banner {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid #ef4444;
+            color: #ef4444;
+            padding: 0.8rem;
+            border-radius: 8px;
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            margin-bottom: 1.2rem;
+            text-align: center;
+        }
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 1.5rem;
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+        .back-link:hover {
+            color: var(--accent-primary);
+        }
+    </style>
+</head>
+<body>
+    <div class="login-card">
+        <div class="login-header">
+            <span class="login-logo">NL<span style="color:#b026ff;">.</span>ADMIN</span>
+            <br>
+            <span class="login-badge">AUTHENTICATED CONSOLE</span>
+        </div>
+
+        {% if error %}
+        <div class="error-banner">
+            {{ error }}
+        </div>
+        {% endif %}
+
+        <form method="POST" action="/admin/login" class="login-form">
+            <div class="input-group">
+                <label for="password">ROOT SECURITY PASSCODE</label>
+                <input type="password" id="password" name="password" required autofocus placeholder="Enter Admin Passcode..." class="login-input">
+            </div>
+            <button type="submit" class="login-btn">
+                <span>UNLOCK SYSTEM</span> &rarr;
+            </button>
+            <div style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-secondary); text-align: center; margin-top: 0.5rem;">
+                Default Passcode: <code>admin123</code>
+            </div>
+            <div style="display: flex; align-items: center; justify-content: center; gap: 6px; font-family: var(--font-mono); font-size: 0.72rem; color: #10b981; margin-top: 0.8rem; background: rgba(16, 185, 129, 0.08); padding: 6px 12px; border-radius: 20px; border: 1px solid rgba(16, 185, 129, 0.25);">
+                <i data-lucide="badge-check" style="width: 14px; height: 14px;"></i> Bound to Verified GitHub: @namanartist
+            </div>
+        </form>
+
+        <a href="/" class="back-link">&larr; Return to Public Portfolio</a>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.lucide) lucide.createIcons();
+        });
+    </script>
+</body>
+</html>
+
