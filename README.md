@@ -12,7 +12,7 @@
 - **Dynamic Content Persistence**: Update profile tagline, bio, status, project links (Live Demo & GitHub), and skills with real-time JSON disk persistence (`portfolio_data.json`).
 - **Local LLM AI Console**: Real-time Ollama daemon diagnostics, knowledge base vector inspector, and interactive prompt testing playground.
 
-### 🎨 Visual & Interactive Polish (Inspired by Aviral Pathak)
+### 🎨 Visual & Interactive Polish
 - **Floating Quick Launch (`⌘K`)**: Always-accessible floating cyberpunk pill button at the bottom left for instant keyboard navigation, section jumping, theme toggling, and sound controls.
 - **Redesigned "LET'S TALK." Section**: Integrated the "Transmit Message" contact form directly into the grand typographic footer with split-grid layout and direct channel pills.
 - **Enhanced Glass Menu Navigation**: Numbered cyberpunk menu items (`01. Home`, `02. About`, ... `11. Let's Talk`) with Lenis smooth scroll offset handling.
