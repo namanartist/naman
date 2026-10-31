@@ -1,6 +1,6 @@
 # Naman Lahariya — Portfolio 2.0 (Flask Edition)
 
-> Upgraded developer portfolio for **Naman Lahariya**, inspired by the cyberpunk / high-tech glassmorphism aesthetic of **[aviralpathak.in](https://aviralpathak.in)** and powered by **Python & Flask**.
+> Upgraded developer portfolio for **Naman Lahariya**, inspired by the cyberpunk / high-tech glassmorphism aesthetic and powered by **Python & Flask**.
 
 ---
 
